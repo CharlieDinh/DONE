@@ -6,7 +6,7 @@ import argparse
 import importlib
 import random
 import os
-from algorithms.centralServer.Server import Server
+from algorithms.centralServer.server import Server
 from algorithms.trainmodel.models import *
 from utils.plot_utils import *
 import torch

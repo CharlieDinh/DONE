@@ -6,10 +6,9 @@ import argparse
 import importlib
 import random
 import os
-from algorithms.centralServer.serveravg import FedAvg
-from algorithms.centralServer.serverfedl import FEDL
+from algorithms.centralServer.server import Server
 from algorithms.trainmodel.models import *
-from algorithms.plot_utils import *
+from utils.plot_utils import *
 import torch
 torch.manual_seed(0)
 

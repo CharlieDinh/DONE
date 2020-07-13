@@ -6,9 +6,7 @@ import argparse
 import importlib
 import random
 import os
-from algorithms.centralServer.serveravg import FedAvg
-from algorithms.centralServer.serverfedl import FEDL
-from algorithms.centralServer.serverneumann import FedNeumann
+from algorithms.centralServer.server import Server
 from algorithms.trainmodel.models import *
 from utils.plot_utils import *
 import torch

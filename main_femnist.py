@@ -6,7 +6,7 @@ import argparse
 import importlib
 import random
 import os
-from algorithms.centralServer.Server import Server
+from algorithms.centralServer.server import Server
 from algorithms.trainmodel.models import *
 from utils.plot_utils import *
 import torch
@@ -30,10 +30,8 @@ L = 0
 if(0):
 
     server = Server(dataset, algorithm, model, batch_size, learning_rate, hyper_learning_rate, L, num_glob_iters, local_ep, optimizer, numusers, i)
-    
     server.train()
     server.test()
-
     average_data(num_users=numusers, loc_ep1=local_ep, Numb_Glob_Iters=num_glob_iters, lamb=L,learning_rate=learning_rate, hyper_learning_rate = hyper_learning_rate, algorithms=algorithm, batch_size=batch_size, dataset=dataset,times = i)
 
 if(1):
