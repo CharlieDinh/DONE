@@ -51,11 +51,7 @@ class Edgebase:
     def clone_model_paramenter(self, param, clone_param):
         for param, clone_param in zip(param, clone_param):
             clone_param.data = param.data.clone()
-            if(param.grad != None):
-                if(clone_param.grad == None):
-                    clone_param.grad = torch.zeros_like(param.grad)
-                clone_param.grad.data = param.grad.data.clone()
-                
+                            
         return clone_param
     
     def get_updated_parameters(self):

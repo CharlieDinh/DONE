@@ -46,7 +46,7 @@ if __name__ == "__main__":
     parser.add_argument("--L", type=int, default=15, help="Regularization term")
     parser.add_argument("--num_global_iters", type=int, default=800)
     parser.add_argument("--local_epochs", type=int, default=20)
-    parser.add_argument("--optimizer", type=str, default="SecondOrder", choices=["SecondOrder", "FirstOrder"])
+    parser.add_argument("--optimizer", type=str, default="FirstOrder",choices=["SecondOrder", "FirstOrder"])
     parser.add_argument("--algorithm", type=str, default="SecondOrder",choices=["SecondOrder", "FirstOrder"])
     parser.add_argument("--numedges", type=int, default=10,help="Number of Edges per round")
     parser.add_argument("--times", type=int, default=1, help="running time")
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     print("Algorithm: {}".format(args.algorithm))
     print("Batch size: {}".format(args.batch_size))
     print("Learing rate       : {}".format(args.learning_rate))
-    print("Subset of edges      : {}".format(args.numusers))
+    print("Subset of edges      : {}".format(args.numedges))
     print("Number of local rounds       : {}".format(args.local_epochs))
     print("Number of global rounds       : {}".format(args.num_global_iters))
     print("Dataset       : {}".format(args.dataset))
@@ -74,6 +74,6 @@ if __name__ == "__main__":
         num_glob_iters=args.num_global_iters,
         local_epochs=args.local_epochs,
         optimizer= args.optimizer,
-        numedges=args.numusers,
+        numedges=args.numedges,
         times = args.times
         )

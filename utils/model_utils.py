@@ -112,7 +112,8 @@ def read_data(dataset):
 
     return clients, groups, train_data, test_data
 
-def read_user_data(index,data,dataset):
+
+def read_edge_data(index, data, dataset):
     id = data[0][index]
     train_data = data[2][id]
     test_data = data[3][id]

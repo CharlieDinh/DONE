@@ -3,38 +3,39 @@ import os
 
 from algorithms.edgeServer.edge import Edge
 from algorithms.centralServer.serverbase import ServerBase
-from utils.model_utils import read_data, read_user_data
+from utils.model_utils import read_data, read_edge_data
 import numpy as np
 
 # Implementation for FedAvg Server
 class Server(ServerBase):
     def __init__(self, dataset,algorithm, model, batch_size, learning_rate, L, num_glob_iters,
-                 local_epochs, optimizer, num_users, times):
+                 local_epochs, optimizer, num_edges, times):
         super().__init__(dataset,algorithm, model[0], batch_size, learning_rate, L, num_glob_iters,
-                         local_epochs, optimizer, num_users, times)
+                         local_epochs, optimizer, num_edges, times)
 
-        # Initialize data for all  users
+        # Initialize data for all  edges
         data = read_data(dataset)
-        total_users = len(data[0])
-        for i in range(total_users):
-            id, train , test = read_user_data(i, data, dataset)
-            user = Edge(id, train, test, model, batch_size, learning_rate, L, local_epochs, optimizer)
-            self.edgeServer.append(user)
-            self.total_train_samples += user.train_samples
+        total_edges = len(data[0])
+        for i in range(total_edges):
+            id, train, test = read_edge_data(i, data, dataset)
+            edge = Edge(id, train, test, model, batch_size,
+                        learning_rate, L, local_epochs, optimizer)
+            self.edges.append(edge)
+            self.total_train_samples += edge.train_samples
             
-        print("Number of users / total users:",num_users, " / " ,total_users)
+        print("Number of edges / total edges:", num_edges, " / ", total_edges)
         print("Finished creating FedNeumann server.")
 
     def send_grads(self):
-        assert (self.users is not None and len(self.users) > 0)
+        assert (self.edges is not None and len(self.usedgesers) > 0)
         grads = []
         for param in self.model.parameters():
             if param.grad is None:
                 grads.append(torch.zeros_like(param.data))
             else:
                 grads.append(param.grad)
-        for user in self.users:
-            user.set_grads(grads)
+        for edge in self.edges:
+            edge.set_grads(grads)
 
     def train(self):
         loss = []
@@ -42,10 +43,10 @@ class Server(ServerBase):
             print("-------------Round number: ",glob_iter, " -------------")
             self.send_parameters()
             self.evaluate()
-            self.selected_users = self.select_users(glob_iter,self.num_users)
+            self.selected_edges = self.select_edges(glob_iter, self.num_edges)
 
-            for user in self.selected_users:
-                user.train(self.local_epochs)
+            for edge in self.selected_edges:
+                edge.train(self.local_epochs)
 
             self.aggregate_parameters()
         self.save_results()
