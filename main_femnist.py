@@ -6,10 +6,8 @@ import argparse
 import importlib
 import random
 import os
-from flearn.servers.serveravg import FedAvg
-from flearn.servers.serverfedl import FEDL
-from flearn.servers.serverneumann import FedNeumann
-from flearn.trainmodel.models import *
+from algorithms.centralServer.Server import Server
+from algorithms.trainmodel.models import *
 from utils.plot_utils import *
 import torch
 torch.manual_seed(0)
@@ -30,12 +28,9 @@ model = Mclr_Logistic(input_dim = 784, output_dim = 62), model
 L = 0
 
 if(0):
-    if(algorithm == "FedAvg"):
-        server = FedAvg(dataset, algorithm, model, batch_size, learning_rate, hyper_learning_rate, L, num_glob_iters, local_ep, optimizer, numusers, i)
-            
-    if(algorithm == "Neumann"):
-        server = FedNeumann(dataset, algorithm, model, batch_size, learning_rate, hyper_learning_rate, L, num_glob_iters, local_ep, optimizer, numusers, i)
-        
+
+    server = Server(dataset, algorithm, model, batch_size, learning_rate, hyper_learning_rate, L, num_glob_iters, local_ep, optimizer, numusers, i)
+    
     server.train()
     server.test()
 

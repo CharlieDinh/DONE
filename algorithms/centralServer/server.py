@@ -1,14 +1,13 @@
 import torch
 import os
 
-from flearn.users.useravg import UserAVG
-from flearn.servers.serverbase import Server
+from algorithms.edgeServer.edge import Edge
+from algorithms.centralServer.serverbase import ServerBase
 from utils.model_utils import read_data, read_user_data
 import numpy as np
 
 # Implementation for FedAvg Server
-
-class FedAvg(Server):
+class Server(ServerBase):
     def __init__(self, dataset,algorithm, model, batch_size, learning_rate, hyper_learning_rate, L, num_glob_iters,
                  local_epochs, optimizer, num_users, times):
         super().__init__(dataset,algorithm, model[0], batch_size, learning_rate, hyper_learning_rate, L, num_glob_iters,
@@ -19,12 +18,12 @@ class FedAvg(Server):
         total_users = len(data[0])
         for i in range(total_users):
             id, train , test = read_user_data(i, data, dataset)
-            user = UserAVG(id, train, test, model, batch_size, learning_rate,hyper_learning_rate,L, local_epochs, optimizer)
-            self.users.append(user)
+            user = Edge(id, train, test, model, batch_size, learning_rate, hyper_learning_rate, L, local_epochs, optimizer)
+            self.edgeServer.append(user)
             self.total_train_samples += user.train_samples
             
         print("Number of users / total users:",num_users, " / " ,total_users)
-        print("Finished creating FedAvg server.")
+        print("Finished creating FedNeumann server.")
 
     def send_grads(self):
         assert (self.users is not None and len(self.users) > 0)
@@ -41,19 +40,13 @@ class FedAvg(Server):
         loss = []
         for glob_iter in range(self.num_glob_iters):
             print("-------------Round number: ",glob_iter, " -------------")
-            #loss_ = 0
             self.send_parameters()
-
-            # Evaluate model each interation
             self.evaluate()
-
             self.selected_users = self.select_users(glob_iter,self.num_users)
+
             for user in self.selected_users:
-                user.train(self.local_epochs) #* user.train_samples
+                user.train(self.local_epochs)
+
             self.aggregate_parameters()
-            #loss_ /= self.total_train_samples
-            #loss.append(loss_)
-            #print(loss_)
-        #print(loss)
         self.save_results()
         self.save_model()

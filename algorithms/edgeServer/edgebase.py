@@ -7,9 +7,9 @@ from torch.utils.data import DataLoader
 import numpy as np
 import copy
 
-class User:
+class Edgebase:
     """
-    Base class for users in federated learning.
+    Base class for edges in distributed learning.
     """
     def __init__(self, id, train_data, test_data, model, batch_size = 0, learning_rate = 0, hyper_learning_rate = 0 , L = 0, local_epochs = 0):
         # from fedprox
@@ -17,10 +17,12 @@ class User:
         self.id = id  # integer
         self.train_samples = len(train_data)
         self.test_samples = len(test_data)
+        
         if(batch_size == 0):
             self.batch_size = len(train_data)
         else:
             self.batch_size = batch_size
+
         self.learning_rate = learning_rate
         self.hyper_learning_rate = hyper_learning_rate
         self.L = L
@@ -41,16 +43,6 @@ class User:
         for old_param, new_param, local_param in zip(self.model.parameters(), model.parameters(), self.local_model):
             old_param.data = new_param.data.clone()
             local_param.data = new_param.data.clone()
-            if(new_param.grad != None):
-                if(old_param.grad == None):
-                    old_param.grad = torch.zeros_like(new_param.grad)
-
-                if(local_param.grad == None):
-                    local_param.grad = torch.zeros_like(new_param.grad)
-
-                old_param.grad.data = new_param.grad.data.clone()
-                local_param.grad.data = new_param.grad.data.clone()
-        #self.local_weight_updated = copy.deepcopy(self.optimizer.param_groups[0]['params'])
 
     def get_parameters(self):
         for param in self.model.parameters():
@@ -84,10 +76,6 @@ class User:
             loss = self.loss(output, y)
             loss.backward()
         self.clone_model_paramenter(self.model.parameters(), grads)
-        #for param, grad in zip(self.model.parameters(), grads):
-        #    if(grad.grad == None):
-        #        grad.grad = torch.zeros_like(param.grad)
-        #    grad.grad.data = param.grad.data.clone()
         return grads
 
     def test(self):
@@ -96,9 +84,6 @@ class User:
         for x, y in self.testloaderfull:
             output = self.model(x)
             test_acc += (torch.sum(torch.argmax(output, dim=1) == y)).item()
-            #@loss += self.loss(output, y)
-            #print(self.id + ", Test Accuracy:", test_acc / y.shape[0] )
-            #print(self.id + ", Test Loss:", loss)
         return test_acc, y.shape[0]
 
     def train_error_and_loss(self):
@@ -109,8 +94,6 @@ class User:
             output = self.model(x)
             train_acc += (torch.sum(torch.argmax(output, dim=1) == y)).item()
             loss += self.loss(output, y)
-            #print(self.id + ", Train Accuracy:", train_acc)
-            #print(self.id + ", Train Loss:", loss)
         return train_acc, loss , self.train_samples
     
     
@@ -138,7 +121,7 @@ class User:
         model_path = os.path.join("models", self.dataset)
         if not os.path.exists(model_path):
             os.makedirs(model_path)
-        torch.save(self.model, os.path.join(model_path, "user_" + self.id + ".pt"))
+        torch.save(self.model, os.path.join(model_path, "edge_" + self.id + ".pt"))
 
     def load_model(self):
         model_path = os.path.join("models", self.dataset)

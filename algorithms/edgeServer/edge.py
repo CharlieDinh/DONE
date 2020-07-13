@@ -4,11 +4,11 @@ import torch.nn.functional as F
 import os
 import json
 from torch.utils.data import DataLoader
-from flearn.users.userbase import User
-from flearn.optimizers.fedoptimizer import *
+from algorithms.edgeServer.edgebase import Edgebase
+from algorithms.optimizers.fedoptimizer import *
 # Implementation for FedAvg clients
 
-class UserNeumann(User):
+class Edge(Edgebase):
     def __init__(self, numeric_id, train_data, test_data, model, batch_size, learning_rate, hyper_learning_rate, L,
                  local_epochs, optimizer):
         super().__init__(numeric_id, train_data, test_data, model[0], batch_size, learning_rate, hyper_learning_rate, L,
@@ -19,7 +19,7 @@ class UserNeumann(User):
         else:
             self.loss = nn.NLLLoss()
 
-        self.optimizer = Neumann(list(self.model.parameters()),  lr=self.learning_rate)
+        self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.learning_rate)
 
     def set_grads(self, new_grads):
         if isinstance(new_grads, nn.Parameter):
@@ -28,7 +28,6 @@ class UserNeumann(User):
         elif isinstance(new_grads, list):
             for idx, model_grad in enumerate(self.model.parameters()):
                 model_grad.data = new_grads[idx]
-
 
     def train(self, epochs):
         self.model.train()

@@ -6,10 +6,10 @@ import argparse
 import importlib
 import random
 import os
-from flearn.servers.serveravg import FedAvg
-from flearn.servers.serverfedl import FEDL
-from flearn.servers.serverneumann import FedNeumann
-from flearn.trainmodel.models import *
+from algorithms.centralServer.serveravg import FedAvg
+from algorithms.centralServer.serverfedl import FEDL
+from algorithms.centralServer.serverneumann import FedNeumann
+from algorithms.trainmodel.models import *
 from utils.plot_utils import *
 import torch
 torch.manual_seed(0)
