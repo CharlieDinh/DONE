@@ -9,9 +9,9 @@ from algorithms.optimizers.optimizer import *
 # Implementation for FedAvg clients
 
 class Edge(Edgebase):
-    def __init__(self, numeric_id, train_data, test_data, model, batch_size, learning_rate, hyper_learning_rate, L,
+    def __init__(self, numeric_id, train_data, test_data, model, batch_size, learning_rate, L,
                  local_epochs, optimizer):
-        super().__init__(numeric_id, train_data, test_data, model[0], batch_size, learning_rate, hyper_learning_rate, L,
+        super().__init__(numeric_id, train_data, test_data, model[0], batch_size, learning_rate, L,
                          local_epochs)
 
         if(model[1] == "linear_regression"):
@@ -19,7 +19,10 @@ class Edge(Edgebase):
         else:
             self.loss = nn.NLLLoss()
 
-        self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.learning_rate)
+        if(optimizer == "SecondOrder"):
+            print(" Second optimizer")
+        else: # first order algorithm
+            self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.learning_rate)
 
     def set_grads(self, new_grads):
         if isinstance(new_grads, nn.Parameter):

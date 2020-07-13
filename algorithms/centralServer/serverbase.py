@@ -6,7 +6,7 @@ from utils.model_utils import Metrics
 import copy
 
 class ServerBase:
-    def __init__(self, dataset,algorithm, model, batch_size, learning_rate ,hyper_learning_rate, L, num_glob_iters, local_epochs, optimizer, num_edges, times):
+    def __init__(self, dataset,algorithm, model, batch_size, learning_rate , L, num_glob_iters, local_epochs, optimizer, num_edges, times):
 
         # Set up the main attributes
         self.dataset = dataset
@@ -19,7 +19,6 @@ class ServerBase:
         self.edges = []
         self.selected_edges = []
         self.num_edges = num_edges
-        self.hyper_learning_rate = hyper_learning_rate
         self.L = L
         self.algorithm = algorithm
         self.rs_train_acc, self.rs_train_loss, self.rs_glob_acc= [], [], []
@@ -78,7 +77,7 @@ class ServerBase:
     # Save loss, accurancy to h5 fiel
     def save_results(self):
         alg = self.dataset + "_" + self.algorithm
-        alg = alg + "_" + str(self.learning_rate) + "_" + str(self.hyper_learning_rate) + "_" + str(self.L) + "_" + str(self.num_edges) + "u" + "_" + str(self.batch_size) + "b" + "_" + str(self.local_epochs)
+        alg = alg + "_" + str(self.learning_rate) + "_" + str(self.L) + "_" + str(self.num_edges) + "u" + "_" + str(self.batch_size) + "b" + "_" + str(self.local_epochs)
         alg = alg + "_" + str(self.times)
         if (len(self.rs_glob_acc) != 0 &  len(self.rs_train_acc) & len(self.rs_train_loss)) :
             with h5py.File("./results/"+'{}.h5'.format(alg, self.local_epochs), 'w') as hf:
