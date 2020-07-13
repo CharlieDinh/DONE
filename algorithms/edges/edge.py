@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import os
 import json
 from torch.utils.data import DataLoader
-from algorithms.edgeServer.edgebase import Edgebase
+from algorithms.edges.edgebase import Edgebase
 from algorithms.optimizers.optimizer import *
 # Implementation for FedAvg clients
 

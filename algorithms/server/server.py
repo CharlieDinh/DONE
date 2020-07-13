@@ -1,8 +1,8 @@
 import torch
 import os
 
-from algorithms.edgeServer.edge import Edge
-from algorithms.centralServer.serverbase import ServerBase
+from algorithms.edges.edge import Edge
+from algorithms.server.serverbase import ServerBase
 from utils.model_utils import read_data, read_edge_data
 import numpy as np
 
