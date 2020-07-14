@@ -18,8 +18,15 @@ class Server(ServerBase):
         total_edges = len(data[0])
         for i in range(total_edges):
             id, train, test = read_edge_data(i, data, dataset)
-            edge = Edge(id, train, test, model, batch_size,
-                        learning_rate, L, local_epochs, optimizer)
+            if(algorithm == "SecondOrder"):
+                edge = Edge(id, train, test, model, batch_size, learning_rate, L, local_epochs, optimizer)
+            if(algorithm == "FirstOrder"):
+                print("ininital First Order Edge")
+                # implement later
+            if(algorithm == "DANE"):
+                print("ininital DANE edge")
+                # implement later
+                
             self.edges.append(edge)
             self.total_train_samples += edge.train_samples
             

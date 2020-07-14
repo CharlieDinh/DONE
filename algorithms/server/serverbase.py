@@ -44,11 +44,20 @@ class ServerBase:
     def aggregate_parameters(self):
         assert (self.edges is not None and len(self.edges) > 0)
         total_train = 0
-        for edge in self.selected_edges:
-            total_train += edge.train_samples
+        if(self.algorithm == "DANE"):
+            for param in self.model.parameters():
+                param.data = torch.zeros_like(param.data)
+                if(param.grad != None):
+                    param.grad.data = torch.zeros_like(param.grad.data)
 
-        for edge in self.selected_edges:
-            self.add_parameters(edge, edge.train_samples / total_train)
+            for edge in self.selected_edges:
+                self.add_parameters(edge, 1 / self.num_edges)
+        else:
+            for edge in self.selected_edges:
+                total_train += edge.train_samples
+
+            for edge in self.selected_edges:
+                self.add_parameters(edge, edge.train_samples / total_train)
 
     def save_model(self):
         model_path = os.path.join("models", self.dataset)
