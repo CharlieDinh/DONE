@@ -1,7 +1,10 @@
 import torch
 import os
 
-from algorithms.edges.edge import Edge
+from algorithms.edges.edgeSeOrder import edgeSeOrder
+from algorithms.edges.edgeFiOrder import edgeFiOrder
+from algorithms.edges.edgeDANE import edgeDANE
+
 from algorithms.server.serverbase import ServerBase
 from utils.model_utils import read_data, read_edge_data
 import numpy as np
@@ -19,11 +22,13 @@ class Server(ServerBase):
         for i in range(total_edges):
             id, train, test = read_edge_data(i, data, dataset)
             if(algorithm == "SecondOrder"):
-                edge = Edge(id, train, test, model, batch_size, learning_rate, L, local_epochs, optimizer)
+                edge = edgeSeOrder(id, train, test, model, batch_size, learning_rate, L, local_epochs, optimizer)
             if(algorithm == "FirstOrder"):
+                edge = edgeFiOrder(id, train, test, model, batch_size, learning_rate, L, local_epochs, optimizer)
                 print("ininital First Order Edge")
                 # implement later
             if(algorithm == "DANE"):
+                edge = edgeDANE(id, train, test, model, batch_size, learning_rate, L, local_epochs, optimizer)
                 print("ininital DANE edge")
                 # implement later
                 
