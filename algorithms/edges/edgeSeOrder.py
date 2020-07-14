@@ -18,11 +18,8 @@ class edgeSeOrder(Edgebase):
             self.loss = nn.MSELoss()
         else:
             self.loss = nn.NLLLoss()
-
-        if(optimizer == "SecondOrder"):
-            print(" Second optimizer")
-        else: # first order algorithm
-            self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.learning_rate)
+            
+        self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.learning_rate)
 
     def set_grads(self, new_grads):
         if isinstance(new_grads, nn.Parameter):
