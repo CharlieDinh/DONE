@@ -35,16 +35,19 @@ class Edgebase:
         self.iter_testloader = iter(self.testloader)
 
         # those parameters are for FEDL.
-        self.local_model = copy.deepcopy(list(self.model.parameters()))
+        self.server_parameters = copy.deepcopy(list(self.model.parameters()))
         self.dt = copy.deepcopy(list(self.model.parameters()))
         self.server_grad    = copy.deepcopy(list(self.model.parameters()))
         self.pre_local_grad = copy.deepcopy(list(self.model.parameters()))
 
     def set_parameters(self, model):
-        for old_param, new_param, local_param in zip(self.model.parameters(), model.parameters(), self.local_model):
+        for old_param, new_param, local_param in zip(self.model.parameters(), model.parameters()):
             old_param.data = new_param.data.clone()
-            local_param.data = new_param.data.clone()
 
+    def set_server_parameters(self, model):
+        for new_param, server_param in zip(model.parameters(), self.server_parameters):
+            server_param.data = new_param.data.clone()
+            
     def get_parameters(self):
         for param in self.model.parameters():
             param.detach()

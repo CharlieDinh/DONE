@@ -62,7 +62,7 @@ class Server(ServerBase):
                 self.selected_edges = self.select_edges(glob_iter, self.num_edges)
                 for edge in self.selected_edges:
                     print("Update parameter")
-                    #edge.update_parameter(self.local_epochs)
+                    edge.update_direction()
                 self.aggregate_parameters()
 
         else: # For DANE and Second Oerder method

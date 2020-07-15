@@ -35,7 +35,10 @@ class ServerBase:
     def send_parameters(self):
         assert (self.edges is not None and len(self.edges) > 0)
         for edge in self.edges:
-            edge.set_parameters(self.model)
+            if(self.algorithm == "FirstOrder"):
+                edge.set_server_parameters(self.model)
+            else:
+                edge.set_parameters(self.model)
 
     def add_parameters(self, edge, ratio):
         model = self.model.parameters()
