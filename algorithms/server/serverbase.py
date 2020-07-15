@@ -67,7 +67,7 @@ class ServerBase:
                 total_train += edge.train_samples
 
             for edge in self.selected_edges:
-                self.add_parameters(edge, edge.train_samples / total_train)
+                self.add_parameters(edge, 1 / len(self.selected_edges))
 
     def save_model(self):
         model_path = os.path.join("models", self.dataset)
