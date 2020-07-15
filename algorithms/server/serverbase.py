@@ -6,7 +6,7 @@ from utils.model_utils import Metrics
 import copy
 
 class ServerBase:
-    def __init__(self, dataset,algorithm, model, batch_size, learning_rate , L, num_glob_iters, local_epochs, optimizer, num_edges, times):
+    def __init__(self, dataset, algorithm, model, batch_size, learning_rate , eta, L, num_glob_iters, local_epochs, optimizer, num_edges, times):
 
         # Set up the main attributes
         self.dataset = dataset
@@ -14,6 +14,7 @@ class ServerBase:
         self.local_epochs = local_epochs
         self.batch_size = batch_size
         self.learning_rate = learning_rate
+        self.eta = eta
         self.total_train_samples = 0
         self.model = copy.deepcopy(model)
         self.edges = []
@@ -44,6 +45,7 @@ class ServerBase:
         else: # for first order and second order only aggregate the direction dt
             for server_param, edge_param in zip(self.model.parameters(), edge.get_dt()):
                 server_param.data = server_param.data - self.eta * ratio * edge_param.data.clone()
+
     def aggregate_parameters(self):
         assert (self.edges is not None and len(self.edges) > 0)
         total_train = 0
@@ -85,7 +87,6 @@ class ServerBase:
         num_edges = min(num_edges, len(self.edges))
         np.random.seed(round)
         return np.random.choice(self.edges, num_edges, replace=False)
-
             
     # Save loss, accurancy to h5 fiel
     def save_results(self):
