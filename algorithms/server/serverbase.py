@@ -41,9 +41,9 @@ class ServerBase:
         if(self.algorithm == "DANE"):
             for server_param, edge_param in zip(self.model.parameters(), edge.get_parameters()):
                 server_param.data = server_param.data + edge_param.data.clone() * ratio
-        else:
+        else: # for first order and second order only aggregate the direction dt
             for server_param, edge_param in zip(self.model.parameters(), edge.get_dt()):
-                server_param.data = server_param.data + edge_param.data.clone() * ratio
+                server_param.data = server_param.data - self.eta * ratio * edge_param.data.clone()
     def aggregate_parameters(self):
         assert (self.edges is not None and len(self.edges) > 0)
         total_train = 0
