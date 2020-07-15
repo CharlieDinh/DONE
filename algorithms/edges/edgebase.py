@@ -36,6 +36,7 @@ class Edgebase:
 
         # those parameters are for FEDL.
         self.local_model = copy.deepcopy(list(self.model.parameters()))
+        self.dt = copy.deepcopy(list(self.model.parameters()))
         self.server_grad    = copy.deepcopy(list(self.model.parameters()))
         self.pre_local_grad = copy.deepcopy(list(self.model.parameters()))
 
@@ -48,7 +49,12 @@ class Edgebase:
         for param in self.model.parameters():
             param.detach()
         return self.model.parameters()
-    
+
+    def get_dt(self):
+        for param in self.dt:
+            param.detach()
+        return self.dt
+
     def clone_model_paramenter(self, param, clone_param):
         for param, clone_param in zip(param, clone_param):
             clone_param.data = param.data.clone()

@@ -38,12 +38,16 @@ class ServerBase:
 
     def add_parameters(self, edge, ratio):
         model = self.model.parameters()
-        for server_param, edge_param in zip(self.model.parameters(), edge.get_parameters()):
-            server_param.data = server_param.data + edge_param.data.clone() * ratio
-
+        if(self.algorithm == "DANE"):
+            for server_param, edge_param in zip(self.model.parameters(), edge.get_parameters()):
+                server_param.data = server_param.data + edge_param.data.clone() * ratio
+        else:
+            for server_param, edge_param in zip(self.model.parameters(), edge.get_dt()):
+                server_param.data = server_param.data + edge_param.data.clone() * ratio
     def aggregate_parameters(self):
         assert (self.edges is not None and len(self.edges) > 0)
         total_train = 0
+
         if(self.algorithm == "DANE"):
             for param in self.model.parameters():
                 param.data = torch.zeros_like(param.data)
@@ -52,7 +56,7 @@ class ServerBase:
 
             for edge in self.selected_edges:
                 self.add_parameters(edge, 1 / self.num_edges)
-        else:
+        else: # first order, second order 
             for edge in self.selected_edges:
                 total_train += edge.train_samples
 
