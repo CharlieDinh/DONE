@@ -19,6 +19,7 @@ dataset = "Mnist"
 local_epochs = 20
 learning_rate = 0.001
 eta =  0
+eta0 = 0
 batch_size = 32
 algorithm = "FirstOrder"
 optimizer = "SGD"
@@ -28,7 +29,7 @@ model = Mclr_Logistic(), model
 L = 0
 
 if(1):
-    server = Server(dataset, algorithm, model, batch_size, learning_rate, eta, L, num_glob_iters, local_epochs, optimizer, numedges, i)
+    server = Server(dataset, algorithm, model, batch_size, learning_rate, eta, eta0, L, num_glob_iters, local_epochs, optimizer, numedges, i)
     server.train()
     server.test()
 

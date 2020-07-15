@@ -29,7 +29,7 @@ def main(dataset, algorithm, model, batch_size, learning_rate, eta, L, num_glob_
             model = Linear_Regression(60,1), model
         # select algorithm
 
-        server = Server(dataset, algorithm, model, batch_size, learning_rate, eta, L, num_glob_iters, local_epochs, optimizer, numedges, i)
+        server = Server(dataset, algorithm, model, batch_size, learning_rate, eta, eta0,  L, num_glob_iters, local_epochs, optimizer, numedges, i)
 
         server.train()
         server.test()
@@ -43,7 +43,8 @@ if __name__ == "__main__":
     parser.add_argument("--model", type=str, default="mclr", choices=["linear_regression", "mclr", "cnn"])
     parser.add_argument("--batch_size", type=int, default=20)
     parser.add_argument("--learning_rate", type=float, default=0.003, help="Local learning rate for first order algorithm")
-    parser.add_argument("--eta", type=float, default=0.003, help="learning rate")
+    parser.add_argument("--eta", type=float, default=0.003, help="first eta")
+    parser.add_argument("--eta0", type=float, default=0.003, help="second eta")
     parser.add_argument("--L", type=int, default=15, help="Regularization term")
     parser.add_argument("--num_global_iters", type=int, default=800)
     parser.add_argument("--local_epochs", type=int, default=20)

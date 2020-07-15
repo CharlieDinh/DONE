@@ -11,7 +11,7 @@ class Edgebase:
     """
     Base class for edges in distributed learning.
     """
-    def __init__(self, id, train_data, test_data, model, batch_size = 0, learning_rate = 0, eta=0, L = 0, local_epochs = 0):
+    def __init__(self, id, train_data, test_data, model, batch_size = 0, learning_rate = 0, eta=0, eta0 = 0, L = 0, local_epochs = 0):
         # from fedprox
         self.model = copy.deepcopy(model)
         self.id = id  # integer
@@ -25,6 +25,7 @@ class Edgebase:
 
         self.learning_rate = learning_rate
         self.eta = eta
+        self.eta0 = eta0,
         self.L = L
         self.local_epochs = local_epochs
         self.trainloader = DataLoader(train_data, self.batch_size)
@@ -101,7 +102,10 @@ class Edgebase:
             loss += self.loss(output, y)
         return train_acc, loss , self.train_samples
     
-    
+    def update_direction(self):
+        for local_param, server_param, dt in zip(model.parameters(), self.server_parameters, self.dt):
+            dt.data = 1/self.eta * (local_param.data - server_param.data)
+
     def get_next_train_batch(self):
         try:
             # Samples a new batch for persionalizing
