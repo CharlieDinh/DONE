@@ -36,10 +36,10 @@ class ServerBase:
     def send_parameters(self):
         assert (self.edges is not None and len(self.edges) > 0)
         for edge in self.edges:
-            if(self.algorithm == "FirstOrder"):
-                edge.set_server_parameters(self.model)
-            else:
-                edge.set_parameters(self.model)
+            #if(self.algorithm == "FirstOrder"):
+            #    edge.set_server_parameters(self.model)
+            #else:
+            edge.set_parameters(self.model)
 
     def add_parameters(self, edge, ratio):
         model = self.model.parameters()
@@ -48,7 +48,7 @@ class ServerBase:
                 server_param.data = server_param.data + edge_param.data.clone() * ratio
         else: # for first order and second order only aggregate the direction dt
             for server_param, edge_param in zip(self.model.parameters(), edge.get_dt()):
-                server_param.data = server_param.data - self.eta0 * ratio * edge_param.data.clone()
+                server_param.data = server_param.data + self.eta0 * ratio * edge_param.data.clone()
 
     def aggregate_parameters(self):
         assert (self.edges is not None and len(self.edges) > 0)

@@ -39,4 +39,6 @@ class edgeFiOrder(Edgebase):
                 loss = self.loss(output, y)
                 loss.backward()
                 self.optimizer.step()
+        # save optimal parameter after training.
+        self.clone_model_paramenter(self.model.parameters(), self.local_optimal)
         return loss

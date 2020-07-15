@@ -36,7 +36,7 @@ class Edgebase:
         self.iter_testloader = iter(self.testloader)
 
         # those parameters are for FEDL.
-        self.server_parameters = copy.deepcopy(list(self.model.parameters()))
+        self.local_optimal = copy.deepcopy(list(self.model.parameters()))
         self.dt = copy.deepcopy(list(self.model.parameters()))
         self.server_grad    = copy.deepcopy(list(self.model.parameters()))
         self.pre_local_grad = copy.deepcopy(list(self.model.parameters()))
@@ -45,9 +45,9 @@ class Edgebase:
         for old_param, new_param in zip(self.model.parameters(), model.parameters()):
             old_param.data = new_param.data.clone()
 
-    def set_server_parameters(self, model):
-        for new_param, server_param in zip(model.parameters(), self.server_parameters):
-            server_param.data = new_param.data.clone()
+    #def set_server_parameters(self, model):
+    #    for new_param, server_param in zip(model.parameters(), self.server_parameters):
+    #        server_param.data = new_param.data.clone()
             
     def get_parameters(self):
         for param in self.model.parameters():
@@ -103,8 +103,9 @@ class Edgebase:
         return train_acc, loss , self.train_samples
     
     def update_direction(self):
-        for local_param, server_param, dt in zip(self.model.parameters(), self.server_parameters, self.dt):
-            dt.data = 1/self.eta * (local_param.data - server_param.data)
+        #self.model.parameters() is model updated from server
+        for opitmal_param, server_param, dt in zip(self.local_optimal,self.model.parameters(), self.dt):
+            dt.data = 1/self.eta * (opitmal_param.data - server_param.data)
 
     def get_next_train_batch(self):
         try:
