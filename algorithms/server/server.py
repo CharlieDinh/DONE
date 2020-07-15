@@ -9,7 +9,7 @@ from algorithms.server.serverbase import ServerBase
 from utils.model_utils import read_data, read_edge_data
 import numpy as np
 
-# Implementation for FedAvg Server
+# Implementation for Central Server
 class Server(ServerBase):
     def __init__(self, dataset,algorithm, model, batch_size, learning_rate, eta, eta0, L, num_glob_iters,
                  local_epochs, optimizer, num_edges, times):
@@ -25,13 +25,13 @@ class Server(ServerBase):
 
             if(algorithm == "SecondOrder"):
                 edge = edgeSeOrder(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
-                print("Finished creating SecondOrder server.")
+                #print("Finished creating SecondOrder server.")
             if(algorithm == "FirstOrder"):
                 edge = edgeFiOrder(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
-                print("Finished creating FirstOrder server.")
+                #print("Finished creating FirstOrder server.")
             if(algorithm == "DANE"):
                 edge = edgeDANE(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
-                print("Finished creating DANE server.")
+                #print("Finished creating DANE server.")
 
             self.edges.append(edge)
             self.total_train_samples += edge.train_samples
@@ -54,17 +54,17 @@ class Server(ServerBase):
         if(self.algorithm == "FirstOrder"):
             # All edge will eun GD or SGD to obtain w*
             for edge in self.edges:
-                    edge.train(self.local_epochs)
+                edge.train(self.local_epochs)
             
             # Communication rounds
             for glob_iter in range(self.num_glob_iters):
                 self.send_parameters()
                 self.evaluate() # still evaluate on the global model
                 self.selected_edges = self.select_edges(glob_iter, self.num_edges)
-                for edge in self.selected_edges:
-                    print("Update parameter")
-                    edge.update_direction()
 
+                for edge in self.selected_edges:
+                    edge.update_direction()
+                    
                 self.aggregate_parameters()
 
         else: # For DANE and Second Order method

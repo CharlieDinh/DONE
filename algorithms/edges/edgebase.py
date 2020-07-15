@@ -103,7 +103,7 @@ class Edgebase:
         return train_acc, loss , self.train_samples
     
     def update_direction(self):
-        for local_param, server_param, dt in zip(model.parameters(), self.server_parameters, self.dt):
+        for local_param, server_param, dt in zip(self.model.parameters(), self.server_parameters, self.dt):
             dt.data = 1/self.eta * (local_param.data - server_param.data)
 
     def get_next_train_batch(self):
