@@ -33,12 +33,10 @@ class edgeFiOrder(Edgebase):
         self.model.train()
         for epoch in range(1, self.local_epochs + 1):
             self.model.train()
-            #loss_per_epoch = 0
             for batch_idx, (X, y) in enumerate(self.trainloader):
                 self.optimizer.zero_grad()
                 output = self.model(X)
                 loss = self.loss(output, y)
                 loss.backward()
                 self.optimizer.step()
-            self.clone_model_paramenter(self.model.parameters(), self.local_model)
         return loss

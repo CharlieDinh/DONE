@@ -23,7 +23,7 @@ class ServerBase:
         self.num_edges = num_edges
         self.L = L
         self.algorithm = algorithm
-        self.rs_train_acc, self.rs_train_loss, self.rs_glob_acc= [], [], []
+        self.rs_train_acc, self.rs_train_loss, self.rs_glob_acc = [], [], []
         self.times = times
         
     def aggregate_grads(self):
@@ -127,7 +127,6 @@ class ServerBase:
             tot_correct.append(ct*1.0)
             num_samples.append(ns)
             losses.append(cl*1.0)
-        
         ids = [c.id for c in self.edges]
         #groups = [c.group for c in self.clients]
 

@@ -59,11 +59,12 @@ class Server(ServerBase):
             # Communication rounds
             for glob_iter in range(self.num_glob_iters):
                 self.send_parameters()
-                self.evaluate()
+                self.evaluate() # still evaluate on the global model
                 self.selected_edges = self.select_edges(glob_iter, self.num_edges)
                 for edge in self.selected_edges:
                     print("Update parameter")
                     edge.update_direction()
+
                 self.aggregate_parameters()
 
         else: # For DANE and Second Order method
