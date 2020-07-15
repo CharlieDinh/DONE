@@ -12,7 +12,7 @@ from utils.plot_utils import *
 import torch
 torch.manual_seed(0)
 
-def main(dataset, algorithm, model, batch_size, learning_rate, eta, L, num_glob_iters,
+def main(dataset, algorithm, model, batch_size, learning_rate, eta, eta0, L, num_glob_iters,
          local_epochs, optimizer, numedges, times):
 
     for i in range(times):
@@ -43,13 +43,13 @@ if __name__ == "__main__":
     parser.add_argument("--model", type=str, default="mclr", choices=["linear_regression", "mclr", "cnn"])
     parser.add_argument("--batch_size", type=int, default=20)
     parser.add_argument("--learning_rate", type=float, default=0.003, help="Local learning rate for first order algorithm")
-    parser.add_argument("--eta", type=float, default=0.003, help="first eta")
-    parser.add_argument("--eta0", type=float, default=0.003, help="second eta")
+    parser.add_argument("--eta", type=float, default=0.001, help="first eta")
+    parser.add_argument("--eta0", type=float, default=0.001, help="second eta")
     parser.add_argument("--L", type=int, default=15, help="Regularization term")
     parser.add_argument("--num_global_iters", type=int, default=800)
     parser.add_argument("--local_epochs", type=int, default=20)
     parser.add_argument("--optimizer", type=str, default="SGD",choices=["SGD"])
-    parser.add_argument("--algorithm", type=str, default="FirstOrder",choices=["SecondOrder", "FirstOrder","DANE"])
+    parser.add_argument("--algorithm", type=str, default="SecondOrder",choices=["SecondOrder", "FirstOrder","DANE"])
     parser.add_argument("--numedges", type=int, default=10,help="Number of Edges per round")
     parser.add_argument("--times", type=int, default=1, help="running time")
     args = parser.parse_args()
@@ -74,6 +74,7 @@ if __name__ == "__main__":
         batch_size=args.batch_size,
         learning_rate=args.learning_rate,
         eta = args.eta,
+        eta0 = args.eta0,
         L = args.L,
         num_glob_iters=args.num_global_iters,
         local_epochs=args.local_epochs,

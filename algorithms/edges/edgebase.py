@@ -42,7 +42,7 @@ class Edgebase:
         self.pre_local_grad = copy.deepcopy(list(self.model.parameters()))
 
     def set_parameters(self, model):
-        for old_param, new_param, local_param in zip(self.model.parameters(), model.parameters()):
+        for old_param, new_param in zip(self.model.parameters(), model.parameters()):
             old_param.data = new_param.data.clone()
 
     def set_server_parameters(self, model):
