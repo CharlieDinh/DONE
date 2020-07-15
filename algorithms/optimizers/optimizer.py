@@ -24,6 +24,25 @@ class MySGD(Optimizer):
                     p.data.add_(-group['lr'], d_p)
         return loss
 
+class DANEOptimizer(Optimizer):
+    def __init__(self, params, lr = 0.01,  L = 0.1):
+        if lr < 0.0:
+            raise ValueError("Invalid learning rate: {}".format(lr))
+        defaults = dict(lr=lr, L = L)
+        super(DANEOptimizer, self).__init__(params, defaults)
+
+    def step(self, server_grads, pre_grads, closure=None):
+        loss = None
+        if closure is not None:
+            loss = closure
+        for group in self.param_groups:
+            for p, server_grad, pre_grad in zip(group['params'],server_grads, pre_grads):
+                if(server_grad.grad != None and pre_grad.grad != None):
+                    p.data = p.data - group['lr'] * (p.grad.data + group['lr'] * server_grad.grad.data - pre_grad.grad.data)
+                else:
+                     p.data = p.data - group['lr'] * p.grad.data
+        return loss
+
 class Neumann(Optimizer):
     """
     Documentation about the algorithm

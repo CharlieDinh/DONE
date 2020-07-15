@@ -19,7 +19,7 @@ class edgeDANE(Edgebase):
         else:
             self.loss = nn.NLLLoss()
 
-        self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.learning_rate)
+        self.optimizer = DANEOptimizer(self.model.parameters(), lr=self.learning_rate)
 
     def set_grads(self, new_grads):
         if isinstance(new_grads, nn.Parameter):
