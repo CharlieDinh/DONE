@@ -31,7 +31,18 @@ class ServerBase:
         for param in self.model.parameters():
             param.grad = torch.zeros_like(param.data)
         for edge in self.edges:
-            self.add_grad(edge, edge.train_samples / self.total_train_samples)
+            if self.algorithm == "DANE":
+                self.add_grad(edge, 1 / self.num_edges)
+            else:
+                self.add_grad(edge, edge.train_samples / self.total_train_samples)
+
+    def add_grad(self, edge, ratio):
+        for server_param, edge_param in zip(self.model.parameters(), edge.get_parameters()):
+            if server_param.grad is None:
+                server_param.grad = torch.zeros_like(server_param.data)
+            if edge_param.grad is None:
+                edge_param.grad = torch.zeros_like(server_param.data)
+            server_param.grad.data += edge_param.grad.data.clone() * ratio
     
     def send_parameters(self):
         assert (self.edges is not None and len(self.edges) > 0)
@@ -56,9 +67,9 @@ class ServerBase:
 
         if(self.algorithm == "DANE"):
             for param in self.model.parameters():
-                param.data = torch.zeros_like(param.data)
+                param.data.zero_() # = torch.zeros_like(param.data)
                 if(param.grad != None):
-                    param.grad.data = torch.zeros_like(param.grad.data)
+                    param.grad.data.zero_() # = torch.zeros_like(param.grad.data)
 
             for edge in self.selected_edges:
                 self.add_parameters(edge, 1 / self.num_edges)
