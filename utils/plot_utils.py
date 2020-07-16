@@ -14,7 +14,7 @@ def simple_read_data(alg):
     rs_train_loss = np.array(hf.get('rs_train_loss')[:])
     return rs_train_acc, rs_train_loss, rs_glob_acc
 
-def get_training_data_value(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[],algorithms_list=[], batch_size=[], dataset=""):
+def get_training_data_value(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta =[], eta0 =[], algorithms_list=[], batch_size=[], dataset=""):
     Numb_Algs = len(algorithms_list)
     train_acc = np.zeros((Numb_Algs, Numb_Glob_Iters))
     train_loss = np.zeros((Numb_Algs, Numb_Glob_Iters))
@@ -22,21 +22,21 @@ def get_training_data_value(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     algs_lbl = algorithms_list.copy()
     for i in range(Numb_Algs):
         string_learning_rate = str(learning_rate[i])  
-        string_learning_rate = string_learning_rate  + "_" +str(lamb[i])
+        string_learning_rate = string_learning_rate  + "_" + str(eta[i])  + "_" + str(eta0[i])  + "_" + str(lamb[i])
         algorithms_list[i] = algorithms_list[i] + "_" + string_learning_rate + "_" + str(num_users) + "u" + "_" + str(batch_size[i]) + "b"  "_" +str(loc_ep1[i])
         train_acc[i, :], train_loss[i, :], glob_acc[i, :] = np.array(
             simple_read_data(dataset +"_"+ algorithms_list[i] + "_avg"))[:, :Numb_Glob_Iters]
         algs_lbl[i] = algs_lbl[i]
     return glob_acc, train_acc, train_loss
 
-def get_all_training_data_value(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=0, learning_rate=0,algorithms="", batch_size=0, dataset="" ,times = 5):
+def get_all_training_data_value(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=0, learning_rate=0, eta = 0, eta0 = 0, algorithms="", batch_size=0, dataset="" ,times = 5):
     train_acc = np.zeros((times, Numb_Glob_Iters))
     train_loss = np.zeros((times, Numb_Glob_Iters))
     glob_acc = np.zeros((times, Numb_Glob_Iters))
     algorithms_list  = [algorithms] * times
     for i in range(times):
         string_learning_rate = str(learning_rate)  
-        string_learning_rate = string_learning_rate  + "_" + str(lamb)
+        string_learning_rate = string_learning_rate  + "_" + str(eta)  + "_" + str(eta0) + "_" + str(lamb)
         algorithms_list[i] = algorithms_list[i] + "_" + string_learning_rate + "_" + str(num_users) + "u" + "_" + str(batch_size) + "b"  "_" +str(loc_ep1) +  "_" +str(i)
         train_acc[i, :], train_loss[i, :], glob_acc[i, :] = np.array(simple_read_data(dataset +"_"+ algorithms_list[i]))[:, :Numb_Glob_Iters]
     
@@ -52,8 +52,8 @@ def get_data_label_style(input_data = [], linestyles= [], algs_lbl = [], lamb = 
 
     return data, lstyles, labels
 
-def average_data(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb="", learning_rate="", eta="", algorithms="", batch_size=0, dataset = "", times = 5):
-    glob_acc, train_acc, train_loss = get_all_training_data_value( num_users, loc_ep1, Numb_Glob_Iters, lamb, learning_rate, algorithms, batch_size, dataset,times)
+def average_data(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb="", learning_rate="", eta="", eta0="", algorithms="", batch_size=0, dataset = "", times = 5):
+    glob_acc, train_acc, train_loss = get_all_training_data_value( num_users, loc_ep1, Numb_Glob_Iters, lamb, learning_rate,eta,eta0, algorithms, batch_size, dataset,times)
     glob_acc_data = np.average(glob_acc, axis=0)
     train_acc_data = np.average(train_acc, axis=0)
     train_loss_data = np.average(train_loss, axis=0)
@@ -66,7 +66,7 @@ def average_data(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb="", learning
     print("Mean:", np.mean(max_accurancy))
 
     alg = dataset + "_" + algorithms
-    alg = alg + "_" + str(learning_rate)  + "_" + str(lamb) + "_" + str(num_users) + "u" + "_" + str(batch_size) + "b" + "_" + str(loc_ep1)
+    alg = alg + "_" + str(learning_rate)+ "_" + str(eta) + "_" + str(eta0) + "_" + str(lamb) + "_" + str(num_users) + "u" + "_" + str(batch_size) + "b" + "_" + str(loc_ep1)
     alg = alg + "_" + "avg"
     if (len(glob_acc) != 0 &  len(train_acc) & len(train_loss)) :
         with h5py.File("./results/"+'{}.h5'.format(alg,loc_ep1), 'w') as hf:
@@ -75,7 +75,7 @@ def average_data(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb="", learning
             hf.create_dataset('rs_train_loss', data=train_loss_data)
             hf.close()
 
-def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], algorithms_list=[], batch_size=0, dataset = ""):
+def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, dataset = ""):
     Numb_Algs = len(algorithms_list)
     dataset = dataset
     #glob_acc_, train_acc_, train_loss_ = get_training_data_value( num_users, loc_ep1, Numb_Glob_Iters, lamb, learning_rate, hyper_learning_rate, algorithms_list, batch_size, dataset)
@@ -84,7 +84,7 @@ def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     ##train_loss = average_smooth(train_loss_, window='flat')
     #train_acc = average_smooth(train_acc_, window='flat')
 
-    glob_acc, train_acc, train_loss = get_training_data_value( num_users, loc_ep1, Numb_Glob_Iters, lamb, learning_rate, algorithms_list, batch_size, dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users, loc_ep1, Numb_Glob_Iters, lamb, learning_rate, eta, eta0, algorithms_list, batch_size, dataset)
 
     print("max value of test accurancy",glob_acc.max())
     plt.figure(1,figsize=(5, 5))
