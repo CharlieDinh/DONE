@@ -31,7 +31,7 @@ class edgeSeOrder(Edgebase):
                 model_grad.data = new_grad.data
         elif isinstance(new_grads, list):
             for idx, model_grad in enumerate(self.model.parameters()):
-                model_grad.data = new_grads[idx]
+                model_grad.data = new_grads[idx].clone()
 
     def train(self, epochs):
         self.model.zero_grad()

@@ -39,7 +39,7 @@ class Server(ServerBase):
         print("Number of edges / total edges:", num_edges, " / ", total_edges)
         
     def send_grads(self):
-        assert (self.edges is not None and len(self.usedgesers) > 0)
+        assert (self.edges is not None and len(self.edges) > 0)
         grads = []
         for param in self.model.parameters():
             if param.grad is None:
@@ -66,6 +66,22 @@ class Server(ServerBase):
                     edge.update_direction()
                     
                 self.aggregate_parameters()
+
+        elif self.algorithm == "DANE":
+
+            # Choose all edges in the training process
+            self.selected_edges = self.edges
+            for glob_iter in range(self.num_glob_iters):
+
+                self.aggregate_grads()
+                self.send_grads()
+
+                for edge in self.selected_edges:
+                    edge.train(self.local_epochs)
+
+                self.aggregate_parameters()
+                self.send_parameters()
+                self.evaluate()
 
         else: # For DANE and Second Order method
             for glob_iter in range(self.num_glob_iters):
