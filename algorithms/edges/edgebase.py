@@ -105,7 +105,7 @@ class Edgebase:
     def update_direction(self):
         #self.model.parameters() is model updated from server
         for opitmal_param, server_param, dt in zip(self.local_optimal,self.model.parameters(), self.dt):
-            dt.data = 1/self.eta * (opitmal_param.data - server_param.data)
+            dt.data = 1/self.eta * (opitmal_param.data.clone() - server_param.data.clone())
 
     def get_next_train_batch(self):
         try:

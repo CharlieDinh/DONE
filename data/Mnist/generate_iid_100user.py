@@ -51,7 +51,7 @@ print("IDX1:", idx)  # counting samples for each labels
 user = 0
 props = np.random.lognormal(
     0, 2., (10, NUM_USERS, NUM_LABELS))  # last 5 is 5 labels
-props = np.array([[[len(v)-1000]] for v in mnist_data]) * \
+props = np.array([[[len(v)-NUM_USERS]] for v in mnist_data]) * \
     props/np.sum(props, (1, 2), keepdims=True)
 # print("here:",props/np.sum(props,(1,2), keepdims=True))
 #props = np.array([[[len(v)-100]] for v in mnist_data]) * \
@@ -63,8 +63,8 @@ for user in trange(NUM_USERS):
         # l = (2*user+j)%10
         l = (user + j) % 10
         num_samples = int(props[l, user//int(NUM_USERS/10), j])
-        numran1 = random.randint(10, 200)
-        numran2 = random.randint(1, 10)
+        numran1 = random.randint(1, 100)
+        numran2 = random.randint(1, 5)
         num_samples = (num_samples) * numran2 + numran1
         if(NUM_USERS <= 20):
             num_samples = num_samples * 2
