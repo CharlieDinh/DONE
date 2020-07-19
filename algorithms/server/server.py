@@ -58,6 +58,7 @@ class Server(ServerBase):
             
             # Communication rounds
             for glob_iter in range(self.num_glob_iters):
+                print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
                 self.evaluate() # still evaluate on the global model
                 self.selected_edges = self.select_edges(glob_iter, self.num_edges)
@@ -68,11 +69,12 @@ class Server(ServerBase):
                 self.aggregate_parameters()
 
         elif self.algorithm == "DANE":
+            
 
             # Choose all edges in the training process
             self.selected_edges = self.edges
             for glob_iter in range(self.num_glob_iters):
-
+                print("-------------Round number: ",glob_iter, " -------------")
                 self.aggregate_grads()
                 self.send_grads()
 
