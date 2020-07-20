@@ -4,6 +4,7 @@ import os
 from algorithms.edges.edgeSeOrder import edgeSeOrder
 from algorithms.edges.edgeFiOrder import edgeFiOrder
 from algorithms.edges.edgeDANE import edgeDANE
+from algorithms.edges.edgeNew import edgeNew
 
 from algorithms.server.serverbase import ServerBase
 from utils.model_utils import read_data, read_edge_data
@@ -32,6 +33,8 @@ class Server(ServerBase):
             if(algorithm == "DANE"):
                 edge = edgeDANE(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
                 #print("Finished creating DANE server.")
+            if algorithm == "New":
+                edge = edgeNew(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
 
             self.edges.append(edge)
             self.total_train_samples += edge.train_samples
@@ -84,6 +87,20 @@ class Server(ServerBase):
                 self.aggregate_parameters()
                 self.send_parameters()
                 self.evaluate()
+
+        elif self.algorithm == "New":
+            for glob_iter in range(1, self.num_glob_iters):
+                self.selected_edges = self.select_edges(glob_iter, self.num_edges)
+                print("-------------Round number: ",glob_iter, " -------------")
+                self.send_parameters()
+                self.evaluate()
+
+                for edge in self.selected_edges:
+                    edge.train(self.local_epochs)
+                self.aggregate_parameters()
+            self.save_results()
+            self.save_model()
+
 
         else: # For DANE and Second Order method
             for glob_iter in range(self.num_glob_iters):

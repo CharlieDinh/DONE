@@ -49,8 +49,8 @@ if __name__ == "__main__":
     parser.add_argument("--num_global_iters", type=int, default=800)
     parser.add_argument("--local_epochs", type=int, default=20)
     parser.add_argument("--optimizer", type=str, default="SGD",choices=["SGD"])
-    parser.add_argument("--algorithm", type=str, default="SecondOrder",choices=["SecondOrder", "FirstOrder","DANE"])
-    parser.add_argument("--numedges", type=int, default=10,help="Number of Edges per round")
+    parser.add_argument("--algorithm", type=str, default="New",choices=["SecondOrder", "FirstOrder","DANE", "New"])
+    parser.add_argument("--numedges", type=int, default=20,help="Number of Edges per round")
     parser.add_argument("--times", type=int, default=1, help="running time")
     args = parser.parse_args()
 
