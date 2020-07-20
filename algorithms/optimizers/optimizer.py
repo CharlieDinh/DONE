@@ -42,8 +42,8 @@ class DANEOptimizer(Optimizer):
             for p, server_grad, pre_grad, pre_param in zip(group['params'], server_grads, pre_grads, pre_params):
                 if server_grad.grad is not None and pre_grad.grad is not None:
                     p.data = p.data - group['lr'] * (
-                                p.grad.data + (pre_grad.grad.data - group['lr'] * server_grad.grad.data) +
-                                group['L'] * (p.data - pre_param.data))
+                                p.grad.data + (pre_grad.grad.data - 1 * server_grad.grad.data) +
+                                0 * (p.data - pre_param.data))
                 else:
                     p.data = p.data - group['lr'] * p.grad.data
         return loss
