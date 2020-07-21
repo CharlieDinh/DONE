@@ -3,64 +3,63 @@ import numpy as np
 import json
 import random
 import os
-np.random.seed(0)
 
-NUM_USER = 100
-rho = 1.4
-Dim = 40 
-Noise = 0.05
 
-def generate_x(n_samples = 100, dim= 40, rho= 10):
-    '''Helper function to generate data''' 
+def logit(X, W):
+    return 1 / (1 + np.exp(-np.dot(X, W)))
 
-    powers = - np.log(rho) / np.log(dim) / 2
 
-    S = np.power(np.arange(dim)+1, powers)
-    X = np.random.randn(n_samples, dim) # Random standard Gaussian data
-    X *= S
-    covarient_matrix = np.cov(X)
-    print("Covarient matrix:",covarient_matrix)                            # Conditioning
-    print("np.diag(S)", np.diag(S))
-    return X, 1, 1/rho, np.diag(S)
+def generate_logistic_regression_data(num_users=100, rho=10, dim=40, lamb = 1, noise_ratio=0.05):
+    # For consistent results
+    np.random.seed(0)
 
-def generate_linear_data(num_users=100, rho=10, dim=40, noise_ratio=0.05):
+    # Sanity check
+    assert(rho >= 1 and num_users > 0 and dim > 0)
 
-    '''Helper function to generate data'''
-    # generate power S
-    powers = - np.log(rho) / np.log(dim) / 2
-    DIM = np.arange(dim)
-
-    # Covariance matrix for X
-    S = np.power(DIM+1, powers)
-
-    # Creat list data for all users 
     X_split = [[] for _ in range(num_users)]  # X for each user
     y_split = [[] for _ in range(num_users)]  # y for each user
-    samples_per_user = np.random.lognormal(4, 2, num_users).astype(int) + 500
+
+    # Find users' sample sizes based on the power law (heterogeneity)
+    samples_each_user = 10000
+    samples_per_user = np.array(num_users*[samples_each_user])
     indices_per_user = np.insert(samples_per_user.cumsum(), 0, 0, 0)
     num_total_samples = indices_per_user[-1]
 
-    # Create mean of data for each user, each user will have different distribution
-    mean_X = np.array([np.random.randn(dim) for _ in range(num_users)])
+    # Each user's mean is drawn from N(0, 1) (non-i.i.d. data)
+    mean_X = np.random.randn(dim)
 
+    # Covariance matrix for X
+    Sigma = np.eye(dim)
 
+    # L = 1, beta = LAMBDA
+    #L = 100 if rho == 1 else 1 / (rho - 1)
+    L = lamb/(rho - 1)
+    # Keep all users' inputs and labels in one array,
+    # indexed according to indices_per_user.
+    #   (e.g. X_total[indices_per_user[n]:indices_per_user[n+1], :] = X_n)
+    #   (e.g. y_total[indices_per_user[n]:indices_per_user[n+1]] = y_n)
     X_total = np.zeros((num_total_samples, dim))
     y_total = np.zeros(num_total_samples)
 
     for n in range(num_users):
         # Generate data
-        X_n = np.random.multivariate_normal(mean_X[n], np.diag(S), samples_per_user[n])
+        X_n = np.random.multivariate_normal(mean_X, Sigma, samples_per_user[n])
         X_total[indices_per_user[n]:indices_per_user[n+1], :] = X_n
 
     # Normalize all X's using LAMBDA
     norm = np.sqrt(np.linalg.norm(X_total.T.dot(X_total), 2) / num_total_samples)
-    X_total /= norm
+    X_total /= norm + L
 
     # Generate weights and labels
     W = np.random.rand(dim)
-    y_total = X_total.dot(W)
-    y_total = y_total + np.sqrt(noise_ratio) * np.random.randn(num_total_samples)
+    y_total = logit(X_total, W)
+    y_total = np.where(y_total > 0.5, 1, 0)
 
+    # Apply noise: randomly flip some of y_n with probability noise_ratio
+    noise = np.random.binomial(1, noise_ratio, num_total_samples)
+    y_total = np.multiply(noise - y_total, noise) + np.multiply(y_total, 1 - noise)
+
+    # Save each user's data separately
     for n in range(num_users):
         X_n = X_total[indices_per_user[n]:indices_per_user[n+1], :]
         y_n = y_total[indices_per_user[n]:indices_per_user[n+1]]
@@ -93,13 +92,13 @@ def save_total_data():
         if not os.path.exists(path):
             os.makedirs(path)
 
-    X, y = generate_linear_data(NUM_USER, rho, Dim, Noise)
+    X, y = generate_logistic_regression_data(100, 2, 40, 0.05)
 
     # Create data structure
     train_data = {'users': [], 'user_data': {}, 'num_samples': []}
     test_data = {'users': [], 'user_data': {}, 'num_samples': []}
 
-    for i in range(NUM_USER):
+    for i in range(100):
         uname = 'f_{0:05d}'.format(i)
         combined = list(zip(X[i], y[i]))
         random.shuffle(combined)
@@ -128,8 +127,8 @@ def save_total_data():
 
 
 def main():
-    #generate_x()
     save_total_data()
+    #save_data_by_user()
 
 
 if __name__ == '__main__':
