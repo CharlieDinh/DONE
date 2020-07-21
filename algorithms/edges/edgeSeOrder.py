@@ -33,7 +33,8 @@ class edgeSeOrder(Edgebase):
             for idx, model_grad in enumerate(self.model.parameters()):
                 model_grad.data = new_grads[idx].clone()
 
-    def train(self, epochs):
+    def train(self, epochs, glob_iter):
+        tempeta = self.eta/(glob_iter+1)
         self.model.zero_grad()
 
         # Sample a mini-batch (D_i)
@@ -52,7 +53,8 @@ class edgeSeOrder(Edgebase):
         for i in range(1, self.local_epochs + 1):  # R
             hess_vec_prods = self.hessian_vec_prod(loss, list(self.model.parameters()), self.dt)
             for grad, d, hess_vec in zip(grads, self.dt, hess_vec_prods):
-                d.data = d.data - self.eta * hess_vec - grad.data
+                d.data = d.data - tempeta * hess_vec - grad.data
+                #d.data = d.data - self.eta * hess_vec - grad.data
 
     def hessian_vec_prod(self, loss, params, dt):
         self.model.zero_grad()
