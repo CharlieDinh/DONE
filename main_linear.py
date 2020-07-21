@@ -11,74 +11,31 @@ from algorithms.trainmodel.models import *
 from utils.plot_utils import *
 import torch
 torch.manual_seed(0)
+    
+numedges = 100
+num_glob_iters = 200
+dataset = "Linear_synthetic"
+optimizer = "SGD"
+model =  "linear_regression"
+times = 1
+model = Linear_Regression(40,1), model
 
-def main(dataset, algorithm, model, batch_size, learning_rate, hyper_learning_rate, L, num_glob_iters,
-         local_epochs, optimizer, numusers, times):
-    if(1):
-        for i in range(times):
-            print("---------------Running time:------------",i)
+# defind parameters
+local_epochs = [20]
+learning_rate = [1]
+eta =  [0.001]
+eta0 = [0.001]
+batch_size = [32]
+algorithms = ["SecondOrder"]
+L = [0]
 
-            # Generate model
-            if(model == "mclr"):
-                if(dataset == "Mnist"):
-                    model = Mclr_Logistic(), model
-                elif( dataset == "Fenist"):
-                    model = Mclr_Logistic(), model
-
-            if(model == "linear_regression"):
-                model = Linear_Regression(40,1), model
-            # select algorithm
-            if(algorithm == "FedAvg"):
-                server = FedAvg(dataset, algorithm, model, batch_size, learning_rate, hyper_learning_rate, L, num_glob_iters, local_epochs, optimizer, numusers, i)
-            
-            if(algorithm == "FEDL"):
-                server = FEDL(dataset, algorithm, model, batch_size, learning_rate, hyper_learning_rate, L, num_glob_iters, local_epochs, optimizer, numusers, i)
+if(1):
+    for i in range(len(algorithms)):
+        for time in range(times):
+            server = Server(dataset, algorithms[i], model, batch_size[i], learning_rate[i], eta[i], eta0[i], L[i], num_glob_iters, local_epochs[i], optimizer, numedges, time)
             server.train()
             server.test()
+        average_data(num_users=numedges, loc_ep1=local_epochs[i], Numb_Glob_Iters=num_glob_iters, lamb=L[i], learning_rate=learning_rate[i], eta = eta[i], eta0 = eta0[i], algorithms=algorithms[i], batch_size=batch_size[i], dataset=dataset, times = times)
 
-    # Average data 
-    average_data(num_users=numusers, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L,learning_rate=learning_rate, hyper_learning_rate = hyper_learning_rate, algorithms=algorithm, batch_size=batch_size, dataset=dataset,times = times)
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset", type=str, default="Linear_synthetic", choices=["Mnist","Fenist", "Linear_synthetic", "Logistic_synthetic"])
-    parser.add_argument("--model", type=str, default="linear_regression", choices=["linear_regression", "mclr", "cnn"])
-    parser.add_argument("--batch_size", type=int, default=0)
-    parser.add_argument("--learning_rate", type=float, default=0.01, help="Local learning rate")
-    parser.add_argument("--hyper_learning_rate", type=float, default=0.1, help=" Learning rate of FEDL")
-    parser.add_argument("--L", type=int, default=15, help="Regularization term")
-    parser.add_argument("--num_global_iters", type=int, default=200)
-    parser.add_argument("--local_epochs", type=int, default=20)
-    parser.add_argument("--optimizer", type=str, default="SGD")
-    parser.add_argument("--algorithm", type=str, default="FEDL",choices=["FEDL", "FedAvg"])
-    parser.add_argument("--numusers", type=int, default=10, help="Number of Users per round")
-    parser.add_argument("--times", type=int, default=1, help="running time")
-    args = parser.parse_args()
-
-    print("=" * 80)
-    print("Summary of training process:")
-    print("Algorithm: {}".format(args.algorithm))
-    print("Batch size: {}".format(args.batch_size))
-    print("Learing rate       : {}".format(args.learning_rate))
-    print("Average Moving       : {}".format(args.hyper_learning_rate))
-    print("Subset of users      : {}".format(args.numusers))
-    print("Number of global rounds       : {}".format(args.num_global_iters))
-    print("Number of local rounds       : {}".format(args.local_epochs))
-    print("Dataset       : {}".format(args.dataset))
-    print("Local Model       : {}".format(args.model))
-    print("=" * 80)
-
-    main(
-        dataset=args.dataset,
-        algorithm = args.algorithm,
-        model=args.model,
-        batch_size=args.batch_size,
-        learning_rate=args.learning_rate,
-        hyper_learning_rate = args.hyper_learning_rate, 
-        L = args.L,
-        num_glob_iters=args.num_global_iters,
-        local_epochs=args.local_epochs,
-        optimizer= args.optimizer,
-        numusers = args.numusers,
-        times = args.times
-        )
+if(0):
+    plot_summary_one_figure(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L, learning_rate=learning_rate, eta = eta, eta0 = eta0, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
