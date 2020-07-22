@@ -131,7 +131,8 @@ class Server(ServerBase):
                 self.send_grads()
                
                 # all note are trained 
-                for edge in self.edges:
+                self.selected_edges = self.select_edges(glob_iter, self.num_edges)
+                for edge in self.selected_edges:
                     edge.train(self.local_epochs, glob_iter)
 
                 self.aggregate_parameters()
