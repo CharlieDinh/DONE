@@ -12,7 +12,7 @@ from utils.plot_utils import *
 import torch
 torch.manual_seed(0)
     
-numedges = 100
+numedges = 64
 num_glob_iters = 200
 dataset = "Mnist"
 optimizer = "SGD"
@@ -23,8 +23,8 @@ model = Mclr_Logistic(), model
 # defind parameters
 local_epochs = [20]
 learning_rate = [1]
-eta =  [0.01]
-eta0 = [0.06]
+eta =  [0.05]
+eta0 = [1]
 batch_size = [0]
 algorithms = ["SecondOrder"]
 L = [0]

@@ -28,10 +28,10 @@ class edgeSeOrder(Edgebase):
     def set_grads(self, new_grads):
         if isinstance(new_grads, nn.Parameter):
             for model_grad, new_grad in zip(self.server_grad, new_grads):
-                model_grad.data.grad = new_grad.data
+                model_grad.grad = new_grad.data.clone()
         elif isinstance(new_grads, list):
             for idx, model_grad in enumerate(self.server_grad):
-                model_grad.data.grad = new_grads[idx]
+                model_grad.grad = new_grads[idx].clone()
 
     def get_full_grad(self):
         for X, y in self.trainloaderfull:
@@ -60,7 +60,7 @@ class edgeSeOrder(Edgebase):
             hess_vec_prods = self.hessian_vec_prod(loss, list(self.model.parameters()), self.dt)
             for grad, d, hess_vec in zip(self.server_grad, self.dt, hess_vec_prods):
                 # d.data = d.data - tempeta * hess_vec - grad.data
-                d.data = d.data - self.eta * hess_vec - self.eta * grad.data
+                d.data = d.data - self.eta * hess_vec - self.eta * grad.grad.data
 
     def hessian_vec_prod(self, loss, params, dt):
         self.model.zero_grad()
