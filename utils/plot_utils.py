@@ -380,3 +380,13 @@ def plot_summary_nist(num_users=100, loc_ep1=[], Numb_Glob_Iters=10, lamb=[], le
                 'test_accu.pdf', bbox_inches='tight')
     plt.savefig(dataset + str(loc_ep1[1]) +
                 'test_accu.png', bbox_inches='tight')
+
+
+def plot_loss_differences(differences, log_scale=True):
+    plt.figure()
+    plt.plot(differences)
+    if log_scale:
+        plt.yscale("log")
+    plt.xlabel("$t$")
+    plt.ylabel("$f(w^t) - f(w^*)$")
+    plt.savefig("loss_differences.png", bbox_inches='tight')
