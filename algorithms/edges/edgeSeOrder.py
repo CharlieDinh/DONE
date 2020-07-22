@@ -48,12 +48,12 @@ class edgeSeOrder(Edgebase):
         (X, y) = self.get_next_train_batch()
         loss = self.total_loss(X=X, y=y, full_batch=False, regularize=True)
         loss.backward(create_graph=True)
-        grads = []
+        #grads = []
 
         # Set d^i_0
         for d, param in zip(self.dt, self.model.parameters()):
             d.data = - param.grad.data.clone()
-            grads.append(param.grad.data.clone())
+            #grads.append(param.grad.data.clone())
 
         # Richardson iteration
         for i in range(1, self.local_epochs + 1):  # R

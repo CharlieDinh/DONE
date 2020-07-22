@@ -17,14 +17,6 @@ class edgeAvg(Edgebase):
 
         self.optimizer =  torch.optim.SGD(self.model.parameters(), lr=self.learning_rate)
 
-    def set_grads(self, new_grads):
-        if isinstance(new_grads, nn.Parameter):
-            for model_grad, new_grad in zip(self.server_grad, new_grads):
-                model_grad.data.grad = new_grad.data
-        elif isinstance(new_grads, list):
-            for idx, model_grad in enumerate(self.server_grad):
-                model_grad.data.grad = new_grads[idx]
-
     def train(self, epochs, glob_iter):
         self.model.train()
         for epoch in range(1, self.local_epochs + 1):
@@ -32,7 +24,8 @@ class edgeAvg(Edgebase):
             #loss_per_epoch = 0
             # Sample a mini-batch (D_i)
             (X, y) = self.get_next_train_batch()
+            self.optimizer.zero_grad()
             output = self.model(X)
             loss = self.loss(output, y)
-            loss.backward(create_graph=True)
+            loss.backward()
             self.optimizer.step()
