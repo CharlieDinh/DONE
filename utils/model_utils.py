@@ -68,7 +68,7 @@ def get_batch_sample(data, batch_size):
     batched_y = data_y[0:batch_size]
     return (batched_x, batched_y)
 
-def read_data(dataset):
+def read_data(dataset, read_optimal_weights=False):
     '''parses data in given train and test data directories
 
     assumes:
@@ -110,7 +110,15 @@ def read_data(dataset):
 
     clients = list(sorted(train_data.keys()))
 
-    return clients, groups, train_data, test_data
+    # Read the optimal weights for synthetic datasets
+    optimal_weights = None
+    loss_no_reg = None      # loss without regularization
+    if read_optimal_weights:
+        with open(os.path.join("data", dataset, "data", "optimal_weights.npy"), "rb") as f:
+            optimal_weights = np.load(f)
+            loss_no_reg = np.load(f)
+
+    return clients, groups, train_data, test_data, optimal_weights, loss_no_reg
 
 
 def read_edge_data(index, data, dataset):

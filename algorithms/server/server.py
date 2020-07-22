@@ -19,7 +19,17 @@ class Server(ServerBase):
                          local_epochs, optimizer, num_edges, times)
 
         # Initialize data for all  edges
-        data = read_data(dataset)
+        data = read_data(dataset, read_optimal_weights=dataset.endswith("synthetic"))
+
+        self.optimal_weights = None
+        self.optimal_loss_unreg = None  # Unregularized loss
+        self.optimal_loss_reg = None    # Regularized loss with parameter L
+        if data[-1] is not None:
+            # Synthetic dataset: save the optimal weights for comparison later
+            self.optimal_weights = data[-2]
+            self.optimal_loss_unreg = data[-1]
+            self.optimal_loss_reg = (self.L / 2) * (np.linalg.norm(data[-1]) ** 2)
+
         total_edges = len(data[0])
 
         for i in range(total_edges):
@@ -139,3 +149,37 @@ class Server(ServerBase):
 
         self.save_results()
         self.save_model()
+
+    def weights_difference(self, weights=None, optimal_weights=None):
+        """
+        Calculate the norm of w - w*, the difference between the current weights
+        and the optimal weights of the dataset.
+        """
+        if weights is None:
+            weights = list(self.model.parameters())[0].data.clone().detach().flatten().numpy()
+        if optimal_weights is None:
+            optimal_weights = self.optimal_weights
+        if weights.shape != optimal_weights.shape:
+            weights = weights.T
+        return np.linalg.norm(weights - optimal_weights)
+
+    def regularize(self, model=None):
+        model = self.model if model is None else model
+        reg = 0
+        for param in model.parameters():
+            if param.requires_grad:
+                reg += param.norm() ** 2
+        return (self.L / 2) * reg
+
+    def losses_difference(self, loss, optimal_loss=None, regularize=True):
+        """
+        Calculate f(w) - f(w*), the difference between the evaluation function
+        at the current weights and at the optimal weights.
+        """
+        if optimal_loss is None:
+            if regularize:
+                optimal_loss = self.optimal_loss_reg
+            else:
+                optimal_loss = self.optimal_loss_unreg
+        return loss - optimal_loss
+

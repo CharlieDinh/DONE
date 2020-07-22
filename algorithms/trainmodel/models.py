@@ -73,3 +73,14 @@ class Linear_Regression(nn.Module):
         x = torch.flatten(x, 1)
         outputs = self.linear(x)
         return outputs
+
+class Logistic_Regression(nn.Module):
+    def __init__(self, input_dim = 40):
+        super(Logistic_Regression, self).__init__()
+        self.linear = torch.nn.Linear(input_dim, 1)
+
+    def forward(self, x):
+        x = torch.flatten(x, 1)
+        outputs = self.linear(x)
+        outputs = torch.sigmoid(outputs)
+        return outputs

@@ -144,10 +144,12 @@ class Edgebase:
     def model_exists():
         return os.path.exists(os.path.join("models", "server" + ".pt"))
 
-    def regularize(self):
+    def regularize(self, model=None):
+        model = self.model if model is None else model
         reg = 0
-        for param in self.model.parameters():
-            reg += param.norm() ** 2
+        for param in model.parameters():
+            if param.requires_grad:
+                reg += param.norm() ** 2
         return (self.L / 2) * reg
 
     def total_loss(self, model=None, X=None, y=None, full_batch=True, regularize=False):
@@ -165,4 +167,3 @@ class Edgebase:
         if regularize:
             loss += self.regularize()
         return loss
-    

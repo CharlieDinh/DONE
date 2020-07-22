@@ -27,6 +27,9 @@ def main(dataset, algorithm, model, batch_size, learning_rate, eta, eta0, L, num
 
         if(model == "linear_regression"):
             model = Linear_Regression(40,1), model
+
+        if model == "logistic_regression":
+            model = Logistic_Regression(40), model
         # select algorithm
 
         server = Server(dataset, algorithm, model, batch_size, learning_rate, eta, eta0,  L, num_glob_iters, local_epochs, optimizer, numedges, i)
@@ -39,8 +42,8 @@ def main(dataset, algorithm, model, batch_size, learning_rate, eta, eta0, L, num
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset", type=str, default="Mnist", choices=["Mnist","Fenist", "Linear_synthetic", "Logistic_synthetic"])
-    parser.add_argument("--model", type=str, default="mclr", choices=["linear_regression", "mclr", "cnn"])
+    parser.add_argument("--dataset", type=str, default="Logistic_synthetic", choices=["Mnist","Fenist", "Linear_synthetic", "Logistic_synthetic"])
+    parser.add_argument("--model", type=str, default="logistic_regression", choices=["linear_regression", "mclr", "cnn", "logistic_regression"])
     parser.add_argument("--batch_size", type=int, default=20)
     parser.add_argument("--learning_rate", type=float, default=0.003, help="Local learning rate for first order algorithm")
     parser.add_argument("--eta", type=float, default=0.001, help="first eta")
