@@ -5,7 +5,7 @@ import random
 import os
 np.random.seed(0)
 
-NUM_USER = 100
+NUM_USER = 64
 rho = 1.4
 Dim = 40 
 Noise = 0.05
@@ -37,7 +37,7 @@ def generate_linear_data(num_users=100, rho=10, dim=40, noise_ratio=0.05):
     X_split = [[] for _ in range(num_users)]  # X for each user
     y_split = [[] for _ in range(num_users)]  # y for each user
 
-    samples_each_user = 5000
+    samples_each_user = 500
     samples_per_user = np.array(num_users*[samples_each_user])
     indices_per_user = np.insert(samples_per_user.cumsum(), 0, 0, 0)
     num_total_samples = indices_per_user[-1]

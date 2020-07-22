@@ -26,7 +26,7 @@ def main(dataset, algorithm, model, batch_size, learning_rate, eta, eta0, L, num
                 model = Mclr_Logistic(), model
 
         if(model == "linear_regression"):
-            model = Linear_Regression(60,1), model
+            model = Linear_Regression(40,1), model
         # select algorithm
 
         server = Server(dataset, algorithm, model, batch_size, learning_rate, eta, eta0,  L, num_glob_iters, local_epochs, optimizer, numedges, i)
@@ -49,7 +49,7 @@ if __name__ == "__main__":
     parser.add_argument("--num_global_iters", type=int, default=800)
     parser.add_argument("--local_epochs", type=int, default=20)
     parser.add_argument("--optimizer", type=str, default="SGD",choices=["SGD"])
-    parser.add_argument("--algorithm", type=str, default="New",choices=["SecondOrder", "FirstOrder","DANE", "New"])
+    parser.add_argument("--algorithm", type=str, default="New",choices=["SecondOrder", "FirstOrder","DANE", "New", "FedAvg"])
     parser.add_argument("--numedges", type=int, default=20,help="Number of Edges per round")
     parser.add_argument("--times", type=int, default=1, help="running time")
     args = parser.parse_args()
