@@ -53,11 +53,14 @@ def generate_logistic_regression_data(num_users=100, rho=10, dim=40, lamb = 1, n
     # Generate weights and labels
     W = np.random.rand(dim)
     y_total = logit(X_total, W)
+    y_predicted = y_total.copy()
     y_total = np.where(y_total > 0.5, 1, 0)
 
     # Apply noise: randomly flip some of y_n with probability noise_ratio
     noise = np.random.binomial(1, noise_ratio, num_total_samples)
     y_total = np.multiply(noise - y_total, noise) + np.multiply(y_total, 1 - noise)
+
+    loss = np.average(-y_total * np.log(y_predicted) - (1 - y_total) * np.log(1 - y_predicted))
 
     # Save each user's data separately
     for n in range(num_users):
@@ -69,9 +72,12 @@ def generate_logistic_regression_data(num_users=100, rho=10, dim=40, lamb = 1, n
         # print("User {} has {} samples.".format(n, samples_per_user[n]))
 
     # Save the optimal weights
-    if not os.path.exists("data"):
-        os.mkdir("data")
-    np.save("data/optimal_weights.npy", W)
+    with open("data/optimal_weights.npy", "wb") as f:
+        np.save(f, W)
+        np.save(f, loss)
+    # if not os.path.exists("data"):
+    #     os.mkdir("data")
+    # np.save("data/optimal_weights.npy", W)
 
 
     print("=" * 80)
