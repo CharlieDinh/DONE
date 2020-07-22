@@ -30,9 +30,9 @@ class edgeAvg(Edgebase):
         for epoch in range(1, self.local_epochs + 1):
             self.model.train()
             #loss_per_epoch = 0
-            for X, y in self.trainloaderfull:
-                self.optimizer.zero_grad()
-                output = self.model(X)
-                loss = self.loss(output, y)
-                loss.backward()
-                self.optimizer.step()
+            # Sample a mini-batch (D_i)
+            (X, y) = self.get_next_train_batch()
+            output = self.model(X)
+            loss = self.loss(output, y)
+            loss.backward(create_graph=True)
+            self.optimizer.step()

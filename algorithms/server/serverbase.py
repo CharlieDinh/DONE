@@ -54,7 +54,7 @@ class ServerBase:
 
     def add_parameters(self, edge, ratio):
         model = self.model.parameters()
-        if(self.algorithm == "DANE"):
+        if(self.algorithm == "DANE" or self.algorithm == "FedAvg"):
             for server_param, edge_param in zip(self.model.parameters(), edge.get_parameters()):
                 server_param.data = server_param.data + edge_param.data.clone() * ratio
         else: # for first order and second order only aggregate the direction dt
@@ -70,13 +70,16 @@ class ServerBase:
                 param.data.zero_() # = torch.zeros_like(param.data)
                 if(param.grad != None):
                     param.grad.data.zero_() # = torch.zeros_like(param.grad.data)
-
             for edge in self.selected_edges:
                 self.add_parameters(edge, 1 / self.num_edges)
-        else: # first order, second order 
+        elif self.algorithm == "FedAvg":
+            for param in self.model.parameters():
+                param.data.zero_() # = torch.zeros_like(param.data)
             for edge in self.selected_edges:
                 total_train += edge.train_samples
-
+            for edge in self.selected_edges:
+                self.add_parameters(edge, edge.train_samples / total_train)
+        else: # first order, second order 
             for edge in self.selected_edges:
                 self.add_parameters(edge, 1 / len(self.selected_edges))
 
