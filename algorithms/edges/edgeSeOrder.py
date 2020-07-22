@@ -27,14 +27,24 @@ class edgeSeOrder(Edgebase):
 
     def set_grads(self, new_grads):
         if isinstance(new_grads, nn.Parameter):
-            for model_grad, new_grad in zip(self.model.parameters(), new_grads):
-                model_grad.data = new_grad.data
+            for model_grad, new_grad in zip(self.server_grad, new_grads):
+                model_grad.data.grad = new_grad.data
         elif isinstance(new_grads, list):
-            for idx, model_grad in enumerate(self.model.parameters()):
-                model_grad.data = new_grads[idx].clone()
+            for idx, model_grad in enumerate(self.server_grad):
+                model_grad.data.grad = new_grads[idx]
+
+    def get_full_grad(self):
+        for X, y in self.trainloaderfull:
+            self.model.zero_grad()
+            output = self.model(X)
+            loss = self.loss(output, y)
+            loss.backward()
+
+        #for local_grad, param in zip(self.pre_local_grad, self.model.parameters()):
+        #    local_grad.data = param.grad.data.clone()
 
     def train(self, epochs, glob_iter):
-        tempeta = self.eta/(glob_iter+1)
+        #tempeta = self.eta/(glob_iter+1)
         self.model.zero_grad()
 
         # Sample a mini-batch (D_i)
@@ -42,19 +52,19 @@ class edgeSeOrder(Edgebase):
         output = self.model(X)
         loss = self.loss(output, y)
         loss.backward(create_graph=True)
-        grads = []
+        #grads = []
 
         # Set d^i_0
         for d, param in zip(self.dt, self.model.parameters()):
             d.data = - param.grad.data.clone()
-            grads.append(param.grad.data.clone())
+            #grads.append(param.grad.data.clone())
 
         # Richardson iteration
         for i in range(1, self.local_epochs + 1):  # R
             hess_vec_prods = self.hessian_vec_prod(loss, list(self.model.parameters()), self.dt)
-            for grad, d, hess_vec in zip(grads, self.dt, hess_vec_prods):
-                d.data = d.data - tempeta * hess_vec - grad.data
-                #d.data = d.data - self.eta * hess_vec - grad.data
+            for grad, d, hess_vec in zip(self.server_grad, self.dt, hess_vec_prods):
+                #d.data = d.data - tempeta * hess_vec - grad.data
+                d.data = d.data - self.eta * hess_vec - self.eta *grad.data
 
     def hessian_vec_prod(self, loss, params, dt):
         self.model.zero_grad()

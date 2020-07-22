@@ -34,7 +34,6 @@ class edgeDANE(Edgebase):
 
         # Find derivative of phi(w^(t-1))
         for X, y in self.trainloaderfull:
-
             self.model.zero_grad()
             output = self.model(X)
             loss = self.loss(output, y)

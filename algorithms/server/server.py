@@ -103,7 +103,7 @@ class Server(ServerBase):
             self.save_results()
             self.save_model()
 
-        else: # Second Order method, Fed Avg
+         elif self.algorithm == "FedAvg"
             for glob_iter in range(self.num_glob_iters):
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
@@ -112,7 +112,28 @@ class Server(ServerBase):
 
                 for edge in self.selected_edges:
                     edge.train(self.local_epochs, glob_iter)
+                self.aggregate_parameters()
+        else: # Second Order method
+            for glob_iter in range(self.num_glob_iters):
+                print("-------------Round number: ",glob_iter, " -------------")
+
+                # recive parameter from server
+                self.send_parameters()
+                self.evaluate()
+                #self.selected_edges = self.select_edges(glob_iter, self.num_edges)
+                # Caculate gradient to send to server for average
+                for edge in self.edges:
+                    edge.get_full_grad()
+                
+                self.aggregate_grads()
+                # receive average gradient form server 
+                self.send_grads()
+               
+                # all note are trained 
+                for edge in self.edges:
+                    edge.train(self.local_epochs, glob_iter)
 
                 self.aggregate_parameters()
+
         self.save_results()
         self.save_model()

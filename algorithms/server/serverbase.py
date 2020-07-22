@@ -31,10 +31,10 @@ class ServerBase:
         for param in self.model.parameters():
             param.grad = torch.zeros_like(param.data)
         for edge in self.edges:
-            if self.algorithm == "DANE":
-                self.add_grad(edge, 1 / self.num_edges)
-            else:
-                self.add_grad(edge, edge.train_samples / self.total_train_samples)
+            #if self.algorithm == "DANE":
+            self.add_grad(edge, 1 / self.num_edges)
+            #else:
+            #    self.add_grad(edge, edge.train_samples / self.total_train_samples)
 
     def add_grad(self, edge, ratio):
         for server_param, edge_param in zip(self.model.parameters(), edge.get_parameters()):
