@@ -103,7 +103,7 @@ class Server(ServerBase):
             self.save_results()
             self.save_model()
 
-         elif self.algorithm == "FedAvg"
+        elif self.algorithm == "FedAvg":
             for glob_iter in range(self.num_glob_iters):
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
@@ -113,7 +113,8 @@ class Server(ServerBase):
                 for edge in self.selected_edges:
                     edge.train(self.local_epochs, glob_iter)
                 self.aggregate_parameters()
-        else: # Second Order method
+                
+        elif self.algorithm == "SecondOrder": # Second Order method
             for glob_iter in range(self.num_glob_iters):
                 print("-------------Round number: ",glob_iter, " -------------")
 
