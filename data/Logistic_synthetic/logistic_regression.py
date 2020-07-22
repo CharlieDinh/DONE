@@ -67,6 +67,11 @@ def generate_logistic_regression_data(num_users=100, rho=10, dim=40, lamb = 1, n
 
         # print("User {} has {} samples.".format(n, samples_per_user[n]))
 
+    # Save the optimal weights
+    if not os.path.exists("data"):
+        os.mkdir("data")
+    np.save("data/optimal_weights.npy", W)
+
     print("=" * 80)
     print("Generated synthetic data for logistic regression successfully.")
     print("Summary of the generated data:".format(rho))
