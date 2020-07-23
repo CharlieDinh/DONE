@@ -15,15 +15,23 @@ class edgeDANE(Edgebase):
         else:
             self.loss = nn.NLLLoss()
 
-        self.optimizer = DANEOptimizer(self.model.parameters(), lr=self.learning_rate)
+        self.optimizer = DANEOptimizer(self.model.parameters(), lr=self.learning_rate, L = self.L)
+
+    # def set_grads(self, new_grads):
+    #     if isinstance(new_grads, nn.Parameter):
+    #         for model_grad, new_grad in zip(self.server_grad, new_grads):
+    #             model_grad.data.grad = new_grad.data
+    #     elif isinstance(new_grads, list):
+    #         for idx, model_grad in enumerate(self.server_grad):
+    #             model_grad.data.grad = new_grads[idx]
 
     def set_grads(self, new_grads):
         if isinstance(new_grads, nn.Parameter):
             for model_grad, new_grad in zip(self.server_grad, new_grads):
-                model_grad.data.grad = new_grad.data
+                model_grad.grad = new_grad.data.clone()
         elif isinstance(new_grads, list):
             for idx, model_grad in enumerate(self.server_grad):
-                model_grad.data.grad = new_grads[idx]
+                model_grad.grad = new_grads[idx].clone()
 
     def set_parameters(self, model):
         for old_param, new_param in zip(self.model.parameters(), model.parameters()):
@@ -37,6 +45,7 @@ class edgeDANE(Edgebase):
             self.model.zero_grad()
             output = self.model(X)
             loss = self.loss(output, y)
+            #loss = self.total_loss(X=X, y=y, full_batch=False, regularize=True)
             loss.backward()
 
         for param in self.model.parameters():
@@ -53,9 +62,9 @@ class edgeDANE(Edgebase):
                 self.optimizer.zero_grad()
                 output = self.model(X)
                 loss = self.loss(output, y)
+                #loss = self.total_loss(X=X, y=y, full_batch=False, regularize=True)
                 loss.backward()
-                self.optimizer.step(server_grads=self.server_grad, pre_grads=self.pre_local_grad,
-                                    pre_params=self.pre_params)
+                self.optimizer.step(server_grads=self.server_grad, pre_grads=self.pre_local_grad, pre_params=self.pre_params)
             # for batch_idx, (X, y) in enumerate(self.trainloader):
             #     self.optimizer.zero_grad()
             #     output = self.model(X)

@@ -40,12 +40,11 @@ class DANEOptimizer(Optimizer):
             loss = closure
         for group in self.param_groups:
             for p, server_grad, pre_grad, pre_param in zip(group['params'], server_grads, pre_grads, pre_params):
-                if server_grad.grad is not None and pre_grad.grad is not None:
-                    p.data = p.data - group['lr'] * (p.grad.data + (pre_grad.grad.data - 1 * server_grad.grad.data) + group['L'] * (p.data - pre_param.data))
+                if server_grad.grad.data is not None and pre_grad.data is not None:
+                    p.data = p.data - group['lr'] * (p.grad.data + (pre_grad.data - group['lr'] * server_grad.grad.data) + 3 * group['L'] * (p.data - pre_param.data) + group['L'] * p.data )
                 else:
                     p.data = p.data - group['lr'] * p.grad.data
         return loss
-
 
 class Neumann(Optimizer):
     """
