@@ -37,12 +37,15 @@ def finding_optimal_synthetic(num_users=100, rho=10, dim = 40, noise_ratio=0.05)
     # Creat list data for all users 
     X_split = [[] for _ in range(num_users)]  # X for each user
     y_split = [[] for _ in range(num_users)]  # y for each user
-    samples_per_user = np.random.lognormal(4, 2, num_users).astype(int) + 50
+    
+    samples_each_user = 500
+    samples_per_user = np.array(num_users*[samples_each_user])
+    
     indices_per_user = np.insert(samples_per_user.cumsum(), 0, 0, 0)
     num_total_samples = indices_per_user[-1]
 
     # Create mean of data for each user, each user will have different distribution
-    mean_X = np.array([np.random.randn(dim) for _ in range(num_users)])
+    mean_X = np.random.randn(dim)
 
     # Covariance matrix for X
     X_total = np.zeros((num_total_samples, dim))
@@ -50,7 +53,7 @@ def finding_optimal_synthetic(num_users=100, rho=10, dim = 40, noise_ratio=0.05)
 
     for n in range(num_users):
         # Generate data
-        X_n = np.random.multivariate_normal(mean_X[n], np.diag(S), samples_per_user[n])
+        X_n = np.random.multivariate_normal(mean_X, np.diag(S), samples_per_user[n])
         X_total[indices_per_user[n]:indices_per_user[n+1], :] = X_n
 
     # Normalize all X's using LAMBDA
@@ -121,4 +124,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

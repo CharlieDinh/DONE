@@ -92,7 +92,7 @@ def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     start = 0
     linestyles = ['-', '--', '-.', ':', '-', '--', '-.', ':']
     for i in range(Numb_Algs):
-        plt.plot(train_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b")
+        plt.plot(train_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b"  + "_" + str(learning_rate[i])  + "_" + str(eta[i])  + "_" + str(eta0[i]) )
     plt.legend(loc='lower right')
     plt.ylabel('Training Accuracy')
     plt.xlabel('Global rounds ' + '$K_g$')
@@ -102,7 +102,7 @@ def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     #plt.savefig(dataset + str(loc_ep1[1]) + 'train_acc.pdf')
     plt.figure(2,figsize=(5, 5))
     for i in range(Numb_Algs):
-        plt.plot(train_loss[i, start:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b")
+        plt.plot(train_loss[i, start:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b" + "_" + str(learning_rate[i])  + "_" + str(eta[i])  + "_" + str(eta0[i]))
         #plt.plot(train_loss1[i, 1:], label=algs_lbl1[i])
     plt.legend(loc='upper right')
     plt.ylim([MIN, MIN+ 0.3])
@@ -114,7 +114,7 @@ def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     #plt.savefig(dataset + str(loc_ep1[1]) + 'train_loss.pdf')
     plt.figure(3)
     for i in range(Numb_Algs):
-        plt.plot(glob_acc[i, start:], linestyle=linestyles[i],label=algs_lbl[i]+ "_" +str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b")
+        plt.plot(glob_acc[i, start:], linestyle=linestyles[i],label=algs_lbl[i]+ "_" +str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b" + "_" + str(learning_rate[i])  + "_" + str(eta[i])  + "_" + str(eta0[i]))
         #plt.plot(glob_acc1[i, 1:], label=algs_lbl1[i])  
     plt.legend(loc='lower right')
     #plt.ylim([0.6, glob_acc.max()])
