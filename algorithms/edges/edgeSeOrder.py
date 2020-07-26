@@ -54,7 +54,7 @@ class edgeSeOrder(Edgebase):
 
         # Set d^i_0
         for d, param in zip(self.dt, self.model.parameters()):
-            d.data = - param.grad.data.clone()
+            d.data = - self.eta * param.grad.data.clone()
             #grads.append(param.grad.data.clone())
 
         # Richardson iteration
