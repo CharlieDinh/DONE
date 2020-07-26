@@ -12,7 +12,7 @@ from utils.plot_utils import *
 import torch
 torch.manual_seed(0)
     
-numedges = 100
+numedges = 64
 num_glob_iters = 200
 dataset = "Linear_synthetic"
 optimizer = "SGD"
@@ -22,12 +22,12 @@ model = Linear_Regression(40,1), model
 
 # defind parameters
 local_epochs = [20]
-learning_rate = [1]
-eta =  [0.001]
-eta0 = [0.001]
-batch_size = [32]
-algorithms = ["SecondOrder"]
-L = [0]
+learning_rate = [0.01]
+eta =  [0.01]
+eta0 = [1]
+batch_size = [0]
+algorithms = ["DANE"]
+L = [0.01]
 
 if(1):
     for i in range(len(algorithms)):

@@ -142,9 +142,9 @@ def read_edge_data(index, data, dataset):
         #print(y_test.size(),y_train.size())
     else:
         X_train = torch.Tensor(X_train).type(torch.float32)
-        y_train = torch.Tensor(y_train).type(torch.int64)
+        y_train = torch.Tensor(y_train).view(-1, 1).type(torch.float32)
         X_test = torch.Tensor(X_test).type(torch.float32)
-        y_test = torch.Tensor(y_test).type(torch.int64)
+        y_test = torch.Tensor(y_test).view(-1, 1).type(torch.float32)
     train_data = [(x, y) for x, y in zip(X_train, y_train)]
     test_data = [(x, y) for x, y in zip(X_test, y_test)]
     return id, train_data, test_data

@@ -54,7 +54,7 @@ def generate_logistic_regression_data(num_users=100, rho=10, dim=40, lamb = 1, n
     W = np.random.rand(dim)
     y_total = logit(X_total, W)
     y_predicted = y_total.copy()
-    y_total = np.where(y_total > 0.5, 1, 0)
+    y_total = np.where(y_total >= 0.5, 1, 0)
 
     # Apply noise: randomly flip some of y_n with probability noise_ratio
     noise = np.random.binomial(1, noise_ratio, num_total_samples)

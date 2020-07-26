@@ -14,8 +14,10 @@ class edgeFiOrder(Edgebase):
         super().__init__(numeric_id, train_data, test_data, model[0], batch_size, learning_rate, eta, eta0, L,
                          local_epochs)
 
-        if(model[1] == "linear_regression"):
+        if (model[1] == "linear_regression"):
             self.loss = nn.MSELoss()
+        elif model[1] == "logistic_regression":
+            self.loss = nn.BCELoss()
         else:
             self.loss = nn.NLLLoss()
 

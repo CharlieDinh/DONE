@@ -19,7 +19,7 @@ class Server(ServerBase):
                          local_epochs, optimizer, num_edges, times)
 
         # Initialize data for all  edges
-        data = read_data(dataset, read_optimal_weights=dataset.endswith("synthetic"))
+        data = read_data(dataset, read_optimal_weights=False)
 
         self.optimal_weights = None
         self.optimal_loss_unreg = None  # Unregularized loss

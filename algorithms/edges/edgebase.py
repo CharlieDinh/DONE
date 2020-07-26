@@ -6,6 +6,7 @@ import json
 from torch.utils.data import DataLoader
 import numpy as np
 import copy
+from algorithms.trainmodel.models import *
 
 
 class Edgebase:
@@ -92,7 +93,10 @@ class Edgebase:
         test_acc = 0
         for x, y in self.testloaderfull:
             output = self.model(x)
-            test_acc += (torch.sum(torch.argmax(output, dim=1) == y)).item()
+            if isinstance(self.model, Logistic_Regression):
+                test_acc += torch.sum(((output >= 0.5) == y).type(torch.int)).item()
+            else:
+                test_acc += (torch.sum(torch.argmax(output, dim=1) == y)).item()
         return test_acc, y.shape[0]
 
     def train_error_and_loss(self):
@@ -101,7 +105,10 @@ class Edgebase:
         loss = 0
         for x, y in self.trainloaderfull:
             output = self.model(x)
-            train_acc += (torch.sum(torch.argmax(output, dim=1) == y)).item()
+            if isinstance(self.model, Logistic_Regression):
+                train_acc += torch.sum(((output >= 0.5) == y).type(torch.int)).item()
+            else:
+                train_acc += (torch.sum(torch.argmax(output, dim=1) == y)).item()
             loss += self.loss(output, y)
         return train_acc, loss, self.train_samples
 

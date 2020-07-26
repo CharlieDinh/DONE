@@ -10,8 +10,10 @@ class edgeAvg(Edgebase):
                          local_epochs)
 
         self.pre_params = []
-        if model[1] == "linear_regression":
+        if (model[1] == "linear_regression"):
             self.loss = nn.MSELoss()
+        elif model[1] == "logistic_regression":
+            self.loss = nn.BCELoss()
         else:
             self.loss = nn.NLLLoss()
 
