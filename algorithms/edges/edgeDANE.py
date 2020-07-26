@@ -15,7 +15,7 @@ class edgeDANE(Edgebase):
         else:
             self.loss = nn.NLLLoss()
 
-        self.optimizer = DANEOptimizer(self.model.parameters(), lr=self.learning_rate, L = self.L)
+        self.optimizer = DANEOptimizer(self.model.parameters(), lr=self.learning_rate, L = self.L, eta = self.eta)
 
     # def set_grads(self, new_grads):
     #     if isinstance(new_grads, nn.Parameter):
@@ -32,6 +32,13 @@ class edgeDANE(Edgebase):
         elif isinstance(new_grads, list):
             for idx, model_grad in enumerate(self.server_grad):
                 model_grad.grad = new_grads[idx].clone()
+    
+    def get_full_grad(self):
+        for X, y in self.trainloaderfull:
+            self.model.zero_grad()
+            output = self.model(X)
+            loss = self.loss(output, y)
+            loss.backward()
 
     def set_parameters(self, model):
         for old_param, new_param in zip(self.model.parameters(), model.parameters()):

@@ -28,10 +28,10 @@ class MySGD(Optimizer):
 
 
 class DANEOptimizer(Optimizer):
-    def __init__(self, params, lr=0.01, L=0.1):
+    def __init__(self, params, lr=0.01, L = 0.1, eta = 1):
         if lr < 0.0:
             raise ValueError("Invalid learning rate: {}".format(lr))
-        defaults = dict(lr=lr, L=L)
+        defaults = dict(lr=lr, L=L, eta = eta)
         super(DANEOptimizer, self).__init__(params, defaults)
 
     def step(self, server_grads, pre_grads, pre_params, closure=None):
@@ -41,7 +41,7 @@ class DANEOptimizer(Optimizer):
         for group in self.param_groups:
             for p, server_grad, pre_grad, pre_param in zip(group['params'], server_grads, pre_grads, pre_params):
                 if server_grad.grad.data is not None and pre_grad.data is not None:
-                    p.data = p.data - group['lr'] * (p.grad.data + (pre_grad.data - group['lr'] * server_grad.grad.data) + 3 * group['L'] * (p.data - pre_param.data) + group['L'] * p.data )
+                    p.data = p.data - group['lr'] * (p.grad.data + (pre_grad.data - group['eta'] * server_grad.grad.data) + 3 * group['L'] * (p.data - pre_param.data) + group['L'] * p.data )
                 else:
                     p.data = p.data - group['lr'] * p.grad.data
         return loss

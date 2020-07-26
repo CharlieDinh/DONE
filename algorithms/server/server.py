@@ -86,19 +86,39 @@ class Server(ServerBase):
 
         elif self.algorithm == "DANE":
         
-            # Choose all edges in the training process
-            self.selected_edges = self.edges
+            # # Choose all edges in the training process
+            # self.selected_edges = self.edges
             for glob_iter in range(self.num_glob_iters):
-                print("-------------Round number: ",glob_iter, " -------------")
-                self.aggregate_grads()
-                self.send_grads()
+            #     print("-------------Round number: ",glob_iter, " -------------")
+            #     self.aggregate_grads()
 
+            #     self.send_grads()
+            #     self.send_parameters()
+
+            #     self.evaluate()
+
+            #     for edge in self.selected_edges:
+            #         edge.train(self.local_epochs)
+
+            #     self.aggregate_parameters()
+            #recive parameter from server
+                self.send_parameters()
+                self.evaluate()
+                    #self.selected_edges = self.select_edges(glob_iter, self.num_edges)
+                    # Caculate gradient to send to server for average
+                for edge in self.edges:
+                    edge.get_full_grad()
+                    
+                self.aggregate_grads()
+                    # receive average gradient form server 
+                self.send_grads()
+                
+                    # all note are trained 
+                self.selected_edges = self.select_edges(glob_iter, self.num_edges)
                 for edge in self.selected_edges:
                     edge.train(self.local_epochs)
 
-                self.aggregate_parameters()
-                self.send_parameters()
-                self.evaluate()
+                self.aggregate_parameters()          
 
         elif self.algorithm == "New":
             for glob_iter in range(1, self.num_glob_iters):
