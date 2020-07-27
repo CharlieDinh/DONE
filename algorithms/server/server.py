@@ -6,6 +6,7 @@ from algorithms.edges.edgeFiOrder import edgeFiOrder
 from algorithms.edges.edgeDANE import edgeDANE
 from algorithms.edges.edgeNew import edgeNew
 from algorithms.edges.edgeAvg import edgeAvg
+from algorithms.edges.edgeFEDL import edgeFEDL
 
 from algorithms.server.serverbase import ServerBase
 from utils.model_utils import read_data, read_edge_data
@@ -48,7 +49,8 @@ class Server(ServerBase):
                 edge = edgeNew(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
             if algorithm == "FedAvg":
                 edge = edgeAvg(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
-
+            if(algorithm == "FEDL"):
+                edge = edgeFEDL(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
             self.edges.append(edge)
             self.total_train_samples += edge.train_samples
             
@@ -166,6 +168,19 @@ class Server(ServerBase):
                     edge.train(self.local_epochs, glob_iter)
 
                 self.aggregate_parameters()
+
+        elif self.algorithm == "FEDL":
+            for glob_iter in range(self.num_glob_iters):
+                self.send_parameters()
+                self.send_grads()
+                self.evaluate()
+
+                self.selected_edges = self.select_edges(glob_iter, self.num_edges)
+                for edge in self.selected_edges:
+                    edge.train(self.local_epochs)
+                #self.selected_edges[0].train(self.local_epochs)
+                self.aggregate_parameters()
+                self.aggregate_grads()
 
         self.save_results()
         self.save_model()

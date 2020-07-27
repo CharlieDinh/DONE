@@ -31,10 +31,10 @@ class ServerBase:
         for param in self.model.parameters():
             param.grad = torch.zeros_like(param.data)
         for edge in self.edges:
-            #if self.algorithm == "DANE":
-            self.add_grad(edge, 1 / self.num_edges)
-            #else:
-            #    self.add_grad(edge, edge.train_samples / self.total_train_samples)
+            if self.algorithm == "FEDL":
+                self.add_grad(edge, edge.train_samples / self.total_train_samples)
+            else:
+                self.add_grad(edge, 1 / self.num_edges)
 
     def add_grad(self, edge, ratio):
         for server_param, edge_param in zip(self.model.parameters(), edge.get_parameters()):
@@ -54,7 +54,7 @@ class ServerBase:
 
     def add_parameters(self, edge, ratio):
         model = self.model.parameters()
-        if(self.algorithm == "DANE" or self.algorithm == "FedAvg"):
+        if(self.algorithm == "DANE" or self.algorithm == "FedAvg" or self.algorithm == "FEDL"):
             for server_param, edge_param in zip(self.model.parameters(), edge.get_parameters()):
                 server_param.data = server_param.data + edge_param.data.clone() * ratio
         else: # for first order and second order only aggregate the direction dt
@@ -72,7 +72,7 @@ class ServerBase:
                     param.grad.data.zero_() # = torch.zeros_like(param.grad.data)
             for edge in self.selected_edges:
                 self.add_parameters(edge, 1 / self.num_edges)
-        elif self.algorithm == "FedAvg":
+        elif self.algorithm == "FedAvg" or self.algorithm == "FEDL":
             for param in self.model.parameters():
                 param.data.zero_() # = torch.zeros_like(param.data)
             for edge in self.selected_edges:
