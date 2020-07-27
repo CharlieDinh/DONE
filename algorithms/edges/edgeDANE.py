@@ -62,24 +62,34 @@ class edgeDANE(Edgebase):
             self.pre_local_grad.append(param.grad.data.clone())
 
 
+    # def train(self, epochs):
+    #     self.model.train()
+    #     for epoch in range(1, self.local_epochs + 1):
+    #         self.model.train()
+    #         #loss_per_epoch = 0
+    #         X, y = self.get_next_train_batch()
+    #         #for X, y in self.trainloaderfull:
+    #         self.optimizer.zero_grad()
+    #         # output = self.model(X)
+    #         loss = self.total_loss(X=X, y=y, regularize=True)
+    #         # loss = self.loss(output, y)
+    #         #loss = self.total_loss(X=X, y=y, full_batch=False, regularize=True)
+    #         loss.backward()
+    #         self.optimizer.step(server_grads=self.server_grad, pre_grads=self.pre_local_grad, pre_params=self.pre_params)
+    #         # for batch_idx, (X, y) in enumerate(self.trainloader):
+    #         #     self.optimizer.zero_grad()
+    #         #     output = self.model(X)
+    #         #     loss = self.loss(output, y)
+    #         #     loss.backward()
+    #         #     self.optimizer.step(server_grads=self.server_grad, pre_grads=self.pre_local_grad,
+    #         #                         pre_params=self.pre_params)
     def train(self, epochs):
         self.model.train()
         for epoch in range(1, self.local_epochs + 1):
-            self.model.train()
-            #loss_per_epoch = 0
-            X, y = self.get_next_train_batch()
-            #for X, y in self.trainloaderfull:
-            self.optimizer.zero_grad()
-            # output = self.model(X)
-            loss = self.total_loss(X=X, y=y, regularize=True)
-            # loss = self.loss(output, y)
-            #loss = self.total_loss(X=X, y=y, full_batch=False, regularize=True)
-            loss.backward()
-            self.optimizer.step(server_grads=self.server_grad, pre_grads=self.pre_local_grad, pre_params=self.pre_params)
-            # for batch_idx, (X, y) in enumerate(self.trainloader):
-            #     self.optimizer.zero_grad()
-            #     output = self.model(X)
-            #     loss = self.loss(output, y)
-            #     loss.backward()
-            #     self.optimizer.step(server_grads=self.server_grad, pre_grads=self.pre_local_grad,
-            #                         pre_params=self.pre_params)
+            loss_per_epoch = 0
+            for batch_idx, (X, y) in enumerate(self.trainloader):
+                self.optimizer.zero_grad()
+                output = self.model(X)
+                loss = self.total_loss(X=X, y=y, regularize=True)
+                loss.backward()
+                self.optimizer.step(server_grads=self.server_grad, pre_grads=self.pre_local_grad, pre_params=self.pre_params)
