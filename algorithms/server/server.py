@@ -91,7 +91,7 @@ class Server(ServerBase):
             # # Choose all edges in the training process
             # self.selected_edges = self.edges
             for glob_iter in range(self.num_glob_iters):
-            #     print("-------------Round number: ",glob_iter, " -------------")
+                print("-------------Round number: ",glob_iter, " -------------")
             #     self.aggregate_grads()
 
             #     self.send_grads()
@@ -171,6 +171,7 @@ class Server(ServerBase):
 
         elif self.algorithm == "FEDL":
             for glob_iter in range(self.num_glob_iters):
+                print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
                 self.send_grads()
                 self.evaluate()
