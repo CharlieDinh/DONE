@@ -36,11 +36,11 @@ def generate_linear_data(num_users=100, rho=10, dim=40, noise_ratio=0.05):
     # Creat list data for all users 
     X_split = [[] for _ in range(num_users)]  # X for each user
     y_split = [[] for _ in range(num_users)]  # y for each user
-    samples_per_user = np.random.lognormal(4, 2, num_users).astype(int) + 50
+    samples_per_user = np.random.lognormal(4, 2, num_users).astype(int) + 500
     indices_per_user = np.insert(samples_per_user.cumsum(), 0, 0, 0)
     num_total_samples = indices_per_user[-1]
 
-    # Create mean of data for each user, each user will have different distribution
+    # Create mean of data for each user, each user will have different distributionå
     mean_X = np.random.randn(dim)
 
 
