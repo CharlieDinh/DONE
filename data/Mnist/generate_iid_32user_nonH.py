@@ -8,7 +8,7 @@ import scipy.io
 random.seed(1)
 np.random.seed(1)
 
-NUM_USERS = 64 # should be muitiple of 10
+NUM_USERS = 32 # should be muitiple of 10
 NUM_LABELS = 10
 
 # Setup directory for train/test data
