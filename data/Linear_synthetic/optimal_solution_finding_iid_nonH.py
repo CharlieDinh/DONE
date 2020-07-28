@@ -11,8 +11,8 @@ from sklearn.linear_model import LinearRegression
 import sklearn as sk
 np.random.seed(0)
 
-NUM_USER = 64
-rho = 2
+NUM_USER = 32
+rho = 5
 Dim = 40 
 Noise = 0.05
 
@@ -41,7 +41,7 @@ def finding_optimal_synthetic(num_users=100, rho=10, dim = 40, noise_ratio=0.05)
     samples_each_user = 500
     samples_per_user = np.array(num_users*[samples_each_user])
     
-    indices_per_user = np.insert(samples_per_user.cumsum(), 0, 0, 0)
+    indices_per_user = np.insert(samples_per_user.cumsum(), 0, 0, 0) + 500
     num_total_samples = indices_per_user[-1]
 
     # Create mean of data for each user, each user will have different distribution

@@ -5,9 +5,9 @@ import random
 import os
 np.random.seed(0)
 
-NUM_USER = 64
-rho = 1.4
-Dim = 40 
+NUM_USER = 32
+rho = 5
+Dim = 40
 Noise = 0.05
 
 def generate_x(n_samples = 100, dim= 40, rho= 10):
