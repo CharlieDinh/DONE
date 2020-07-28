@@ -1,0 +1,85 @@
+import copy
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import os
+import json
+from torch.utils.data import DataLoader
+from algorithms.edges.edgebase import Edgebase
+from algorithms.optimizers.optimizer import *
+
+
+# Implementation for FedAvg clients
+
+class edgeNewton(Edgebase):
+    def __init__(self, numeric_id, train_data, test_data, model, batch_size, learning_rate, eta, eta0, L,
+                 local_epochs, optimizer):
+        super().__init__(numeric_id, train_data, test_data, model[0], batch_size, learning_rate, eta, eta0, L,
+                         local_epochs)
+
+        if (model[1] == "linear_regression"):
+            self.loss = nn.MSELoss()
+        elif model[1] == "logistic_regression":
+            self.loss = nn.BCELoss()
+        else:
+            self.loss = nn.NLLLoss()
+
+        self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.learning_rate)
+
+    def set_grads(self, new_grads):
+        if isinstance(new_grads, nn.Parameter):
+            for model_grad, new_grad in zip(self.server_grad, new_grads):
+                model_grad.grad = new_grad.data.clone()
+        elif isinstance(new_grads, list):
+            for idx, model_grad in enumerate(self.server_grad):
+                model_grad.grad = new_grads[idx].clone()
+
+    def set_dt(self, new_dt):
+        for idx, dt in enumerate(self.dt):
+            dt.data = new_dt[idx]
+
+    def get_full_grad(self):
+        for X, y in self.trainloaderfull:
+            self.model.zero_grad()
+            output = self.model(X)
+            loss = self.loss(output, y)
+            loss.backward()
+
+    def gethessianproduct(self, epochs, glob_iter):
+        self.model.zero_grad()
+
+        for X, y in self.trainloaderfull:
+            loss = self.total_loss(X=X, y=y, full_batch=False, regularize=True)
+            loss.backward(create_graph=True)
+            self.Hdt = self.hessian_vec_prod(loss, list(self.model.parameters()), self.dt)
+            
+    def hessian_vec_prod(self, loss, params, dt):
+        self.model.zero_grad()
+        grads = torch.autograd.grad(loss, params, create_graph=True, retain_graph=True)
+        self.model.zero_grad()
+        hv = torch.autograd.grad(grads, params, dt, only_inputs=True, create_graph=True, retain_graph=True)
+        return hv
+
+    def hessian(self, grads, model):
+        """
+        Order: W first, then b
+        """
+        size = grads[0].shape[1] + 1  # +1 is for the bias
+        hess = torch.zeros(size, size)#.to(device)
+        i = 0
+        for grad in grads[0].flatten():
+            W_second = torch.autograd.grad(grad, model.parameters(), retain_graph=True)
+            hess[i] = torch.cat([W_second[0], W_second[1].view(1, 1)], 1)
+            i += 1
+        b_second = torch.autograd.grad(grads[1], model.parameters(), retain_graph=True)
+        hess[i] = torch.cat([b_second[0], b_second[1].view(1, 1)], 1)
+        i += 1
+        return hess
+
+    def get_hessian(self, epochs, glob_iter):
+        for X, y in self.trainloaderfull:
+            loss = self.total_loss(X=X, y=y, full_batch=False, regularize=True)
+            loss.backward(create_graph=True)
+            grads = torch.autograd.grad(loss, self.model.parameters(), create_graph=True, retain_graph=True)
+            self.hess = self.hessian(grads, self.model)

@@ -99,7 +99,7 @@ class ServerBase:
     
     def select_edges(self, round, num_edges):
         if(num_edges == len(self.edges)):
-            print("All edges are selected")
+            #print("All edges are selected")
             return self.edges
 
         num_edges = min(num_edges, len(self.edges))
@@ -160,3 +160,19 @@ class ServerBase:
         print("Average Global Accurancy: ", glob_acc)
         print("Average Global Trainning Accurancy: ", train_acc)
         print("Average Global Trainning Loss: ",train_loss)
+
+    def aggregate_dt(self):
+        # cacluate average hvdt
+        for edge in self.selected_edges:
+            for sumdt , Hdt in zip(self.total_dt, edge.Hdt):
+                sumdt.data = sumdt.data + 1/self.num_edges * Hdt.data
+        
+        # update dt 
+        for param, dt, sumdt in zip(self.model.parameters(), self.dt, self.total_dt):
+            dt.data = dt.data  - self.eta * sumdt.data - self.eta * param.grad.data
+            sumdt.data = 0 * sumdt.data
+
+    def aggregate_newton(self):
+        for param, dt in zip(self.model.parameters(), self.dt):
+            param.data = param.data + dt.data  
+            

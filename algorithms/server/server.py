@@ -2,11 +2,13 @@ import torch
 import os
 
 from algorithms.edges.edgeSeOrder import edgeSeOrder
+#from algorithms.edges.edgeSeOrder2 import edgeSeOrder2
 from algorithms.edges.edgeFiOrder import edgeFiOrder
 from algorithms.edges.edgeDANE import edgeDANE
 from algorithms.edges.edgeNew import edgeNew
 from algorithms.edges.edgeAvg import edgeAvg
 from algorithms.edges.edgeFEDL import edgeFEDL
+from algorithms.edges.edgeNewton import edgeNewton
 
 from algorithms.server.serverbase import ServerBase
 from utils.model_utils import read_data, read_edge_data
@@ -47,13 +49,19 @@ class Server(ServerBase):
                 #print("Finished creating DANE server.")
             if algorithm == "New":
                 edge = edgeNew(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
+
             if algorithm == "FedAvg":
                 edge = edgeAvg(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
+
             if(algorithm == "FEDL"):
                 edge = edgeFEDL(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
+
+            if(algorithm == "Newton"):
+                edge = edgeNewton(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
+                
             self.edges.append(edge)
             self.total_train_samples += edge.train_samples
-            
+
         print("Number of edges / total edges:", num_edges, " / ", total_edges)
         
     def send_grads(self):
@@ -66,6 +74,10 @@ class Server(ServerBase):
                 grads.append(param.grad)
         for edge in self.edges:
             edge.set_grads(grads)
+
+    def send_dt(self):
+        for edge in self.edges:
+            edge.set_dt(self.dt)
 
     def train(self):
         loss = []
@@ -182,6 +194,50 @@ class Server(ServerBase):
                 #self.selected_edges[0].train(self.local_epochs)
                 self.aggregate_parameters()
                 self.aggregate_grads()
+
+        elif self.algorithm == "Newton":
+            # create zero dt
+        
+            for glob_iter in range(self.num_glob_iters):
+                print("-------------Round number: ",glob_iter, " -------------")
+                self.send_parameters()
+                self.evaluate()
+                self.dt = []
+                self.total_dt = []
+
+                for param in self.model.parameters():
+                    self.dt.append(torch.zeros_like(param.data))
+                    self.total_dt.append(torch.zeros_like(param.data))
+
+                for edge in self.edges:
+                        edge.get_full_grad()
+                self.aggregate_grads()
+
+                for r in range(self.local_epochs):
+                    self.send_dt()
+
+                    self.selected_edges = self.select_edges(glob_iter, self.num_edges)
+                    for edge in self.selected_edges:
+                        edge.gethessianproduct(self.local_epochs, glob_iter)
+                    self.aggregate_dt()
+
+                self.aggregate_newton()
+
+        elif self.algorithm == "Newton2":
+            for glob_iter in range(self.num_glob_iters):
+                print("-------------Round number: ",glob_iter, " -------------")
+                self.send_parameters()
+                self.evaluate()
+
+                for edge in self.edges:
+                    edge.get_full_grad()
+                self.aggregate_grads()
+
+                self.selected_edges = self.select_edges(glob_iter, self.num_edges)
+                for edge in self.selected_edges:
+                    edge.get_hessian(self.local_epochs, glob_iter)
+
+                self.aggregate_parameters()
 
         self.save_results()
         self.save_model()
