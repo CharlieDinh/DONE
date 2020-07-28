@@ -12,7 +12,7 @@ from utils.plot_utils import *
 import torch
 torch.manual_seed(0)
     
-numedges = 64
+numedges = 32
 num_glob_iters = 200
 dataset = "Mnist"
 optimizer = "SGD"
