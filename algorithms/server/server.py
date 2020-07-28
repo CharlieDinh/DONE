@@ -202,20 +202,22 @@ class Server(ServerBase):
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
                 self.evaluate()
+            
+                # reset all direction after each global interation
                 self.dt = []
                 self.total_dt = []
-
                 for param in self.model.parameters():
                     self.dt.append(torch.zeros_like(param.data))
                     self.total_dt.append(torch.zeros_like(param.data))
 
+                # Aggregate grads of client.
                 for edge in self.edges:
-                        edge.get_full_grad()
+                    edge.get_full_grad()
                 self.aggregate_grads()
 
+                # Richardson
                 for r in range(self.local_epochs):
                     self.send_dt()
-
                     self.selected_edges = self.select_edges(glob_iter, self.num_edges)
                     for edge in self.selected_edges:
                         edge.gethessianproduct(self.local_epochs, glob_iter)
