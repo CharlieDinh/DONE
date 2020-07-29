@@ -91,13 +91,15 @@ class Edgebase:
     def test(self):
         self.model.eval()
         test_acc = 0
+        loss = 0
         for x, y in self.testloaderfull:
             output = self.model(x)
             if isinstance(self.model, Logistic_Regression):
                 test_acc += torch.sum(((output >= 0.5) == y).type(torch.int)).item()
             else:
                 test_acc += (torch.sum(torch.argmax(output, dim=1) == y)).item()
-        return test_acc, y.shape[0]
+            loss += self.loss(output, y)
+        return test_acc, loss, y.shape[0]
 
     def train_error_and_loss(self):
         self.model.eval()

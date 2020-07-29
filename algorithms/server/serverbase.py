@@ -126,12 +126,13 @@ class ServerBase:
         tot_correct = []
         losses = []
         for c in self.edges:
-            ct, ns = c.test()
+            ct, cl, ns = c.test()
             tot_correct.append(ct*1.0)
             num_samples.append(ns)
+            losses.append(cl*1.0)
         ids = [c.id for c in self.edges]
 
-        return ids, num_samples, tot_correct
+        return ids, num_samples, tot_correct, losses
 
     def train_error_and_loss(self):
         num_samples = []
@@ -150,7 +151,12 @@ class ServerBase:
     def evaluate(self):
         stats = self.test()  
         stats_train = self.train_error_and_loss()
-        glob_acc = np.sum(stats[2])*1.0/np.sum(stats[1])
+
+        if(self.dataset == "Linear_synthetic"):
+            glob_acc = sum([x * y for (x, y) in zip(stats[1], stats[3])]).item() / np.sum(stats[1])
+        else:
+            glob_acc = np.sum(stats[2])*1.0/np.sum(stats[1])
+
         train_acc = np.sum(stats_train[2])*1.0/np.sum(stats_train[1])
         # train_loss = np.dot(stats_train[3], stats_train[1])*1.0/np.sum(stats_train[1])
         train_loss = sum([x * y for (x, y) in zip(stats_train[1], stats_train[3])]).item() / np.sum(stats_train[1])
