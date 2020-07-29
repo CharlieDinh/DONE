@@ -86,10 +86,9 @@ class edgeDANE(Edgebase):
     def train(self, epochs):
         self.model.train()
         for epoch in range(1, self.local_epochs + 1):
-            loss_per_epoch = 0
             for batch_idx, (X, y) in enumerate(self.trainloader):
                 self.optimizer.zero_grad()
                 output = self.model(X)
-                loss = self.total_loss(X=X, y=y, regularize=True)
+                loss =  self.loss(output, y)
                 loss.backward()
                 self.optimizer.step(server_grads=self.server_grad, pre_grads=self.pre_local_grad, pre_params=self.pre_params)
