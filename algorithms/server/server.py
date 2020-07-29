@@ -235,11 +235,24 @@ class Server(ServerBase):
                     edge.get_full_grad()
                 self.aggregate_grads()
 
-                self.selected_edges = self.select_edges(glob_iter, self.num_edges)
-                for edge in self.selected_edges:
-                    edge.get_hessian(self.local_epochs, glob_iter)
+                hess = self.aggregate_hessians()
+                inverse_hess = torch.inverse(hess)
+                grads = []
+                for param in self.model.parameters():
+                    grads.append(param.grad.clone().detach())
+                grads_as_vector = torch.cat([-grads[0].data, -grads[1].data.view(1, 1)], 1)
+                direction = torch.matmul(grads_as_vector, inverse_hess)
+                weights_direction = direction[0, 0:-1].view(grads[0].shape)
+                bias_direction = direction[0, -1].view(grads[1].shape)
 
-                self.aggregate_parameters()
+                for param, d in zip(self.model.parameters(), [weights_direction, bias_direction]):
+                    param.data.add_(self.eta * d)
+
+                # self.selected_edges = self.select_edges(glob_iter, self.num_edges)
+                # for edge in self.selected_edges:
+                #     edge.get_hessian(self.local_epochs, glob_iter)
+
+                # self.aggregate_parameters()
 
         self.save_results()
         self.save_model()
@@ -277,3 +290,15 @@ class Server(ServerBase):
                 optimal_loss = self.optimal_loss_unreg
         return loss - optimal_loss
 
+    def aggregate_hessians(self):
+        aggregated_hessians = None
+        i = 0
+        total_samples = 0
+        for i, edge in enumerate(self.edges):
+            hess = edge.send_hessian()
+            total_samples += edge.train_samples
+            if aggregated_hessians is None:
+                aggregated_hessians = hess
+            else:
+                aggregated_hessians.add_(hess)
+        return aggregated_hessians / (i + 1 + 1e-6)

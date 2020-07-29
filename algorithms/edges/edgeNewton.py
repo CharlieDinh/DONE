@@ -8,6 +8,7 @@ import json
 from torch.utils.data import DataLoader
 from algorithms.edges.edgebase import Edgebase
 from algorithms.optimizers.optimizer import *
+from algorithms.edges.nn_utils import hessian
 
 
 # Implementation for FedAvg clients
@@ -26,6 +27,7 @@ class edgeNewton(Edgebase):
             self.loss = nn.NLLLoss()
 
         self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.learning_rate)
+        self.hessian = None
 
     def set_grads(self, new_grads):
         if isinstance(new_grads, nn.Parameter):
@@ -61,25 +63,13 @@ class edgeNewton(Edgebase):
         hv = torch.autograd.grad(grads, params, dt, only_inputs=True, create_graph=True, retain_graph=True)
         return hv
 
-    def hessian(self, grads, model):
-        """
-        Order: W first, then b
-        """
-        size = grads[0].shape[1] + 1  # +1 is for the bias
-        hess = torch.zeros(size, size)#.to(device)
-        i = 0
-        for grad in grads[0].flatten():
-            W_second = torch.autograd.grad(grad, model.parameters(), retain_graph=True)
-            hess[i] = torch.cat([W_second[0], W_second[1].view(1, 1)], 1)
-            i += 1
-        b_second = torch.autograd.grad(grads[1], model.parameters(), retain_graph=True)
-        hess[i] = torch.cat([b_second[0], b_second[1].view(1, 1)], 1)
-        i += 1
-        return hess
-
-    def get_hessian(self, epochs, glob_iter):
+    def get_hessian(self):
         for X, y in self.trainloaderfull:
             loss = self.total_loss(X=X, y=y, full_batch=False, regularize=True)
             loss.backward(create_graph=True)
             grads = torch.autograd.grad(loss, self.model.parameters(), create_graph=True, retain_graph=True)
-            self.hess = self.hessian(grads, self.model)
+            self.hessian = hessian(grads, self.model)
+
+    def send_hessian(self):
+        self.get_hessian()
+        return self.hessian.clone().detach()
