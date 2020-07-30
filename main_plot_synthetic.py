@@ -32,9 +32,9 @@ times = 1
 model = Mclr_Logistic(), model
 
 # defind parameters
-local_epochs = [30,30,30,40,20,1,30,30,30,40,20,1]
+local_epochs = [15,15,15,40,20,1,30,30,30,40,20,1]
 learning_rate = [1,1,1,0.5,0.1,0.45,1,1,1,0.5,0.1,0.45]
-eta =  [0.2,0.2,0.2,1,1,1,0.2,0.2,0.2,1,1,1]
+eta =  [0.4,0.4,0.4,1,1,1,0.2,0.2,0.2,1,1,1]
 eta0 = [1,1,1,1,1,1,1,1,1,1,1,1]
 batch_size = [0,256,0,0,256,0,0,256,0,0,256,0]
 algorithms = ["DONE","DONE", "Newton", "DANE", "FedDANE", "FirstOrder","DONE","DONE", "Newton", "DANE", "FedDANE", "FirstOrder"]
