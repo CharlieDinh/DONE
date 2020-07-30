@@ -153,13 +153,18 @@ class ServerBase:
         stats_train = self.train_error_and_loss()
 
         if(self.dataset == "Linear_synthetic"):
-            glob_acc = sum([x * y for (x, y) in zip(stats[1], stats[3])]).item() / np.sum(stats[1])
+            glob_acc = np.sum(stats[3])*1.0/len(stats[0])
         else:
             glob_acc = np.sum(stats[2])*1.0/np.sum(stats[1])
 
         train_acc = np.sum(stats_train[2])*1.0/np.sum(stats_train[1])
         # train_loss = np.dot(stats_train[3], stats_train[1])*1.0/np.sum(stats_train[1])
-        train_loss = sum([x * y for (x, y) in zip(stats_train[1], stats_train[3])]).item() / np.sum(stats_train[1])
+        
+        if self.algorithm == "FedAvg" or self.algorithm == "FEDL":
+            train_loss = sum([x * y for (x, y) in zip(stats_train[1], stats_train[3])]).item() / np.sum(stats_train[1])
+        else:
+            train_loss = (np.sum(stats_train[3])*1.0/len(stats_train[0])).item()
+
         self.rs_glob_acc.append(glob_acc)
         self.rs_train_acc.append(train_acc)
         self.rs_train_loss.append(train_loss)
