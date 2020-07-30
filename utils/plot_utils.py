@@ -14,7 +14,7 @@ def simple_read_data(alg):
     rs_train_loss = np.array(hf.get('rs_train_loss')[:])
     return rs_train_acc, rs_train_loss, rs_glob_acc
 
-def get_training_data_value(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta =[], eta0 =[], algorithms_list=[], batch_size=[], dataset=""):
+def get_training_data_value(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta =[], eta0 =[], algorithms_list=[], batch_size=[], kappa=[], dataset=""):
     Numb_Algs = len(algorithms_list)
     train_acc = np.zeros((Numb_Algs, Numb_Glob_Iters))
     train_loss = np.zeros((Numb_Algs, Numb_Glob_Iters))
@@ -24,6 +24,8 @@ def get_training_data_value(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
         string_learning_rate = str(learning_rate[i])  
         string_learning_rate = string_learning_rate  + "_" + str(eta[i])  + "_" + str(eta0[i])  + "_" + str(lamb[i])
         algorithms_list[i] = algorithms_list[i] + "_" + string_learning_rate + "_" + str(num_users) + "u" + "_" + str(batch_size[i]) + "b"  "_" +str(loc_ep1[i])
+        if kappa:
+            algorithms_list[i] = algorithms_list[i] + "_"+ str(kappa[i])
         train_acc[i, :], train_loss[i, :], glob_acc[i, :] = np.array(
             simple_read_data(dataset +"_"+ algorithms_list[i] + "_avg"))[:, :Numb_Glob_Iters]
         algs_lbl[i] = algs_lbl[i]
@@ -84,7 +86,8 @@ def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     ##train_loss = average_smooth(train_loss_, window='flat')
     #train_acc = average_smooth(train_acc_, window='flat')
     algs_lbl = algorithms_list.copy()
-    glob_acc, train_acc, train_loss = get_training_data_value( num_users, loc_ep1, Numb_Glob_Iters, lamb, learning_rate, eta, eta0, algorithms_list, batch_size, dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
+
 
     print("max value of test accurancy",glob_acc.max())
     plt.figure(1,figsize=(5, 5))
@@ -105,7 +108,7 @@ def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
         plt.plot(train_loss[i, start:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b" + "_" + str(learning_rate[i])  + "_" + str(eta[i])  + "_" + str(eta0[i]))
         #plt.plot(train_loss1[i, 1:], label=algs_lbl1[i])
     plt.legend(loc='upper right')
-    plt.ylim([MIN, MIN+ 0.3])
+    plt.ylim([0.24, 0.5])
     plt.ylabel('Training Loss')
     plt.xlabel('Global rounds')
     plt.title(dataset.upper())
@@ -127,8 +130,8 @@ def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
 
 def get_max_value_index(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], algorithms_list=[], batch_size=0, dataset=""):
     Numb_Algs = len(algorithms_list)
-    glob_acc, train_acc, train_loss = get_training_data_value(
-        num_users, loc_ep1, Numb_Glob_Iters, lamb, learning_rate, algorithms_list, batch_size, dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
+
     for i in range(Numb_Algs):
         print("Algorithm: ", algorithms_list[i], "Max testing Accurancy: ", glob_acc[i].max(
         ), "Index: ", np.argmax(glob_acc[i]), "local update:", loc_ep1[i])
@@ -152,8 +155,8 @@ def average_smooth(data, window_len=20, window='hanning'):
 
 def plot_summary_mnist(num_users=100, loc_ep1=[], Numb_Glob_Iters=10, lamb=[], learning_rate=[], algorithms_list=[], batch_size=0, dataset=""):
     Numb_Algs = len(algorithms_list)
-    glob_acc, train_acc, train_loss = get_training_data_value(
-        num_users, loc_ep1, Numb_Glob_Iters, lamb, learning_rate, algorithms_list, batch_size, dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
+
     for i in range(Numb_Algs):
         print(algorithms_list[i], "loss:", glob_acc[i].max())
     plt.figure(1)
@@ -269,8 +272,8 @@ def plot_summary_mnist(num_users=100, loc_ep1=[], Numb_Glob_Iters=10, lamb=[], l
 
 def plot_summary_nist(num_users=100, loc_ep1=[], Numb_Glob_Iters=10, lamb=[], learning_rate=[], algorithms_list=[], batch_size=0, dataset=""):
     Numb_Algs = len(algorithms_list)
-    glob_acc, train_acc, train_loss = get_training_data_value(
-        num_users, loc_ep1, Numb_Glob_Iters, lamb, learning_rate, algorithms_list, batch_size, dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
+
     for i in range(Numb_Algs):
         print(algorithms_list[i], "loss:", glob_acc[i].max())
     plt.figure(1)
@@ -390,3 +393,61 @@ def plot_loss_differences(differences, log_scale=True):
     plt.xlabel("$t$")
     plt.ylabel("$f(w^t) - f(w^*)$")
     plt.savefig("loss_differences.png", bbox_inches='tight')
+
+
+def plot_summary_linear(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
+
+    Numb_Algs = len(algorithms_list)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
+    for i in range(Numb_Algs):
+        print(algorithms_list[i], "loss:", glob_acc[i].max())
+    
+    plt.figure(1)
+    linestyles = ['-','-', '--', '-.', '-.', ':']
+    markers = ["o","v","s","*","x","P"]
+    algs_lbl = ["DONE","DONE", "Newton","DANE", "FedDANE", "FirstOrder"]
+    #plt.figure(figsize=(6,12))
+    fig = plt.figure(figsize=(12, 6))
+    ax = fig.add_subplot(111)    # The big subplot
+    ax1 = fig.add_subplot(121)
+    ax2 = fig.add_subplot(122)
+    ax.spines['top'].set_color('none')
+    ax.spines['bottom'].set_color('none')
+    ax.spines['left'].set_color('none')
+    ax.spines['right'].set_color('none')
+    ax.tick_params(labelcolor='w', top='off',
+                   bottom='off', left='off', right='off')
+    #fig, (ax1, ax2) = plt.subplots(1, 2)
+
+    num_al = 6
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        if(stringbatch == '0'):
+            stringbatch = '$\infty$'
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=5)
+
+    #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
+    ax1.legend(loc='upper right')
+    ax1.set_ylim([0.045, 0.2])
+    ax1.grid(True)
+    ax1.set_title('$\\kappa = $' + str(kappa[0]))
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        if(stringbatch == '0'):
+            stringbatch = '$\infty$'
+        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=5)
+
+    ax2.set_ylim([0.045, 0.2])
+
+    #plt.title('$\\kappa = $' + str(kappa))
+    #fig.set_title('Linear Synthetic')
+    ax2.grid(True)
+    ax2.set_title('$\\kappa = $' + str(kappa[-1]))
+    #ax1.set_ylim([0.045, 0.2])
+    ax.set_xlabel('Global rounds ' + '$T$')
+    ax.set_ylabel('Training Loss', x = 1.1)
+    #plt.xticks(np.arange(0.045, 2, 0.1))
+    plt.savefig(dataset + str(loc_ep1[1]) + 'train_loss.pdf', bbox_inches='tight')
+    plt.savefig(dataset + str(loc_ep1[1]) + 'train_loss.png', bbox_inches='tight')
