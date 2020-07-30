@@ -447,7 +447,7 @@ def plot_summary_linear(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], l
     ax2.set_title('$\\kappa = $' + str(kappa[-1]))
     #ax1.set_ylim([0.045, 0.2])
     ax.set_xlabel('Global rounds ' + '$T$')
-    ax.set_ylabel('Training Loss', x = 1.1)
+    ax.set_ylabel('Training Loss', labelpad = 10)
     #plt.xticks(np.arange(0.045, 2, 0.1))
     plt.savefig(dataset + str(loc_ep1[1]) + 'train_loss.pdf', bbox_inches='tight')
     plt.savefig(dataset + str(loc_ep1[1]) + 'train_loss.png', bbox_inches='tight')
