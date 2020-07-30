@@ -26,10 +26,6 @@ torch.manual_seed(0)
 numedges = 32
 num_glob_iters = 100
 dataset = "Linear_synthetic"
-optimizer = "SGD"
-model =  "mclr"
-times = 1
-model = Mclr_Logistic(), model
 
 # defind parameters
 local_epochs = [15,15,15,40,20,1,30,30,30,40,20,1]

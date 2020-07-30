@@ -153,7 +153,7 @@ def average_smooth(data, window_len=20, window='hanning'):
         results.append(y[window_len-1:])
     return np.array(results)
 
-def plot_summary_mnist(num_users=100, loc_ep1=[], Numb_Glob_Iters=10, lamb=[], learning_rate=[], algorithms_list=[], batch_size=0, dataset=""):
+def plot_summary_mnist2(num_users=100, loc_ep1=[], Numb_Glob_Iters=10, lamb=[], learning_rate=[], algorithms_list=[], batch_size=0, dataset=""):
     Numb_Algs = len(algorithms_list)
     glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
 
@@ -451,3 +451,73 @@ def plot_summary_linear(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], l
     #plt.xticks(np.arange(0.045, 2, 0.1))
     plt.savefig(dataset + str(loc_ep1[1]) + 'train_loss.pdf', bbox_inches='tight')
     plt.savefig(dataset + str(loc_ep1[1]) + 'train_loss.png', bbox_inches='tight')
+
+def plot_summary_mnist(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, dataset = ""):
+    Numb_Algs = len(algorithms_list)
+    dataset = dataset
+
+    algs_lbl = algorithms_list.copy()
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
+
+    linestyles = ['-','-', '--', '-.', '-.', ':']
+    markers = ["o","v","s","*","x","P"]
+    algs_lbl = ["DONE","DONE", "Newton","DANE", "FedDANE", "FirstOrder"]
+
+    print("max value of test accurancy",glob_acc.max())
+    
+    start = 0
+
+    plt.figure(1,figsize=(7, 6))
+    for i in range(Numb_Algs):
+        stringbatch = str(batch_size[i])
+        if(stringbatch == '0'):
+            stringbatch = '$\infty$'
+        plt.plot(train_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=5)
+        #plt.plot(train_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b"  + "_" + str(learning_rate[i])  + "_" + str(eta[i])  + "_" + str(eta0[i]) )
+    plt.legend(loc='lower right')
+    plt.ylabel('Training Accuracy')
+    plt.xlabel('Global rounds ' + '$T$')
+    plt.title(dataset.upper())
+    plt.grid(True)
+    plt.ylim([0.86, train_acc.max() + 0.01])
+    plt.savefig(dataset.upper() +'train_acc.png')
+    plt.savefig(dataset.upper() +'train_acc.pdf')
+    #plt.savefig(dataset + str(loc_ep1[1]) + 'train_acc.pdf')
+
+    plt.figure(2,figsize=(7, 6))
+    for i in range(Numb_Algs):
+        stringbatch = str(batch_size[i])
+        if(stringbatch == '0'):
+            stringbatch = '$\infty$'
+        plt.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=5)
+        #plt.plot(train_loss[i, start:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b" + "_" + str(learning_rate[i])  + "_" + str(eta[i])  + "_" + str(eta0[i]))
+        #plt.plot(train_loss1[i, 1:], label=algs_lbl1[i])
+    plt.legend(loc='upper right')
+    plt.ylim([0.2, 0.5])
+    plt.ylabel('Training Loss')
+    plt.xlabel('Global rounds ' + '$T$')
+    plt.title(dataset.upper())
+    plt.grid(True)
+    #plt.ylim([train_loss.min(), 1])
+    plt.savefig(dataset.upper() + 'train_loss.png')
+    plt.savefig(dataset.upper() + 'train_loss.pdf')
+    #plt.savefig(dataset + str(loc_ep1[1]) + 'train_loss.pdf')
+
+    plt.figure(3,figsize=(7, 6))
+    for i in range(Numb_Algs):
+        #plt.plot(glob_acc[i, start:], linestyle=linestyles[i],label=algs_lbl[i]+ "_" +str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b" + "_" + str(learning_rate[i])  + "_" + str(eta[i])  + "_" + str(eta0[i]))
+        #plt.plot(glob_acc1[i, 1:], label=algs_lbl1[i])
+        stringbatch = str(batch_size[i])
+        if(stringbatch == '0'):
+            stringbatch = '$\infty$'
+        plt.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=5)
+       
+    plt.legend(loc='lower right')
+    plt.grid(True)
+    plt.ylim([0.86, 0.922])
+    plt.ylabel('Test Accuracy')
+    plt.xlabel('Global rounds ' + '$T$')
+    plt.title(dataset.upper())
+    plt.savefig(dataset.upper() + 'glob_acc.png')
+    plt.savefig(dataset.upper() +  'glob_acc.pdf')
+    #plt.savefig(dataset + str(loc_ep1[1]) + 'glob_acc.pdf')
