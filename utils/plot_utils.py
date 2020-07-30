@@ -521,3 +521,60 @@ def plot_summary_mnist(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], le
     plt.savefig(dataset.upper() + 'glob_acc.png')
     plt.savefig(dataset.upper() +  'glob_acc.pdf')
     #plt.savefig(dataset + str(loc_ep1[1]) + 'glob_acc.pdf')
+
+def plot_summary_mnist2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, dataset = ""):
+    Numb_Algs = len(algorithms_list)
+    dataset = dataset
+
+    algs_lbl = algorithms_list.copy()
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
+
+    linestyles = ['-','-', '--', '-.', '-.', ':']
+    markers = ["o","v","s","*","x","P"]
+    algs_lbl = ["DONE","DONE", "Newton","DANE", "FedDANE", "FirstOrder"]
+
+   #plt.figure(figsize=(6,12))
+    fig = plt.figure(figsize=(12, 6))
+    ax = fig.add_subplot(111)    # The big subplot
+    ax1 = fig.add_subplot(121)
+    ax2 = fig.add_subplot(122)
+    ax.spines['top'].set_color('none')
+    ax.spines['bottom'].set_color('none')
+    ax.spines['left'].set_color('none')
+    ax.spines['right'].set_color('none')
+    ax.tick_params(labelcolor='w', top='off',
+                   bottom='off', left='off', right='off')
+    #fig, (ax1, ax2) = plt.subplots(1, 2)
+
+    num_al = 6
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        if(stringbatch == '0'):
+            stringbatch = '$\infty$'
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=5)
+
+    #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
+    ax1.legend(loc='upper right')
+    ax1.set_ylim([0.21, 0.5])
+    ax1.grid(True)
+    ax1.set_title('Training Loss')
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        if(stringbatch == '0'):
+            stringbatch = '$\infty$'
+        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=5)
+
+    ax2.set_ylim([0.86, 0.922])
+
+    #plt.title('$\\kappa = $' + str(kappa))
+    #fig.set_title('Linear Synthetic')
+    ax2.grid(True)
+    ax2.set_title('Test Accuracy')
+    #ax1.set_ylim([0.045, 0.2])
+    ax.set_xlabel('Global rounds ' + '$T$')
+    #ax.set_ylabel('Training Loss', labelpad = 10)
+    #plt.xticks(np.arange(0.045, 2, 0.1))
+    plt.savefig(dataset + 'acu_loss.pdf', bbox_inches='tight')
+    plt.savefig(dataset +  'acu_loss.png', bbox_inches='tight')
