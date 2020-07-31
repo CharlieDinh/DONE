@@ -12,7 +12,7 @@ import sklearn as sk
 np.random.seed(0)
 
 NUM_USER = 32
-rho = 1.4
+rho = 5
 Dim = 40 
 Noise = 0.05
 
@@ -96,12 +96,14 @@ def finding_optimal_synthetic(num_users=100, rho=10, dim = 40, noise_ratio=0.05)
         y = np.array(train_y[i])
         one = np.ones((X.shape[0], 1))
         Xbar = np.concatenate((one, X), axis = 1)
-        X_X_T += Xbar.T.dot(Xbar)*len(y)/len(train_yc)
-        X_Y += np.array(Xbar).T.dot(y).reshape((dim+1, 1))*len(y)/len(train_yc)
+        X_X_T += Xbar.T.dot(Xbar)*1/NUM_USER#len(y)/len(train_yc)
+        X_Y += np.array(Xbar).T.dot(y).reshape((dim+1, 1))*1/NUM_USER#len(y)/len(train_yc)
     
     # get optimal point.
     w = np.linalg.inv(X_X_T).dot(X_Y)
-
+    print(W)
+    print("------")
+    print(w)
     # caculate loss over all devices
     loss = 0
     for n in range(num_users):
@@ -110,7 +112,7 @@ def finding_optimal_synthetic(num_users=100, rho=10, dim = 40, noise_ratio=0.05)
         one = np.ones((X.shape[0], 1))
         Xbar = np.concatenate((one, X), axis = 1)
         y_predict = Xbar.dot(w)
-        loss += sk.metrics.mean_squared_error(y,y_predict)*len(y)/len(train_yc)
+        loss += sk.metrics.mean_squared_error(y,y_predict)*1/NUM_USER#len(y)/len(train_yc)
 
     return loss
 
