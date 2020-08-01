@@ -6,8 +6,8 @@ import os
 np.random.seed(0)
 
 NUM_USER = 32
-rho = 5
-Dim = 40
+rho = 10
+Dim = 40 
 Noise = 0.05
 
 def generate_x(n_samples = 100, dim= 40, rho= 10):
@@ -36,12 +36,12 @@ def generate_linear_data(num_users=100, rho=10, dim=40, noise_ratio=0.05):
     # Creat list data for all users 
     X_split = [[] for _ in range(num_users)]  # X for each user
     y_split = [[] for _ in range(num_users)]  # y for each user
-    samples_per_user = np.random.lognormal(4, 2, num_users).astype(int) + 500
+    samples_per_user = np.random.lognormal(4, 1, num_users).astype(int)*10 + 500
     indices_per_user = np.insert(samples_per_user.cumsum(), 0, 0, 0)
     num_total_samples = indices_per_user[-1]
 
-    # Create mean of data for each user, each user will have different distributionå
-    mean_X = np.random.randn(dim)
+    # Create mean of data for each user, each user will have different distribution
+    #mean_X = np.array([np.random.randn(dim) for _ in range(num_users)])
 
 
     X_total = np.zeros((num_total_samples, dim))
@@ -49,6 +49,10 @@ def generate_linear_data(num_users=100, rho=10, dim=40, noise_ratio=0.05):
 
     for n in range(num_users):
         # Generate data
+        mean = np.random.uniform(low=-1.0, high=1.0)
+        cov = np.random.uniform(low=0.0, high=0.01)
+        #print("mean -cov", mean,cov)
+        mean_X = np.random.normal(mean, cov, dim)
         X_n = np.random.multivariate_normal(mean_X, np.diag(S), samples_per_user[n])
         X_total[indices_per_user[n]:indices_per_user[n+1], :] = X_n
 
@@ -68,11 +72,6 @@ def generate_linear_data(num_users=100, rho=10, dim=40, noise_ratio=0.05):
         y_split[n] = y_n.tolist()
 
         # print("User {} has {} samples.".format(n, samples_per_user[n]))
-
-    # Save the optimal weights
-    if not os.path.exists("data"):
-        os.mkdir("data")
-    np.save("data/optimal_weights.npy", W)
 
     print("=" * 80)
     print("Generated synthetic data for logistic regression successfully.")
