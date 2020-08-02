@@ -463,7 +463,7 @@ def plot_summary_mnist(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], le
 
     linestyles = ['-','-', '--', '-.', '-.', ':']
     markers = ["o","v","s","*","x","P"]
-    algs_lbl = ["DONE","DONE", "Newton","DANE", "FedDANE", "FirstOrder"]
+    algs_lbl = ["DONE","DONE", "Newton","DANE", "FedDANE", "GD"]
 
     print("max value of test accurancy",glob_acc.max())
     
@@ -530,10 +530,14 @@ def plot_summary_mnist2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], l
 
     algs_lbl = algorithms_list.copy()
     glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
+    
+    for i in range(Numb_Algs):
+        print(algorithms_list[i], "acc:", glob_acc[i].max())
+        print(algorithms_list[i], "loss:", train_loss[i].min())
 
     linestyles = ['-','-', '--', '-.', '-.', ':']
     markers = ["o","v","s","*","x","P"]
-    algs_lbl = ["DONE","DONE", "Newton","DANE", "FedDANE", "FirstOrder"]
+    algs_lbl = ["DONE","DONE", "Newton","DANE", "GD"]
 
    #plt.figure(figsize=(6,12))
     fig = plt.figure(figsize=(12, 6))
@@ -548,7 +552,7 @@ def plot_summary_mnist2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], l
                    bottom='off', left='off', right='off')
     #fig, (ax1, ax2) = plt.subplots(1, 2)
 
-    num_al = 6
+    num_al = 5
 
     for i in range(num_al):
         stringbatch = str(batch_size[i])
