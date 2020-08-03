@@ -805,5 +805,5 @@ def plot_summary_linear_kappa(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb
     ax.set_ylabel('Training Loss', labelpad = 10)
     #ax.set_title('Fixed ' +'$\\alpha$' + ' end ' + 'R' )
     #plt.xticks(np.arange(0.045, 2, 0.1))
-    plt.savefig('Linear_synthetic_R_alpha.pdf', bbox_inches='tight')
-    plt.savefig('Linear_synthetic_R_alpha.png', bbox_inches='tight')
+    plt.savefig('Linear_synthetic_kappa.pdf', bbox_inches='tight')
+    plt.savefig('Linear_synthetic_kappa.png', bbox_inches='tight')

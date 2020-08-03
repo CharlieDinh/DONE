@@ -49,16 +49,26 @@ dataset = "Linear_synthetic"
 # plot_summary_linear2(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L,
 #                      learning_rate=learning_rate, eta=eta, eta0=eta0, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
 
-local_epochs = [5, 10, 20, 30, 20,20,20,20]
+# local_epochs = [5, 10, 20, 30, 20,20,20,20]
+# learning_rate = [1, 1, 1, 1, 1, 1, 1, 1]
+# eta = [0.05, 0.05, 0.05, 0.05, 0.01, 0.03, 0.05, 0.07]
+# eta0 = [1, 1, 1, 1, 1, 1, 1, 1]
+# batch_size = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+# algorithms = ["DONE", "DONE", "DONE", "DONE", "DONE", "DONE", "DONE", "DONE"]
+# L = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+# #kappa = [4,4,4,4,4,4,9,9,9,9,9,9]
+# plot_summary_linear_R_and_alpha(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L,
+#                      learning_rate=learning_rate, eta=eta, eta0=eta0, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
+
+
+local_epochs = [20, 20, 20, 20, 30, 30, 30, 30]
 learning_rate = [1, 1, 1, 1, 1, 1, 1, 1]
-eta = [0.05, 0.05, 0.05, 0.05, 0.01, 0.03, 0.05, 0.07]
+eta = [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]
 eta0 = [1, 1, 1, 1, 1, 1, 1, 1]
 batch_size = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-algorithms = ["DONE", "DONE", "DONE", "DONE", "DONE", "DONE", "DONE", "DONE"]
+algorithms = ["DONE", "DONE", "DONE", "DONE",
+              "DONE", "DONE", "DONE", "DONE"]
 L = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-#kappa = [4,4,4,4,4,4,9,9,9,9,9,9]
-plot_summary_linear_R_and_alpha(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L,
-                     learning_rate=learning_rate, eta=eta, eta0=eta0, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
-
-
-
+kappa = [5, 10, 20, 40, 5, 10, 20, 40]
+plot_summary_linear_kappa(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L,
+                          learning_rate=learning_rate, eta=eta, eta0=eta0, algorithms_list=algorithms, batch_size=batch_size, kappa=kappa, dataset=dataset)
