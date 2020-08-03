@@ -155,237 +155,6 @@ def average_smooth(data, window_len=20, window='hanning'):
         results.append(y[window_len-1:])
     return np.array(results)
 
-def plot_summary_mnist2(num_users=100, loc_ep1=[], Numb_Glob_Iters=10, lamb=[], learning_rate=[], algorithms_list=[], batch_size=0, dataset=""):
-    Numb_Algs = len(algorithms_list)
-    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
-
-    for i in range(Numb_Algs):
-        print(algorithms_list[i], "loss:", glob_acc[i].max())
-    plt.figure(1)
-
-    linestyles = ['-', '--', '-.', ':']
-    algs_lbl = ["FEDL",  "FedAvg",
-                "FEDL",  "FedAvg",
-                "FEDL",  "FedAvg",
-                "FEDL",  "FEDL"]
-
-    fig = plt.figure(figsize=(12, 4))
-    ax = fig.add_subplot(111)    # The big subplot
-    ax1 = fig.add_subplot(131)
-    ax2 = fig.add_subplot(132)
-    ax3 = fig.add_subplot(133)
-    #min = train_loss.min()
-    min = train_loss.min() - 0.01
-    max = 0.5  # train_loss.max() + 0.01
-    num_al = 2
-# Turn off axis lines and ticks of the big subplot
-    ax.spines['top'].set_color('none')
-    ax.spines['bottom'].set_color('none')
-    ax.spines['left'].set_color('none')
-    ax.spines['right'].set_color('none')
-    ax.tick_params(labelcolor='w', top='off',
-                   bottom='off', left='off', right='off')
-    for i in range(num_al):
-        stringbatch = str(batch_size[i])
-        if(stringbatch == '0'):
-            stringbatch = '$\infty$'
-        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i],
-                 label=algs_lbl[i] + " : "  + '$B = $' + stringbatch+ ', $\eta = $')
-        ax1.set_ylim([min, max])
-        ax1.legend(loc='upper right')
-
-    for i in range(num_al):
-        stringbatch = str(batch_size[i+2])
-        if(stringbatch == '0'):
-            stringbatch = '$\infty$'
-        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i],
-                 label=algs_lbl[i + num_al] + " : "  + '$B = $' + stringbatch+ ', $\eta = $')
-        ax2.set_ylim([min, max])
-        ax2.legend(loc='upper right')
-
-    for i in range(4):
-        stringbatch = str(batch_size[i+4])
-        if(stringbatch == '0'):
-            stringbatch = '$\infty$'
-        ax3.plot(train_loss[i+num_al*2, 1:], linestyle=linestyles[i],
-                 label=algs_lbl[i + num_al*2] + " : "  + '$B = $' + stringbatch+ ', $\eta = $')
-        ax3.set_ylim([min, max])
-        ax3.legend(loc='upper right')
-
-    ax.set_title('MNIST', y=1.02)
-    ax.set_xlabel('Global rounds ' + '$K_g$')
-    ax.set_ylabel('Training Loss',x=1.03)
-    plt.savefig(dataset + str(loc_ep1[1]) +
-                'train_loss.pdf', bbox_inches='tight')
-    plt.savefig(dataset + str(loc_ep1[1]) +
-                'train_loss.png', bbox_inches='tight')
-
-    fig = plt.figure(figsize=(12, 4))
-    ax = fig.add_subplot(111)    # The big subplot
-    ax1 = fig.add_subplot(131)
-    ax2 = fig.add_subplot(132)
-    ax3 = fig.add_subplot(133)
-    #min = train_loss.min()
-    min = 0.8
-    max = glob_acc.max() + 0.01  # train_loss.max() + 0.01
-    num_al = 2
-# Turn off axis lines and ticks of the big subplot
-    ax.spines['top'].set_color('none')
-    ax.spines['bottom'].set_color('none')
-    ax.spines['left'].set_color('none')
-    ax.spines['right'].set_color('none')
-    ax.tick_params(labelcolor='w', top='off',
-                   bottom='off', left='off', right='off')
-    for i in range(num_al):
-        stringbatch = str(batch_size[i])
-        if(stringbatch == '0'):
-            stringbatch = '$\infty$'
-        ax1.plot(glob_acc[i, 1:], linestyle=linestyles[i],
-                 label=algs_lbl[i] + " : "  + '$B = $' + stringbatch + ', $\eta = $')
-        ax1.set_ylim([min, max])
-        ax1.legend(loc='lower right')
-
-    for i in range(num_al):
-        stringbatch = str(batch_size[i+2])
-        if(stringbatch == '0'):
-            stringbatch = '$\infty$'
-        ax2.plot(glob_acc[i+num_al, 1:], linestyle=linestyles[i],
-                 label=algs_lbl[i + num_al] + " : "  + '$B = $' + stringbatch+ ', $\eta = $')
-        ax2.set_ylim([min, max])
-        ax2.legend(loc='lower right')
-
-    for i in range(4):
-        stringbatch = str(batch_size[i+4])
-        if(stringbatch == '0'):
-            stringbatch = '$\infty$'
-        ax3.plot(glob_acc[i+num_al*2, 1:], linestyle=linestyles[i],
-                 label=algs_lbl[i + num_al*2] + " : " + '$B = $' + stringbatch + ', $\eta = $')
-        ax3.set_ylim([min, max])
-        ax3.legend(loc='lower right')
-
-    ax.set_title('MNIST', y=1.02)
-    ax.set_xlabel('Global rounds ' + '$K_g$')
-    ax.set_ylabel('Testing Accuracy', labelpad=15)
-    plt.savefig(dataset + str(loc_ep1[1]) +
-                'test_accu.pdf', bbox_inches='tight')
-    plt.savefig(dataset + str(loc_ep1[1]) +
-                'test_accu.png', bbox_inches='tight')
-
-
-def plot_summary_nist(num_users=100, loc_ep1=[], Numb_Glob_Iters=10, lamb=[], learning_rate=[], algorithms_list=[], batch_size=0, dataset=""):
-    Numb_Algs = len(algorithms_list)
-    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
-
-    for i in range(Numb_Algs):
-        print(algorithms_list[i], "loss:", glob_acc[i].max())
-    plt.figure(1)
-
-    linestyles = ['-', '--', '-.', ':']
-    algs_lbl = ["FEDL","FedAvg", "FEDL",
-                "FEDL", "FedAvg", "FEDL",
-                "FEDL", "FedAvg", "FEDL"]
-    fig = plt.figure(figsize=(12, 4))
-    ax = fig.add_subplot(111)    # The big subplot
-    ax1 = fig.add_subplot(131)
-    ax2 = fig.add_subplot(132)
-    ax3 = fig.add_subplot(133)
-    #min = train_loss.min()
-    min = train_loss.min() - 0.01
-    max = 2.5  # train_loss.max() + 0.01
-    num_al = 3
-# Turn off axis lines and ticks of the big subplot
-    ax.spines['top'].set_color('none')
-    ax.spines['bottom'].set_color('none')
-    ax.spines['left'].set_color('none')
-    ax.spines['right'].set_color('none')
-    ax.tick_params(labelcolor='w', top='off',
-                   bottom='off', left='off', right='off')
-    for i in range(num_al):
-        stringbatch = str(batch_size[i])
-        if(stringbatch == '0'):
-            stringbatch = '$\infty$'
-        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i],
-                 label=algs_lbl[i] + " : " + '$B = $' + stringbatch + ', $\eta = $' +  ', $K_l = $' + str(loc_ep1[i]))
-        ax1.set_ylim([min, max])
-        ax1.legend(loc='upper right')
-
-    for i in range(num_al):
-        stringbatch = str(batch_size[i+num_al])
-        if(stringbatch == '0'):
-            stringbatch = '$\infty$'
-        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i],
-                 label=algs_lbl[i + num_al] + " : " + '$B = $' + stringbatch + ', $\eta = $' + ', $K_l = $' + str(loc_ep1[i+ num_al]))
-        ax2.set_ylim([min, max])
-        ax2.legend(loc='upper right')
-
-    for i in range(num_al):
-        stringbatch = str(batch_size[i+num_al*2])
-        if(stringbatch == '0'):
-            stringbatch = '$\infty$'
-        ax3.plot(train_loss[i+num_al*2, 1:], linestyle=linestyles[i],
-                 label=algs_lbl[i + num_al*2] + " : " + '$B = $' + stringbatch + ', $\eta = $' + ', $K_l = $' + str(loc_ep1[i + num_al*2]))
-        ax3.set_ylim([min, max])
-        ax3.legend(loc='upper right')
-
-    ax.set_title('FENIST', y=1.02)
-    ax.set_xlabel('Global rounds ' + '$K_g$')
-    ax.set_ylabel('Training Loss')
-    plt.savefig(dataset + str(loc_ep1[1]) +
-                'train_loss.pdf', bbox_inches='tight')
-    plt.savefig(dataset + str(loc_ep1[1]) +
-                'train_loss.png', bbox_inches='tight')
-
-    fig = plt.figure(figsize=(12, 4))
-    ax = fig.add_subplot(111)    # The big subplot
-    ax1 = fig.add_subplot(131)
-    ax2 = fig.add_subplot(132)
-    ax3 = fig.add_subplot(133)
-    #min = train_loss.min()
-    num_al = 3
-    min = 0.5
-    max = glob_acc.max() + 0.01  # train_loss.max() + 0.01
-# Turn off axis lines and ticks of the big subplot
-    ax.spines['top'].set_color('none')
-    ax.spines['bottom'].set_color('none')
-    ax.spines['left'].set_color('none')
-    ax.spines['right'].set_color('none')
-    ax.tick_params(labelcolor='w', top='off',
-                   bottom='off', left='off', right='off')
-    for i in range(num_al):
-        stringbatch = str(batch_size[i])
-        if(stringbatch == '0'):
-            stringbatch = '$\infty$'
-        ax1.plot(glob_acc[i, 1:], linestyle=linestyles[i],
-                 label=algs_lbl[i] + " : " + '$B = $' + stringbatch + ', $\eta = $'  + ', $K_l = $' + str(loc_ep1[i]))
-        ax1.set_ylim([min, max])
-        ax1.legend(loc='lower right')
-
-    for i in range(num_al):
-        stringbatch = str(batch_size[i+num_al])
-        if(stringbatch == '0'):
-            stringbatch = '$\infty$'
-        ax2.plot(glob_acc[i+num_al, 1:], linestyle=linestyles[i],
-                 label=algs_lbl[i + num_al] + " : " + '$B = $' + stringbatch + ', $\eta = $'  + ', $K_l = $' + str(loc_ep1[i + num_al]))
-        ax2.set_ylim([min, max])
-        ax2.legend(loc='lower right')
-
-    for i in range(num_al):
-        stringbatch = str(batch_size[i+num_al*2])
-        if(stringbatch == '0'):
-            stringbatch = '$\infty$'
-        ax3.plot(glob_acc[i+num_al*2, 1:], linestyle=linestyles[i],
-                 label=algs_lbl[i + num_al*2] + " : " + '$B = $' + stringbatch + ', $\eta = $' + ', $K_l = $' + str(loc_ep1[i+ 2*num_al]))
-        ax3.set_ylim([min, max])
-        ax3.legend(loc='lower right')
-
-    ax.set_title('FENIST', y=1.02)
-    ax.set_xlabel('Global rounds ' + '$K_g$')
-    ax.set_ylabel('Testing Accuracy', labelpad=15)
-    plt.savefig(dataset + str(loc_ep1[1]) +
-                'test_accu.pdf', bbox_inches='tight')
-    plt.savefig(dataset + str(loc_ep1[1]) +
-                'test_accu.png', bbox_inches='tight')
-
 
 def plot_loss_differences(differences, log_scale=True):
     plt.figure()
@@ -535,9 +304,9 @@ def plot_summary_mnist2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], l
         print(algorithms_list[i], "acc:", glob_acc[i].max())
         print(algorithms_list[i], "loss:", train_loss[i].min())
 
-    linestyles = ['-','-', '--', '-.', '-.', ':']
+    linestyles = ['-', '-', '-', '--', '-.', '-.', ':']
     markers = ["o","v","s","*","x","P"]
-    algs_lbl = ["DONE","DONE", "Newton","DANE", "GD"]
+    algs_lbl = ["DONE", "DONE", "DONE", "Newton", "DANE", "GD"]
 
    #plt.figure(figsize=(6,12))
     fig = plt.figure(figsize=(12, 6))
@@ -552,13 +321,13 @@ def plot_summary_mnist2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], l
                    bottom='off', left='off', right='off')
     #fig, (ax1, ax2) = plt.subplots(1, 2)
 
-    num_al = 5
+    num_al = 6
 
     for i in range(num_al):
         stringbatch = str(batch_size[i])
         if(stringbatch == '0'):
             stringbatch = '$\infty$'
-        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=5)
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=7)
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
@@ -570,7 +339,7 @@ def plot_summary_mnist2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], l
         stringbatch = str(batch_size[i])
         if(stringbatch == '0'):
             stringbatch = '$\infty$'
-        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=5)
+        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=7)
 
     ax2.set_ylim([0.86, 0.922])
 
@@ -616,7 +385,7 @@ def plot_summary_linear_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10
     num_al = len(algs_lbl)
 
     for i in range(num_al):
-        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(eta[i]) ,marker = markers[i],markevery=0.2, markersize=5)
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(eta[i]) ,marker = markers[i],markevery=0.2, markersize=7)
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
@@ -626,7 +395,7 @@ def plot_summary_linear_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10
 
     for i in range(num_al):
         stringbatch = str(batch_size[i])
-        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\alpha = $' + str(eta[i+ num_al]) ,marker = markers[i],markevery=0.2, markersize=5)
+        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\alpha = $' + str(eta[i+ num_al]) ,marker = markers[i],markevery=0.2, markersize=7)
 
     ax2.set_ylim([0.049, 0.1])
 
@@ -649,9 +418,9 @@ def plot_summary_linear2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], 
         print(algorithms_list[i], "loss:", glob_acc[i].max())
     
     plt.figure(1)
-    linestyles = ['-','-', '--', '-.',':']
+    linestyles = ['-', '-', '-', '--', '-.', '-.']
     markers = ["o","v","s","*","x","P"]
-    algs_lbl = ["DONE","DONE", "Newton","DANE", "GD"]
+    algs_lbl = ["DONE","DONE", "DONE", "Newton","DANE", "GD"]
     #plt.figure(figsize=(6,12))
     fig = plt.figure(figsize=(12, 6))
     ax = fig.add_subplot(111)    # The big subplot
@@ -671,7 +440,8 @@ def plot_summary_linear2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], 
         stringbatch = str(batch_size[i])
         if(stringbatch == '0'):
             stringbatch = '$\infty$'
-        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=5)
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " +
+                 '$B = $' + stringbatch, marker=markers[i], markevery=0.2 + i/10, markersize=7)
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
@@ -683,8 +453,7 @@ def plot_summary_linear2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], 
         stringbatch = str(batch_size[i])
         if(stringbatch == '0'):
             stringbatch = '$\infty$'
-        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " +
-                 '$B = $' + stringbatch, marker=markers[i], markevery=0.2, markersize=5)
+        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$B = $' + stringbatch, marker=markers[i], markevery=0.2 + i/10, markersize=7)
 
     ax2.set_ylim([0.049, 0.1])
 
@@ -727,7 +496,7 @@ def plot_summary_mnist_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10,
     num_al = len(algs_lbl)
 
     for i in range(num_al):
-        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(eta[i]) ,marker = markers[i],markevery=0.2, markersize=5)
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(eta[i]) ,marker = markers[i],markevery=0.2, markersize=7)
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
@@ -737,7 +506,7 @@ def plot_summary_mnist_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10,
 
     for i in range(num_al):
         stringbatch = str(batch_size[i])
-        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\alpha = $' + str(eta[i+ num_al]) ,marker = markers[i],markevery=0.2, markersize=5)
+        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\alpha = $' + str(eta[i+ num_al]) ,marker = markers[i],markevery=0.2, markersize=7)
 
     ax2.set_ylim([0.2, 0.5])
 
@@ -750,8 +519,8 @@ def plot_summary_mnist_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10,
     ax.set_xlabel('Global rounds ' + '$T$')
     ax.set_ylabel('Training Loss', labelpad = 10)
     #plt.xticks(np.arange(0.045, 2, 0.1))
-    plt.savefig('Linear_synthetic_R_alpha.pdf', bbox_inches='tight')
-    plt.savefig('Linear_synthetic_R_alpha.png', bbox_inches='tight')
+    plt.savefig('MNIST_R_alpha.pdf', bbox_inches='tight')
+    plt.savefig('MNIST_R_alpha.png', bbox_inches='tight')
 
 
 def plot_summary_linear_kappa(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
@@ -781,7 +550,7 @@ def plot_summary_linear_kappa(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb
     num_al = len(algs_lbl)
 
     for i in range(num_al):
-        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i]) + ', $\\kappa = $' + str(kappa[i]) ,marker = markers[i],markevery=0.2, markersize=5)
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i]) + ', $\\kappa = $' + str(kappa[i]) ,marker = markers[i],markevery=0.2, markersize=7)
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
@@ -791,7 +560,7 @@ def plot_summary_linear_kappa(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb
 
     for i in range(num_al):
         stringbatch = str(batch_size[i])
-        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\kappa = $' + str(kappa[i+ num_al]) ,marker = markers[i],markevery=0.2, markersize=5)
+        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\kappa = $' + str(kappa[i+ num_al]) ,marker = markers[i],markevery=0.2, markersize=7)
 
     ax2.set_ylim([0.049, 0.1])
 
