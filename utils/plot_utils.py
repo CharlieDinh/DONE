@@ -122,7 +122,7 @@ def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     plt.legend(loc='lower right')
     #plt.ylim([0.6, glob_acc.max()])
     plt.ylim([0.88,  glob_acc.max() + 0.001])
-    plt.ylabel('Test Accuracy')
+    plt.ylabel('Testing Accuracy')
     plt.xlabel('Global rounds ')
     plt.title(dataset.upper())
     plt.savefig(dataset.upper() + str(loc_ep1[0]) + 'glob_acc.png')
@@ -286,7 +286,7 @@ def plot_summary_mnist(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], le
     plt.legend(loc='lower right')
     plt.grid(True)
     plt.ylim([0.86, 0.922])
-    plt.ylabel('Test Accuracy')
+    plt.ylabel('Testing Accuracy')
     plt.xlabel('Global rounds ' + '$T$')
     plt.title(dataset.upper())
     plt.savefig(dataset.upper() + 'glob_acc.png')
@@ -346,17 +346,13 @@ def plot_summary_mnist2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], l
     #plt.title('$\\kappa = $' + str(kappa))
     #fig.set_title('Linear Synthetic')
     ax2.grid(True)
-    ax2.set_title('Test Accuracy')
+    ax2.set_title('Testing Accuracy')
     #ax1.set_ylim([0.045, 0.2])
     ax.set_xlabel('Global rounds ' + '$T$')
     #ax.set_ylabel('Training Loss', labelpad = 10)
     #plt.xticks(np.arange(0.045, 2, 0.1))
     plt.savefig(dataset + 'acu_loss.pdf', bbox_inches='tight')
     plt.savefig(dataset +  'acu_loss.png', bbox_inches='tight')
-
-
-
-
 
 def plot_summary_linear_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
 
@@ -410,6 +406,49 @@ def plot_summary_linear_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10
     #plt.xticks(np.arange(0.045, 2, 0.1))
     plt.savefig('Linear_synthetic_R_alpha.pdf', bbox_inches='tight')
     plt.savefig('Linear_synthetic_R_alpha.png', bbox_inches='tight')
+    fig = plt.figure(figsize=(12, 6))
+    ax = fig.add_subplot(111)    # The big subplot
+    ax1 = fig.add_subplot(121)
+    ax2 = fig.add_subplot(122)
+    ax.spines['top'].set_color('none')
+    ax.spines['bottom'].set_color('none')
+    ax.spines['left'].set_color('none')
+    ax.spines['right'].set_color('none')
+    ax.tick_params(labelcolor='w', top='off',
+                   bottom='off', left='off', right='off')
+    #fig, (ax1, ax2) = plt.subplots(1, 2)
+
+    num_al = len(algs_lbl)
+
+    for i in range(num_al):
+        ax1.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
+            loc_ep1[i]) + ', $\\alpha = $' + str(eta[i]), marker=markers[i], markevery=0.2, markersize=7)
+
+    #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
+    ax1.legend(loc='upper right')
+    ax1.set_ylim([0.049, 0.1])
+    ax1.grid(True)
+    ax1.set_title('Fixed '+'$\\alpha$')
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        ax2.plot(glob_acc[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
+            loc_ep1[i + num_al]) + ', $\\alpha = $' + str(eta[i + num_al]), marker=markers[i], markevery=0.2, markersize=7)
+
+    ax2.set_ylim([0.049, 0.1])
+
+    #plt.title('$\\kappa = $' + str(kappa))
+    #fig.set_title('Linear Synthetic')
+    ax2.legend(loc='upper right')
+    ax2.grid(True)
+    ax2.set_title('Fixed R')
+    #ax1.set_ylim([0.045, 0.2])
+    ax.set_xlabel('Global rounds ' + '$T$')
+    ax.set_ylabel('Testing Loss', labelpad=10)
+    #plt.xticks(np.arange(0.045, 2, 0.1))
+    plt.savefig('Linear_synthetic_R_alpha_test_loss.pdf', bbox_inches='tight')
+    plt.savefig('Linear_synthetic_R_alpha_test_loss.png', bbox_inches='tight')
+
 def plot_summary_linear2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
     
     Numb_Algs = len(algorithms_list)
@@ -460,7 +499,7 @@ def plot_summary_linear2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], 
     #plt.title('$\\kappa = $' + str(kappa))
     #fig.set_title('Linear Synthetic')
     ax2.grid(True)
-    ax2.set_title('Test loss')
+    ax2.set_title('Testing loss')
     #ax1.set_ylim([0.045, 0.2])
     ax.set_xlabel('Global rounds ' + '$T$')
     #ax.set_ylabel('Training Loss', labelpad = 10)
@@ -521,6 +560,49 @@ def plot_summary_mnist_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10,
     #plt.xticks(np.arange(0.045, 2, 0.1))
     plt.savefig('MNIST_R_alpha.pdf', bbox_inches='tight')
     plt.savefig('MNIST_R_alpha.png', bbox_inches='tight')
+    
+    fig = plt.figure(figsize=(12, 6))
+    ax = fig.add_subplot(111)    # The big subplot
+    ax1 = fig.add_subplot(121)
+    ax2 = fig.add_subplot(122)
+    ax.spines['top'].set_color('none')
+    ax.spines['bottom'].set_color('none')
+    ax.spines['left'].set_color('none')
+    ax.spines['right'].set_color('none')
+    ax.tick_params(labelcolor='w', top='off',
+                   bottom='off', left='off', right='off')
+    #fig, (ax1, ax2) = plt.subplots(1, 2)
+
+    num_al = len(algs_lbl)
+
+    for i in range(num_al):
+        ax1.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
+            loc_ep1[i]) + ', $\\alpha = $' + str(eta[i]), marker=markers[i], markevery=0.2, markersize=7)
+
+    #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
+    ax1.legend(loc='lower right')
+    ax1.set_ylim([0.86, 0.922])
+    ax1.grid(True)
+    ax1.set_title('Fixed '+'$\\alpha$')
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        ax2.plot(glob_acc[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
+            loc_ep1[i + num_al]) + ', $\\alpha = $' + str(eta[i + num_al]), marker=markers[i], markevery=0.2, markersize=7)
+
+    ax2.set_ylim([0.86, 0.922])
+
+    #plt.title('$\\kappa = $' + str(kappa))
+    #fig.set_title('Linear Synthetic')
+    ax2.legend(loc='lower right')
+    ax2.grid(True)
+    ax2.set_title('Fixed R')
+    #ax1.set_ylim([0.045, 0.2])
+    ax.set_xlabel('Global rounds ' + '$T$')
+    ax.set_ylabel('Testing Accuracy', labelpad=10)
+    #plt.xticks(np.arange(0.045, 2, 0.1))
+    plt.savefig('MNIST_R_alpha_accu.pdf', bbox_inches='tight')
+    plt.savefig('MNIST_R_alpha_accu.png', bbox_inches='tight')
 
 
 def plot_summary_linear_kappa(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
@@ -576,3 +658,49 @@ def plot_summary_linear_kappa(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb
     #plt.xticks(np.arange(0.045, 2, 0.1))
     plt.savefig('Linear_synthetic_kappa.pdf', bbox_inches='tight')
     plt.savefig('Linear_synthetic_kappa.png', bbox_inches='tight')
+    Numb_Algs = len(algorithms_list)
+
+    #plt.figure(figsize=(6,12))
+    fig = plt.figure(figsize=(12, 6))
+    ax = fig.add_subplot(111)    # The big subplot
+    ax1 = fig.add_subplot(121)
+    ax2 = fig.add_subplot(122)
+    ax.spines['top'].set_color('none')
+    ax.spines['bottom'].set_color('none')
+    ax.spines['left'].set_color('none')
+    ax.spines['right'].set_color('none')
+    ax.tick_params(labelcolor='w', top='off',
+                   bottom='off', left='off', right='off')
+    #fig, (ax1, ax2) = plt.subplots(1, 2)
+
+    num_al = len(algs_lbl)
+
+    for i in range(num_al):
+        ax1.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
+            loc_ep1[i]) + ', $\\kappa = $' + str(kappa[i]), marker=markers[i], markevery=0.2, markersize=7)
+
+    #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
+    ax1.legend(loc='upper right')
+    ax1.set_ylim([0.049, 0.1])
+    ax1.grid(True)
+   # ax1.set_title('Fixed '+'$\\alpha$')
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        ax2.plot(glob_acc[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
+            loc_ep1[i + num_al]) + ', $\\kappa = $' + str(kappa[i + num_al]), marker=markers[i], markevery=0.2, markersize=7)
+
+    ax2.set_ylim([0.049, 0.1])
+
+    #plt.title('$\\kappa = $' + str(kappa))
+    #fig.set_title('Linear Synthetic')
+    ax2.legend(loc='upper right')
+    ax2.grid(True)
+    #ax2.set_title('Fixed R')
+    #ax1.set_ylim([0.045, 0.2])
+    ax.set_xlabel('Global rounds ' + '$T$')
+    ax.set_ylabel('Testing Loss', labelpad=10)
+    #ax.set_title('Fixed ' +'$\\alpha$' + ' end ' + 'R' )
+    #plt.xticks(np.arange(0.045, 2, 0.1))
+    plt.savefig('Linear_synthetic_kappa_test_loss.pdf', bbox_inches='tight')
+    plt.savefig('Linear_synthetic_kappa_test_loss.png', bbox_inches='tight')
