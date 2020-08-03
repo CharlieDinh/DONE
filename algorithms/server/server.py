@@ -6,7 +6,7 @@ from algorithms.edges.edgeSeOrder import edgeSeOrder
 from algorithms.edges.edgeFiOrder import edgeFiOrder
 from algorithms.edges.edgeDANE import edgeDANE
 from algorithms.edges.edgeNew import edgeNew
-from algorithms.edges.edgeAvg import edgeAvg
+from algorithms.edges.edgeGD import edgeGD
 from algorithms.edges.edgeFEDL import edgeFEDL
 from algorithms.edges.edgeNewton import edgeNewton
 
@@ -38,9 +38,9 @@ class Server(ServerBase):
         for i in range(total_edges):
             id, train, test = read_edge_data(i, data, dataset)
 
-            if(algorithm == "SecondOrder"):
+            if(algorithm == "DONE"):
                 edge = edgeSeOrder(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
-                #print("Finished creating SecondOrder server.")
+                #print("Finished creating DONE server.")
             if(algorithm == "FirstOrder"):
                 edge = edgeFiOrder(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
                 #print("Finished creating FirstOrder server.")
@@ -50,8 +50,8 @@ class Server(ServerBase):
             if algorithm == "New":
                 edge = edgeNew(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
 
-            if algorithm == "FedAvg":
-                edge = edgeAvg(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
+            if algorithm == "GD":
+                edge = edgeGD(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
 
             if(algorithm == "FEDL"):
                 edge = edgeFEDL(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
@@ -147,7 +147,7 @@ class Server(ServerBase):
             self.save_results()
             self.save_model()
 
-        elif self.algorithm == "FedAvg":
+        elif self.algorithm == "GD":
             for glob_iter in range(self.num_glob_iters):
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
@@ -158,7 +158,7 @@ class Server(ServerBase):
                     edge.train(self.local_epochs, glob_iter)
                 self.aggregate_parameters()
                 
-        elif self.algorithm == "SecondOrder": # Second Order method
+        elif self.algorithm == "DONE": # Second Order method
             for glob_iter in range(self.num_glob_iters):
                 print("-------------Round number: ",glob_iter, " -------------")
 

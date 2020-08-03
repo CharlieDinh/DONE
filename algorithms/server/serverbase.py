@@ -54,7 +54,7 @@ class ServerBase:
 
     def add_parameters(self, edge, ratio):
         model = self.model.parameters()
-        if(self.algorithm == "DANE" or self.algorithm == "FedAvg" or self.algorithm == "FEDL"):
+        if(self.algorithm == "DANE" or self.algorithm == "GD" or self.algorithm == "FedAvg" or self.algorithm == "FEDL"):
             for server_param, edge_param in zip(self.model.parameters(), edge.get_parameters()):
                 server_param.data = server_param.data + edge_param.data.clone() * ratio
         else: # for first order and second order only aggregate the direction dt
@@ -73,7 +73,7 @@ class ServerBase:
             for edge in self.selected_edges:
                 self.add_parameters(edge, 1 / self.num_edges)
                 #self.add_parameters(edge, edge.train_samples / self.total_train_samples)
-        elif self.algorithm == "FedAvg" or self.algorithm == "FEDL":
+        elif self.algorithm == "FedAvg" or self.algorithm == "GD" or self.algorithm == "FEDL":
             for param in self.model.parameters():
                 param.data.zero_() # = torch.zeros_like(param.data)
             for edge in self.selected_edges:
@@ -161,7 +161,7 @@ class ServerBase:
         train_acc = np.sum(stats_train[2])*1.0/np.sum(stats_train[1])
         # train_loss = np.dot(stats_train[3], stats_train[1])*1.0/np.sum(stats_train[1])
 
-        if self.algorithm == "FedAvg" or self.algorithm == "FEDL":
+        if self.algorithm == "FedAvg" or self.algorithm == "GD" or self.algorithm == "FEDL":
             train_loss = sum([x * y for (x, y) in zip(stats_train[1], stats_train[3])]).item() / np.sum(stats_train[1])
         else:
             train_loss = (np.sum(stats_train[3])*1.0/len(stats_train[0])).item()
