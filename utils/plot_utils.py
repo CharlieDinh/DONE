@@ -77,7 +77,7 @@ def average_data(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb="", learning
             hf.create_dataset('rs_train_loss', data=train_loss_data)
             hf.close()
 
-def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, dataset = ""):
+def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, kappa =[], dataset = ""):
     Numb_Algs = len(algorithms_list)
     dataset = dataset
     #glob_acc_, train_acc_, train_loss_ = get_training_data_value( num_users, loc_ep1, Numb_Glob_Iters, lamb, learning_rate, hyper_learning_rate, algorithms_list, batch_size, dataset)
@@ -86,7 +86,7 @@ def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     ##train_loss = average_smooth(train_loss_, window='flat')
     #train_acc = average_smooth(train_acc_, window='flat')
     algs_lbl = algorithms_list.copy()
-    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size,kappa = kappa, dataset= dataset)
 
 
     print("max value of test accurancy",glob_acc.max())
@@ -108,7 +108,7 @@ def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
         plt.plot(train_loss[i, start:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b" + "_" + str(learning_rate[i])  + "_" + str(eta[i])  + "_" + str(eta0[i]))
         #plt.plot(train_loss1[i, 1:], label=algs_lbl1[i])
     plt.legend(loc='upper right')
-    plt.ylim([0.04, 0.3])
+    plt.ylim([0.049, 0.1]) #set_ylim([0.049, 0.1])
     plt.ylabel('Training Loss')
     plt.xlabel('Global rounds')
     plt.title(dataset.upper())

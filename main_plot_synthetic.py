@@ -61,6 +61,4 @@ plot_summary_linear_R_and_alpha(num_users=numedges, loc_ep1=local_epochs, Numb_G
                      learning_rate=learning_rate, eta=eta, eta0=eta0, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
 
 
-plot_summary_linear_R_and_alpha
-
 
