@@ -12,8 +12,8 @@ from utils.plot_utils import *
 import torch
 torch.manual_seed(0)
     
-numedges = 64
-num_glob_iters = 200
+numedges = 32
+num_glob_iters = 100
 dataset = "Linear_synthetic"
 optimizer = "SGD"
 model =  "linear_regression"

@@ -13,7 +13,7 @@ import torch
 torch.manual_seed(0)
     
 numedges = 32
-num_glob_iters = 200
+num_glob_iters = 100
 dataset = "Mnist"
 optimizer = "SGD"
 model =  "mclr"
