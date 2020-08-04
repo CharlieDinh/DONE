@@ -13,11 +13,11 @@ Noise = 0.05
 def generate_x(n_samples, dim, rho, mu=0.0, sig=1.0):
     '''Helper function to generate data''' 
 
-    powers = - np.log(rho) / np.log(dim) / 2
-
+    powers = - np.log(rho) / np.log(dim) # / 2
     S = np.power(np.arange(dim)+1, powers)
-    X = np.random.normal(mu, sig, (n_samples, dim)) # Random standard Gaussian data
-    X *= S                                          # Conditioning
+    # X = np.random.normal(mu, sig, (n_samples, dim)) # Random standard Gaussian data
+    # X *= S                                          # Conditioning
+    X = np.random.multivariate_normal([mu for _ in range(dim)], sig * np.diag(S), n_samples)
 
     return X #, 1, 1/rho, np.diag(S)
 
@@ -25,7 +25,7 @@ def generate_linear_data(num_users=100, rho=10, dim=40, noise_ratio=0.05, sigma_
 
     '''Helper function to generate data'''
     # generate power S
-    powers = - np.log(rho) / np.log(dim) / 2
+    powers = - np.log(rho) / np.log(dim) # / 2
     DIM = np.arange(dim)
 
     # Covariance matrix for X
@@ -34,7 +34,7 @@ def generate_linear_data(num_users=100, rho=10, dim=40, noise_ratio=0.05, sigma_
     # Creat list data for all users 
     X_split = [[] for _ in range(num_users)]  # X for each user
     y_split = [[] for _ in range(num_users)]  # y for each user
-    samples_per_user = np.random.lognormal(4, 1, num_users).astype(int)*10 + 10000
+    samples_per_user = np.random.lognormal(4, 1, num_users).astype(int)*10 + 1000
     indices_per_user = np.insert(samples_per_user.cumsum(), 0, 0, 0)
     num_total_samples = indices_per_user[-1]
 
