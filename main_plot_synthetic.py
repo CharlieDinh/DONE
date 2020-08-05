@@ -39,12 +39,12 @@ if(0):
     kappa = [4,4,4,4,4,4,9,9,9,9,9,9]
     plot_summary_linear(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L, learning_rate=learning_rate, eta = eta, eta0 = eta0, algorithms_list=algorithms, batch_size=batch_size,kappa=kappa, dataset=dataset)
 
-if(0):
-    local_epochs = [20, 20, 20, 20, 20, 1]
-    learning_rate = [1, 1, 1, 1, 0.07, 0.6]
-    eta = [0.07, 0.07, 0.07, 0.07, 1, 1]
+if(1):
+    local_epochs = [20, 40, 20, 40, 20, 1]
+    learning_rate = [1, 1, 1, 1, 0.6, 0.6]
+    eta = [0.6, 0.4, 0.4, 0.4, 1, 1]
     eta0 = [1, 1, 1, 1, 1,1]
-    batch_size = [0, 256,128, 0, 0, 0]
+    batch_size = [0, 0,0, 0, 0, 0]
     algorithms = ["DONE", "DONE", "DONE", "Newton", "DANE", "GD"]
     L = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     #kappa = [4,4,4,4,4,4,9,9,9,9,9,9]
@@ -54,7 +54,7 @@ if(0):
 if(0):
     local_epochs = [5, 10, 20, 30, 20,20,20,20]
     learning_rate = [1, 1, 1, 1, 1, 1, 1, 1]
-    eta = [0.05, 0.05, 0.05, 0.05, 0.01, 0.03, 0.05, 0.07]
+    eta = [0.4, 0.4, 0.4, 0.4, 0.1, 0.2, 0.4, 0.6]
     eta0 = [1, 1, 1, 1, 1, 1, 1, 1]
     batch_size = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     algorithms = ["DONE", "DONE", "DONE", "DONE", "DONE", "DONE", "DONE", "DONE"]
@@ -66,7 +66,7 @@ if(0):
 if(0):
     local_epochs = [20, 20, 20, 20, 30, 30, 30, 30]
     learning_rate = [1, 1, 1, 1, 1, 1, 1, 1]
-    eta = [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]
+    eta = [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4]
     eta0 = [1, 1, 1, 1, 1, 1, 1, 1]
     batch_size = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     algorithms = ["DONE", "DONE", "DONE", "DONE",
