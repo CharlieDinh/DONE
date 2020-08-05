@@ -101,7 +101,7 @@ for i in range(NUM_USERS):
     test_data['num_samples'].append(test_len)
 
 print("Num_samples:", train_data['num_samples'])
-print("Total_samples:",sum(train_data['num_samples']))
+print("Total_samples:",sum(train_data['num_samples'] + test_data['num_samples']))
     
 with open(train_path,'w') as outfile:
     json.dump(train_data, outfile)

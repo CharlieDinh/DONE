@@ -611,7 +611,7 @@ def plot_summary_linear_kappa(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb
     glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
     for i in range(Numb_Algs):
         print(algorithms_list[i], "loss:", glob_acc[i].max())
-    
+    kappa = ["$10$", "$10^2$", "$10^3$", "$10^4$"]
     plt.figure(1)
     linestyles = ['-','-','-', '-']
     markers = ["o","v","s","*","x","P"]
@@ -632,7 +632,7 @@ def plot_summary_linear_kappa(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb
     num_al = len(algs_lbl)
 
     for i in range(num_al):
-        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i]) + ', $\\kappa = $' + str(kappa[i]) ,marker = markers[i],markevery=0.2, markersize=7)
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i]) + ', $\\kappa = $' + kappa[i] ,marker = markers[i],markevery=0.2, markersize=7)
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
@@ -642,7 +642,7 @@ def plot_summary_linear_kappa(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb
 
     for i in range(num_al):
         stringbatch = str(batch_size[i])
-        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\kappa = $' + str(kappa[i+ num_al]) ,marker = markers[i],markevery=0.2, markersize=7)
+        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\kappa = $' + kappa[i] ,marker = markers[i],markevery=0.2, markersize=7)
 
     ax2.set_ylim([0.049, 0.1])
 
@@ -672,12 +672,12 @@ def plot_summary_linear_kappa(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb
     ax.tick_params(labelcolor='w', top='off',
                    bottom='off', left='off', right='off')
     #fig, (ax1, ax2) = plt.subplots(1, 2)
-
+    
     num_al = len(algs_lbl)
 
     for i in range(num_al):
         ax1.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
-            loc_ep1[i]) + ', $\\kappa = $' + str(kappa[i]), marker=markers[i], markevery=0.2, markersize=7)
+            loc_ep1[i]) + ', $\\kappa = $' + kappa[i], marker=markers[i], markevery=0.2, markersize=7)
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
@@ -688,7 +688,7 @@ def plot_summary_linear_kappa(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb
     for i in range(num_al):
         stringbatch = str(batch_size[i])
         ax2.plot(glob_acc[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
-            loc_ep1[i + num_al]) + ', $\\kappa = $' + str(kappa[i + num_al]), marker=markers[i], markevery=0.2, markersize=7)
+            loc_ep1[i + num_al]) + ', $\\kappa = $' + kappa[i], marker=markers[i], markevery=0.2, markersize=7)
 
     ax2.set_ylim([0.049, 0.1])
 
