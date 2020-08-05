@@ -6,7 +6,7 @@ import os
 np.random.seed(0)
 
 NUM_USER = 32
-rho = 10
+rho = 1000
 Dim = 40 
 Noise = 0.05
 
@@ -27,7 +27,7 @@ def generate_linear_data(num_users=100, rho=10, dim=40, noise_ratio=0.05):
 
     '''Helper function to generate data'''
     # generate power S
-    powers = - np.log(rho) / np.log(dim) / 2
+    powers = - np.log(rho) / np.log(dim)
     DIM = np.arange(dim)
 
     # Covariance matrix for X
@@ -36,7 +36,7 @@ def generate_linear_data(num_users=100, rho=10, dim=40, noise_ratio=0.05):
     # Creat list data for all users 
     X_split = [[] for _ in range(num_users)]  # X for each user
     y_split = [[] for _ in range(num_users)]  # y for each user
-    samples_per_user = np.random.lognormal(4, 1, num_users).astype(int)*10 + 500
+    samples_per_user = np.random.lognormal(4, 1, num_users).astype(int)*10 + 1000
     indices_per_user = np.insert(samples_per_user.cumsum(), 0, 0, 0)
     num_total_samples = indices_per_user[-1]
 
@@ -49,11 +49,17 @@ def generate_linear_data(num_users=100, rho=10, dim=40, noise_ratio=0.05):
 
     for n in range(num_users):
         # Generate data
-        mean = np.random.uniform(low=-1.0, high=1.0)
+        sig = np.random.uniform(0.1, 10)
+        mean = np.random.uniform(low=-0.01, high=0.01)
         cov = np.random.uniform(low=0.0, high=0.01)
         #print("mean -cov", mean,cov)
         mean_X = np.random.normal(mean, cov, dim)
-        X_n = np.random.multivariate_normal(mean_X, np.diag(S), samples_per_user[n])
+        X_n = np.random.multivariate_normal(mean_X, sig * np.diag(S), samples_per_user[n])
+        hess = X_n.T.dot(X_n) / X_n.shape[0]
+        eigvals = np.linalg.eig(hess)[0]
+        eigmax = eigvals.max()
+        eigmin = eigvals.min()
+        print("eigmax = {:05.3f}, eigmin = {:05.3f}, kappa = {:05.3f}".format(eigmax, eigmin, eigmax / eigmin))
         X_total[indices_per_user[n]:indices_per_user[n+1], :] = X_n
 
     # Normalize all X's using LAMBDA
