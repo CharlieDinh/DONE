@@ -1,1 +1,1 @@
-# Federated_Aproximate_Newton
+# DONE: Distributed Newton Method for Federated Edge Learning.
