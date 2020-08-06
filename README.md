@@ -22,3 +22,13 @@ This repository is for the Experiment Section of the paper:
 - The datasets also are available to download at: https://drive.google.com/drive/folders/1LkBjkP0PzfRNiAY9ImN85r9vBIuW4U6-?usp=sharing
 
 # Produce experiments and figures
+- There is a main file "main.py" which allows running all experiments, and 2 files: plot_mnist.py, plot_synthetic.py to plot all results after runing all experiment.
+## Effect of parameters: $\alpha$, $R $, and $\kappa$
+- To produce the Fig.1 : Effects of various values of $\alpha$ and $R$ on synthetic ($\kappa = 10^3$)
+<p align="center">
+  <img src="https://github.com/CharlieDinh/DONE/files/5032598/Linear_synthetic_R_alpha_test_loss.pdf" height="300">
+</p>
+    <pre><code>
+    python3 --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --eta --num_global_iters 100 --local_epochs 10 --numedges 32
+    </code></pre>
+## Performance comparison with different  distributed algorithms
