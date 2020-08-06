@@ -34,7 +34,7 @@ if(0):
     eta =  [0.015,0.01,0.003,0.015,1,1,1]
     eta0 = [1,1,1,1,1,1,1]
     batch_size = [0,256,128,0,0,0]
-    algorithms = ["DONE", "SecondOrder", "DONE", "Newton", "DANE", "FirstOrder"]
+    algorithms = ["DONE", "DONE", "DONE", "Newton", "DANE", "GD"]
     L = [0,0,0,0,0,0,0,0,0,0,0]
     plot_summary_mnist2(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L, learning_rate=learning_rate, eta = eta, eta0 = eta0, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
 
