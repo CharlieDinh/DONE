@@ -16,9 +16,9 @@ import numpy as np
 
 # Implementation for Central Server
 class Server(ServerBase):
-    def __init__(self, dataset,algorithm, model, batch_size, learning_rate, eta, eta0, L, num_glob_iters,
+    def __init__(self, dataset,algorithm, model, batch_size, learning_rate, alpha, eta, L, num_glob_iters,
                  local_epochs, optimizer, num_edges, times):
-        super().__init__(dataset,algorithm, model[0], batch_size, learning_rate, eta, eta0, L, num_glob_iters,
+        super().__init__(dataset,algorithm, model[0], batch_size, learning_rate, alpha, eta, L, num_glob_iters,
                          local_epochs, optimizer, num_edges, times)
 
         # Initialize data for all  edges
@@ -39,25 +39,25 @@ class Server(ServerBase):
             id, train, test = read_edge_data(i, data, dataset)
 
             if(algorithm == "DONE"):
-                edge = edgeDONE(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
+                edge = edgeDONE(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
                 #print("Finished creating DONE server.")
             if(algorithm == "FirstOrder"):
-                edge = edgeFiOrder(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
+                edge = edgeFiOrder(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
                 #print("Finished creating FirstOrder server.")
             if(algorithm == "DANE"):
-                edge = edgeDANE(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
+                edge = edgeDANE(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
                 #print("Finished creating DANE server.")
             if algorithm == "New":
-                edge = edgeNew(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
+                edge = edgeNew(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
 
             if algorithm == "GD":
-                edge = edgeGD(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
+                edge = edgeGD(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
 
             if(algorithm == "FEDL"):
-                edge = edgeFEDL(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
+                edge = edgeFEDL(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
 
             if(algorithm == "Newton"):
-                edge = edgeNewton(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
+                edge = edgeNewton(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
                 
             self.edges.append(edge)
             self.total_train_samples += edge.train_samples
@@ -246,7 +246,7 @@ class Server(ServerBase):
                 bias_direction = direction[0, -1].view(grads[1].shape)
 
                 for param, d in zip(self.model.parameters(), [weights_direction, bias_direction]):
-                    param.data.add_(self.eta * d)
+                    param.data.add_(self.alpha * d)
 
                 # self.selected_edges = self.select_edges(glob_iter, self.num_edges)
                 # for edge in self.selected_edges:

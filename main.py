@@ -12,7 +12,7 @@ from utils.plot_utils import *
 import torch
 torch.manual_seed(0)
 
-def main(dataset, algorithm, model, batch_size, learning_rate, eta, eta0, L, num_glob_iters,
+def main(dataset, algorithm, model, batch_size, learning_rate, alpha, eta, L, num_glob_iters,
          local_epochs, optimizer, numedges, times):
 
     for i in range(times):
@@ -32,28 +32,28 @@ def main(dataset, algorithm, model, batch_size, learning_rate, eta, eta0, L, num
             model = Logistic_Regression(40), model
         # select algorithm
 
-        server = Server(dataset, algorithm, model, batch_size, learning_rate, eta, eta0,  L, num_glob_iters, local_epochs, optimizer, numedges, i)
+        server = Server(dataset, algorithm, model, batch_size, learning_rate, alpha, eta,  L, num_glob_iters, local_epochs, optimizer, numedges, i)
 
         server.train()
         server.test()
 
     # Average data 
-    #average_data(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L, learning_rate=learning_rate, eta, algorithms=algorithm, batch_size=batch_size, dataset=dataset, times = times)
+    #average_data(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L, learning_rate=learning_rate, alpha, algorithms=algorithm, batch_size=batch_size, dataset=dataset, times = times)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", type=str, default="Logistic_synthetic", choices=["Mnist", "Linear_synthetic"])
     parser.add_argument("--model", type=str, default="logistic_regression", choices=["linear_regression", "mclr", "logistic_regression"])
     parser.add_argument("--batch_size", type=int, default=20)
-    parser.add_argument("--learning_rate", type=float, default=0.01, help="Local learning rate for first order algorithm")
-    parser.add_argument("--eta", type=float, default=0.01, help="first eta")
-    parser.add_argument("--eta0", type=float, default=1, help="second eta not use at this version")
-    parser.add_argument("--L", type=int, default=0.01, help="Regularization term")
+    parser.add_argument("--learning_rate", type=float, default=1, help="Local learning rate for DANE, GD")
+    parser.add_argument("--alpha", type=float, default=0.2, help="alpha for DONE and use alpha as eta of DANE")
+    parser.add_argument("--eta", type=float, default=1, help="eta not use at this version")
+    parser.add_argument("--L", type=int, default=0, help="Regularization term")
     parser.add_argument("--num_global_iters", type=int, default=100)
     parser.add_argument("--local_epochs", type=int, default=20)
     parser.add_argument("--optimizer", type=str, default="SGD",choices=["SGD"])
     parser.add_argument("--algorithm", type=str, default="DONE",choices=["DONE", "GD", "DANE", "Newton"])
-    parser.add_argument("--numedges", type=int, default=4,help="Number of Edges per round")
+    parser.add_argument("--numedges", type=int, default=32,help="Number of Edges per round")
     parser.add_argument("--times", type=int, default=1, help="running time")
     args = parser.parse_args()
 
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     print("Algorithm: {}".format(args.algorithm))
     print("Batch size: {}".format(args.batch_size))
     print("Learing rate       : {}".format(args.learning_rate))
-    print("eta       : {}".format(args.eta))
+    print("alpha       : {}".format(args.alpha))
     print("Subset of edges      : {}".format(args.numedges))
     print("Number of local rounds       : {}".format(args.local_epochs))
     print("Number of global rounds       : {}".format(args.num_global_iters))
@@ -76,8 +76,8 @@ if __name__ == "__main__":
         model=args.model,
         batch_size=args.batch_size,
         learning_rate=args.learning_rate,
+        alpha = args.alpha,
         eta = args.eta,
-        eta0 = args.eta0,
         L = args.L,
         num_glob_iters=args.num_global_iters,
         local_epochs=args.local_epochs,

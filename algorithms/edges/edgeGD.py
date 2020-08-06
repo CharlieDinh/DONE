@@ -4,9 +4,9 @@ from algorithms.edges.edgebase import Edgebase
 from algorithms.optimizers.optimizer import *
 
 class edgeGD(Edgebase):
-    def __init__(self, numeric_id, train_data, test_data, model, batch_size, learning_rate, eta,eta0, L,
+    def __init__(self, numeric_id, train_data, test_data, model, batch_size, learning_rate, alpha, eta, L,
                  local_epochs, optimizer):
-        super().__init__(numeric_id, train_data, test_data, model[0], batch_size, learning_rate, eta, eta0, L,
+        super().__init__(numeric_id, train_data, test_data, model[0], batch_size, learning_rate, alpha, eta, L,
                          local_epochs)
 
         self.pre_params = []

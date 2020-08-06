@@ -23,8 +23,8 @@ model = Linear_Regression(40,1), model
 # defind parameters
 local_epochs = [20]
 learning_rate = [0.01]
-eta =  [0.01]
-eta0 = [1]
+alpha =  [0.01]
+eta = [1]
 batch_size = [0]
 algorithms = ["DANE"]
 L = [0.01]
@@ -32,10 +32,10 @@ L = [0.01]
 if(1):
     for i in range(len(algorithms)):
         for time in range(times):
-            server = Server(dataset, algorithms[i], model, batch_size[i], learning_rate[i], eta[i], eta0[i], L[i], num_glob_iters, local_epochs[i], optimizer, numedges, time)
+            server = Server(dataset, algorithms[i], model, batch_size[i], learning_rate[i], alpha[i], eta[i], L[i], num_glob_iters, local_epochs[i], optimizer, numedges, time)
             server.train()
             server.test()
-        average_data(num_users=numedges, loc_ep1=local_epochs[i], Numb_Glob_Iters=num_glob_iters, lamb=L[i], learning_rate=learning_rate[i], eta = eta[i], eta0 = eta0[i], algorithms=algorithms[i], batch_size=batch_size[i], dataset=dataset, times = times)
+        average_data(num_users=numedges, loc_ep1=local_epochs[i], Numb_Glob_Iters=num_glob_iters, lamb=L[i], learning_rate=learning_rate[i], alpha = alpha[i], eta = eta[i], algorithms=algorithms[i], batch_size=batch_size[i], dataset=dataset, times = times)
 
 if(0):
-    plot_summary_one_figure(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L, learning_rate=learning_rate, eta = eta, eta0 = eta0, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
+    plot_summary_one_figure(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L, learning_rate=learning_rate, alpha = alpha, eta = eta, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)

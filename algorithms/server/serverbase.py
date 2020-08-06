@@ -6,7 +6,7 @@ from utils.model_utils import Metrics
 import copy
 
 class ServerBase:
-    def __init__(self, dataset, algorithm, model, batch_size, learning_rate , eta, eta0, L, num_glob_iters, local_epochs, optimizer, num_edges, times):
+    def __init__(self, dataset, algorithm, model, batch_size, learning_rate , alpha, eta, L, num_glob_iters, local_epochs, optimizer, num_edges, times):
 
         # Set up the main attributes
         self.dataset = dataset
@@ -14,8 +14,8 @@ class ServerBase:
         self.local_epochs = local_epochs
         self.batch_size = batch_size
         self.learning_rate = learning_rate
+        self.alpha = alpha
         self.eta = eta
-        self.eta0 = eta0
         self.total_train_samples = 0
         self.model = copy.deepcopy(model)
         self.edges = []
@@ -59,7 +59,7 @@ class ServerBase:
                 server_param.data = server_param.data + edge_param.data.clone() * ratio
         else: # for first order and second order only aggregate the direction dt
             for server_param, edge_param in zip(self.model.parameters(), edge.get_dt()):
-                server_param.data = server_param.data + self.eta0 * ratio * edge_param.data.clone()
+                server_param.data = server_param.data + self.eta * ratio * edge_param.data.clone()
 
     def aggregate_parameters(self):
         assert (self.edges is not None and len(self.edges) > 0)
@@ -110,7 +110,7 @@ class ServerBase:
     # Save loss, accurancy to h5 fiel
     def save_results(self):
         alg = self.dataset + "_" + self.algorithm
-        alg = alg + "_" + str(self.learning_rate) + "_" + str(self.eta)  + "_" + str(self.eta0) + "_" + str(self.L) + "_" + str(self.num_edges) + "u" + "_" + str(self.batch_size) + "b" + "_" + str(self.local_epochs)
+        alg = alg + "_" + str(self.learning_rate) + "_" + str(self.alpha)  + "_" + str(self.eta) + "_" + str(self.L) + "_" + str(self.num_edges) + "u" + "_" + str(self.batch_size) + "b" + "_" + str(self.local_epochs)
         alg = alg + "_" + str(self.times)
         if (len(self.rs_glob_acc) != 0 &  len(self.rs_train_acc) & len(self.rs_train_loss)) :
             with h5py.File("./results/"+'{}.h5'.format(alg, self.local_epochs), 'w') as hf:
@@ -182,7 +182,7 @@ class ServerBase:
         
         # update dt 
         for param, dt, sumdt in zip(self.model.parameters(), self.dt, self.total_dt):
-            dt.data = dt.data  - self.eta * sumdt.data - self.eta * param.grad.data
+            dt.data = dt.data  - self.alpha * sumdt.data - self.alpha * param.grad.data
             sumdt.data = 0 * sumdt.data
 
     def aggregate_newton(self):

@@ -13,9 +13,9 @@ from algorithms.optimizers.optimizer import *
 # Implementation for FedAvg clients
 
 class edgeDONE(Edgebase):
-    def __init__(self, numeric_id, train_data, test_data, model, batch_size, learning_rate, eta, eta0, L,
+    def __init__(self, numeric_id, train_data, test_data, model, batch_size, learning_rate, alpha, eta, L,
                  local_epochs, optimizer):
-        super().__init__(numeric_id, train_data, test_data, model[0], batch_size, learning_rate, eta, eta0, L,
+        super().__init__(numeric_id, train_data, test_data, model[0], batch_size, learning_rate, alpha, eta, L,
                          local_epochs)
 
         if (model[1] == "linear_regression"):
@@ -43,7 +43,7 @@ class edgeDONE(Edgebase):
             loss.backward()
 
     def train(self, epochs, glob_iter):
-        # tempeta = self.eta/(glob_iter+1)
+        # tempalpha = self.alpha/(glob_iter+1)
         self.model.zero_grad()
 
         # Sample a mini-batch (D_i)
@@ -54,7 +54,7 @@ class edgeDONE(Edgebase):
 
         # Set d^i_0
         for d, param in zip(self.dt, self.model.parameters()):
-            #d.data = - self.eta * param.grad.data.clone()
+            #d.data = - self.alpha * param.grad.data.clone()
             # Set direction to 0 at the begining
             d.data = - 0 * param.grad.data.clone()
             #grads.append(param.grad.data.clone())
@@ -63,8 +63,8 @@ class edgeDONE(Edgebase):
         for i in range(1, self.local_epochs + 1):  # R
             hess_vec_prods = self.hessian_vec_prod(loss, list(self.model.parameters()), self.dt)
             for grad, d, hess_vec in zip(self.server_grad, self.dt, hess_vec_prods):
-                # d.data = d.data - tempeta * hess_vec - grad.data
-                d.data = d.data - self.eta * hess_vec - self.eta * grad.grad.data
+                # d.data = d.data - tempalpha * hess_vec - grad.data
+                d.data = d.data - self.alpha * hess_vec - self.alpha * grad.grad.data
 
     def hessian_vec_prod(self, loss, params, dt):
         self.model.zero_grad()

@@ -14,7 +14,7 @@ def simple_read_data(alg):
     rs_train_loss = np.array(hf.get('rs_train_loss')[:])
     return rs_train_acc, rs_train_loss, rs_glob_acc
 
-def get_training_data_value(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta =[], eta0 =[], algorithms_list=[], batch_size=[], kappa=[], dataset=""):
+def get_training_data_value(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha =[], eta =[], algorithms_list=[], batch_size=[], kappa=[], dataset=""):
     Numb_Algs = len(algorithms_list)
     train_acc = np.zeros((Numb_Algs, Numb_Glob_Iters))
     train_loss = np.zeros((Numb_Algs, Numb_Glob_Iters))
@@ -22,7 +22,7 @@ def get_training_data_value(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     algs_lbl = algorithms_list.copy()
     for i in range(Numb_Algs):
         string_learning_rate = str(learning_rate[i])  
-        string_learning_rate = string_learning_rate  + "_" + str(eta[i])  + "_" + str(eta0[i])  + "_" + str(lamb[i])
+        string_learning_rate = string_learning_rate  + "_" + str(alpha[i])  + "_" + str(eta[i])  + "_" + str(lamb[i])
         algorithms_list[i] = algorithms_list[i] + "_" + string_learning_rate + "_" + str(num_users) + "u" + "_" + str(batch_size[i]) + "b"  "_" +str(loc_ep1[i])
         if kappa:
             algorithms_list[i] = algorithms_list[i] + "_"+ str(kappa[i])
@@ -31,14 +31,14 @@ def get_training_data_value(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
         algs_lbl[i] = algs_lbl[i]
     return glob_acc, train_acc, train_loss
 
-def get_all_training_data_value(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=0, learning_rate=0, eta = 0, eta0 = 0, algorithms="", batch_size=0, dataset="" ,times = 5):
+def get_all_training_data_value(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=0, learning_rate=0, alpha = 0, eta = 0, algorithms="", batch_size=0, dataset="" ,times = 5):
     train_acc = np.zeros((times, Numb_Glob_Iters))
     train_loss = np.zeros((times, Numb_Glob_Iters))
     glob_acc = np.zeros((times, Numb_Glob_Iters))
     algorithms_list  = [algorithms] * times
     for i in range(times):
         string_learning_rate = str(learning_rate)  
-        string_learning_rate = string_learning_rate  + "_" + str(eta)  + "_" + str(eta0) + "_" + str(lamb)
+        string_learning_rate = string_learning_rate  + "_" + str(alpha)  + "_" + str(eta) + "_" + str(lamb)
         algorithms_list[i] = algorithms_list[i] + "_" + string_learning_rate + "_" + str(num_users) + "u" + "_" + str(batch_size) + "b"  "_" +str(loc_ep1) +  "_" +str(i)
         train_acc[i, :], train_loss[i, :], glob_acc[i, :] = np.array(simple_read_data(dataset +"_"+ algorithms_list[i]))[:, :Numb_Glob_Iters]
     
@@ -54,8 +54,8 @@ def get_data_label_style(input_data = [], linestyles= [], algs_lbl = [], lamb = 
 
     return data, lstyles, labels
 
-def average_data(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb="", learning_rate="", eta="", eta0="", algorithms="", batch_size=0, dataset = "", times = 5):
-    glob_acc, train_acc, train_loss = get_all_training_data_value( num_users, loc_ep1, Numb_Glob_Iters, lamb, learning_rate,eta,eta0, algorithms, batch_size, dataset,times)
+def average_data(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb="", learning_rate="", alpha="", eta="", algorithms="", batch_size=0, dataset = "", times = 5):
+    glob_acc, train_acc, train_loss = get_all_training_data_value( num_users, loc_ep1, Numb_Glob_Iters, lamb, learning_rate,alpha,eta, algorithms, batch_size, dataset,times)
     glob_acc_data = np.average(glob_acc, axis=0)
     train_acc_data = np.average(train_acc, axis=0)
     train_loss_data = np.average(train_loss, axis=0)
@@ -68,7 +68,7 @@ def average_data(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb="", learning
     print("Mean:", np.mean(max_accurancy))
 
     alg = dataset + "_" + algorithms
-    alg = alg + "_" + str(learning_rate)+ "_" + str(eta) + "_" + str(eta0) + "_" + str(lamb) + "_" + str(num_users) + "u" + "_" + str(batch_size) + "b" + "_" + str(loc_ep1)
+    alg = alg + "_" + str(learning_rate)+ "_" + str(alpha) + "_" + str(eta) + "_" + str(lamb) + "_" + str(num_users) + "u" + "_" + str(batch_size) + "b" + "_" + str(loc_ep1)
     alg = alg + "_" + "avg"
     if (len(glob_acc) != 0 &  len(train_acc) & len(train_loss)) :
         with h5py.File("./results/"+'{}.h5'.format(alg,loc_ep1), 'w') as hf:
@@ -77,7 +77,7 @@ def average_data(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb="", learning
             hf.create_dataset('rs_train_loss', data=train_loss_data)
             hf.close()
 
-def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, kappa =[], dataset = ""):
+def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, kappa =[], dataset = ""):
     Numb_Algs = len(algorithms_list)
     dataset = dataset
     #glob_acc_, train_acc_, train_loss_ = get_training_data_value( num_users, loc_ep1, Numb_Glob_Iters, lamb, learning_rate, hyper_learning_rate, algorithms_list, batch_size, dataset)
@@ -86,7 +86,7 @@ def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     ##train_loss = average_smooth(train_loss_, window='flat')
     #train_acc = average_smooth(train_acc_, window='flat')
     algs_lbl = algorithms_list.copy()
-    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size,kappa = kappa, dataset= dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size,kappa = kappa, dataset= dataset)
 
 
     print("max value of test accurancy",glob_acc.max())
@@ -95,7 +95,7 @@ def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     start = 0
     linestyles = ['-', '--', '-.', ':', '-', '--', '-.', ':']
     for i in range(Numb_Algs):
-        plt.plot(train_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b"  + "_" + str(learning_rate[i])  + "_" + str(eta[i])  + "_" + str(eta0[i]) )
+        plt.plot(train_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b"  + "_" + str(learning_rate[i])  + "_" + str(alpha[i])  + "_" + str(eta[i]) )
     plt.legend(loc='lower right')
     plt.ylabel('Training Accuracy')
     plt.xlabel('Global rounds ' + '$K_g$')
@@ -105,7 +105,7 @@ def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     #plt.savefig(dataset + str(loc_ep1[1]) + 'train_acc.pdf')
     plt.figure(2,figsize=(5, 5))
     for i in range(Numb_Algs):
-        plt.plot(train_loss[i, start:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b" + "_" + str(learning_rate[i])  + "_" + str(eta[i])  + "_" + str(eta0[i]))
+        plt.plot(train_loss[i, start:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b" + "_" + str(learning_rate[i])  + "_" + str(alpha[i])  + "_" + str(eta[i]))
         #plt.plot(train_loss1[i, 1:], label=algs_lbl1[i])
     plt.legend(loc='upper right')
     plt.ylim([0.049, 0.1]) #set_ylim([0.049, 0.1])
@@ -117,7 +117,7 @@ def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     #plt.savefig(dataset + str(loc_ep1[1]) + 'train_loss.pdf')
     plt.figure(3)
     for i in range(Numb_Algs):
-        plt.plot(glob_acc[i, start:], linestyle=linestyles[i],label=algs_lbl[i]+ "_" +str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b" + "_" + str(learning_rate[i])  + "_" + str(eta[i])  + "_" + str(eta0[i]))
+        plt.plot(glob_acc[i, start:], linestyle=linestyles[i],label=algs_lbl[i]+ "_" +str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b" + "_" + str(learning_rate[i])  + "_" + str(alpha[i])  + "_" + str(eta[i]))
         #plt.plot(glob_acc1[i, 1:], label=algs_lbl1[i])  
     plt.legend(loc='lower right')
     #plt.ylim([0.6, glob_acc.max()])
@@ -132,7 +132,7 @@ def plot_summary_one_figure(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[
 
 def get_max_value_index(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], algorithms_list=[], batch_size=0, dataset=""):
     Numb_Algs = len(algorithms_list)
-    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
 
     for i in range(Numb_Algs):
         print("Algorithm: ", algorithms_list[i], "Max testing Accurancy: ", glob_acc[i].max(
@@ -166,10 +166,10 @@ def plot_loss_differences(differences, log_scale=True):
     plt.savefig("loss_differences.png", bbox_inches='tight')
 
 
-def plot_summary_linear(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
+def plot_summary_linear(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
 
     Numb_Algs = len(algorithms_list)
-    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
     for i in range(Numb_Algs):
         print(algorithms_list[i], "loss:", glob_acc[i].max())
     
@@ -223,12 +223,12 @@ def plot_summary_linear(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], l
     plt.savefig(dataset + str(loc_ep1[1]) + 'train_loss.pdf', bbox_inches='tight')
     plt.savefig(dataset + str(loc_ep1[1]) + 'train_loss.png', bbox_inches='tight')
 
-def plot_summary_mnist(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, dataset = ""):
+def plot_summary_mnist(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, dataset = ""):
     Numb_Algs = len(algorithms_list)
     dataset = dataset
 
     algs_lbl = algorithms_list.copy()
-    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
 
     linestyles = ['-','-', '--', '-.', '-.', ':']
     markers = ["o","v","s","*","x","P"]
@@ -244,7 +244,7 @@ def plot_summary_mnist(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], le
         if(stringbatch == '0'):
             stringbatch = '$\infty$'
         plt.plot(train_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=5)
-        #plt.plot(train_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b"  + "_" + str(learning_rate[i])  + "_" + str(eta[i])  + "_" + str(eta0[i]) )
+        #plt.plot(train_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b"  + "_" + str(learning_rate[i])  + "_" + str(alpha[i])  + "_" + str(eta[i]) )
     plt.legend(loc='lower right')
     plt.ylabel('Training Accuracy')
     plt.xlabel('Global rounds ' + '$T$')
@@ -261,7 +261,7 @@ def plot_summary_mnist(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], le
         if(stringbatch == '0'):
             stringbatch = '$\infty$'
         plt.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=5)
-        #plt.plot(train_loss[i, start:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b" + "_" + str(learning_rate[i])  + "_" + str(eta[i])  + "_" + str(eta0[i]))
+        #plt.plot(train_loss[i, start:], linestyle=linestyles[i], label=algs_lbl[i] + "_"+str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b" + "_" + str(learning_rate[i])  + "_" + str(alpha[i])  + "_" + str(eta[i]))
         #plt.plot(train_loss1[i, 1:], label=algs_lbl1[i])
     plt.legend(loc='upper right')
     plt.ylim([0.2, 0.5])
@@ -276,7 +276,7 @@ def plot_summary_mnist(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], le
 
     plt.figure(3,figsize=(7, 6))
     for i in range(Numb_Algs):
-        #plt.plot(glob_acc[i, start:], linestyle=linestyles[i],label=algs_lbl[i]+ "_" +str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b" + "_" + str(learning_rate[i])  + "_" + str(eta[i])  + "_" + str(eta0[i]))
+        #plt.plot(glob_acc[i, start:], linestyle=linestyles[i],label=algs_lbl[i]+ "_" +str(loc_ep1[i])+"e" + "_" + str(batch_size[i]) + "b" + "_" + str(learning_rate[i])  + "_" + str(alpha[i])  + "_" + str(eta[i]))
         #plt.plot(glob_acc1[i, 1:], label=algs_lbl1[i])
         stringbatch = str(batch_size[i])
         if(stringbatch == '0'):
@@ -293,12 +293,12 @@ def plot_summary_mnist(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], le
     plt.savefig(dataset.upper() +  'glob_acc.pdf')
     #plt.savefig(dataset + str(loc_ep1[1]) + 'glob_acc.pdf')
 
-def plot_summary_mnist2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, dataset = ""):
+def plot_summary_mnist2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, dataset = ""):
     Numb_Algs = len(algorithms_list)
     dataset = dataset
 
     algs_lbl = algorithms_list.copy()
-    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
     
     for i in range(Numb_Algs):
         print(algorithms_list[i], "acc:", glob_acc[i].max())
@@ -354,10 +354,10 @@ def plot_summary_mnist2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], l
     plt.savefig(dataset + 'acu_loss.pdf', bbox_inches='tight')
     plt.savefig(dataset +  'acu_loss.png', bbox_inches='tight')
 
-def plot_summary_linear_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
+def plot_summary_linear_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
 
     Numb_Algs = len(algorithms_list)
-    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
     for i in range(Numb_Algs):
         print(algorithms_list[i], "loss:", glob_acc[i].max())
     
@@ -381,7 +381,7 @@ def plot_summary_linear_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10
     num_al = len(algs_lbl)
 
     for i in range(num_al):
-        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(eta[i]) ,marker = markers[i],markevery=0.2, markersize=7)
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]) ,marker = markers[i],markevery=0.2, markersize=7)
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
@@ -391,7 +391,7 @@ def plot_summary_linear_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10
 
     for i in range(num_al):
         stringbatch = str(batch_size[i])
-        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\alpha = $' + str(eta[i+ num_al]) ,marker = markers[i],markevery=0.2, markersize=7)
+        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\alpha = $' + str(alpha[i+ num_al]) ,marker = markers[i],markevery=0.2, markersize=7)
 
     ax2.set_ylim([0.049, 0.1])
 
@@ -422,7 +422,7 @@ def plot_summary_linear_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10
 
     for i in range(num_al):
         ax1.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
-            loc_ep1[i]) + ', $\\alpha = $' + str(eta[i]), marker=markers[i], markevery=0.2, markersize=7)
+            loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]), marker=markers[i], markevery=0.2, markersize=7)
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
@@ -433,7 +433,7 @@ def plot_summary_linear_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10
     for i in range(num_al):
         stringbatch = str(batch_size[i])
         ax2.plot(glob_acc[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
-            loc_ep1[i + num_al]) + ', $\\alpha = $' + str(eta[i + num_al]), marker=markers[i], markevery=0.2, markersize=7)
+            loc_ep1[i + num_al]) + ', $\\alpha = $' + str(alpha[i + num_al]), marker=markers[i], markevery=0.2, markersize=7)
 
     ax2.set_ylim([0.049, 0.1])
 
@@ -449,10 +449,10 @@ def plot_summary_linear_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10
     plt.savefig('Linear_synthetic_R_alpha_test_loss.pdf', bbox_inches='tight')
     plt.savefig('Linear_synthetic_R_alpha_test_loss.png', bbox_inches='tight')
 
-def plot_summary_linear2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
+def plot_summary_linear2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
     
     Numb_Algs = len(algorithms_list)
-    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
     for i in range(Numb_Algs):
         print(algorithms_list[i], "loss:", glob_acc[i].max())
     
@@ -508,10 +508,10 @@ def plot_summary_linear2(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], 
     plt.savefig('Linear_synthetic_different_loss.png', bbox_inches='tight')
 
 
-def plot_summary_mnist_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
+def plot_summary_mnist_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
 
     Numb_Algs = len(algorithms_list)
-    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
     for i in range(Numb_Algs):
         print(algorithms_list[i], "loss:", glob_acc[i].max())
     
@@ -535,7 +535,7 @@ def plot_summary_mnist_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10,
     num_al = len(algs_lbl)
 
     for i in range(num_al):
-        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(eta[i]) ,marker = markers[i],markevery=0.2, markersize=7)
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]) ,marker = markers[i],markevery=0.2, markersize=7)
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
@@ -545,7 +545,7 @@ def plot_summary_mnist_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10,
 
     for i in range(num_al):
         stringbatch = str(batch_size[i])
-        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\alpha = $' + str(eta[i+ num_al]) ,marker = markers[i],markevery=0.2, markersize=7)
+        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\alpha = $' + str(alpha[i+ num_al]) ,marker = markers[i],markevery=0.2, markersize=7)
 
     ax2.set_ylim([0.2, 0.5])
 
@@ -577,7 +577,7 @@ def plot_summary_mnist_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10,
 
     for i in range(num_al):
         ax1.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
-            loc_ep1[i]) + ', $\\alpha = $' + str(eta[i]), marker=markers[i], markevery=0.2, markersize=7)
+            loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]), marker=markers[i], markevery=0.2, markersize=7)
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='lower right')
@@ -588,7 +588,7 @@ def plot_summary_mnist_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10,
     for i in range(num_al):
         stringbatch = str(batch_size[i])
         ax2.plot(glob_acc[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
-            loc_ep1[i + num_al]) + ', $\\alpha = $' + str(eta[i + num_al]), marker=markers[i], markevery=0.2, markersize=7)
+            loc_ep1[i + num_al]) + ', $\\alpha = $' + str(alpha[i + num_al]), marker=markers[i], markevery=0.2, markersize=7)
 
     ax2.set_ylim([0.86, 0.922])
 
@@ -605,10 +605,10 @@ def plot_summary_mnist_R_and_alpha(num_users=100, loc_ep1=5, Numb_Glob_Iters=10,
     plt.savefig('MNIST_R_alpha_accu.png', bbox_inches='tight')
 
 
-def plot_summary_linear_kappa(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], eta = [], eta0 = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
+def plot_summary_linear_kappa(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
 
     Numb_Algs = len(algorithms_list)
-    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, eta =eta, eta0 =eta0, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
     for i in range(Numb_Algs):
         print(algorithms_list[i], "loss:", glob_acc[i].max())
     kappa = ["$10$", "$10^2$", "$10^3$", "$10^4$"]

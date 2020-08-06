@@ -11,9 +11,9 @@ from algorithms.optimizers.optimizer import *
 # Implementation for FedAvg clients
 
 class edgeNew(Edgebase):
-    def __init__(self, numeric_id, train_data, test_data, model, batch_size, learning_rate, eta, eta0, L,
+    def __init__(self, numeric_id, train_data, test_data, model, batch_size, learning_rate, alpha, eta, L,
                  local_epochs, optimizer):
-        super().__init__(numeric_id, train_data, test_data, model[0], batch_size, learning_rate, eta, eta0, L,
+        super().__init__(numeric_id, train_data, test_data, model[0], batch_size, learning_rate, alpha, eta, L,
                          local_epochs)
 
         if (model[1] == "linear_regression"):
@@ -53,11 +53,11 @@ class edgeNew(Edgebase):
             loss = self.loss(output, y)
             grads = torch.autograd.grad(loss, list(self.model.parameters()), retain_graph=True)
             for param, grad in zip(list(self.model.parameters()), grads):
-                param.data.add_(-self.eta * grad)
+                param.data.add_(-self.alpha * grad)
 
         # param = x, server_param = w^t
         for dt, param, server_param in zip(self.dt, self.model.parameters(), server_model):
-            dt.data = (1 / self.eta) * (param - server_param)
+            dt.data = (1 / self.alpha) * (param - server_param)
 
         # save optimal parameter after training.
         self.clone_model_paramenter(self.model.parameters(), self.local_optimal)
