@@ -1,7 +1,7 @@
 import torch
 import os
 
-from algorithms.edges.edgeSeOrder import edgeSeOrder
+from algorithms.edges.edgeDONE import edgeDONE
 #from algorithms.edges.edgeSeOrder2 import edgeSeOrder2
 from algorithms.edges.edgeFiOrder import edgeFiOrder
 from algorithms.edges.edgeDANE import edgeDANE
@@ -39,7 +39,7 @@ class Server(ServerBase):
             id, train, test = read_edge_data(i, data, dataset)
 
             if(algorithm == "DONE"):
-                edge = edgeSeOrder(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
+                edge = edgeDONE(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)
                 #print("Finished creating DONE server.")
             if(algorithm == "FirstOrder"):
                 edge = edgeFiOrder(id, train, test, model, batch_size, learning_rate, eta, eta0, L, local_epochs, optimizer)

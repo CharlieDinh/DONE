@@ -12,7 +12,7 @@ from algorithms.optimizers.optimizer import *
 
 # Implementation for FedAvg clients
 
-class edgeSeOrder(Edgebase):
+class edgeDONE(Edgebase):
     def __init__(self, numeric_id, train_data, test_data, model, batch_size, learning_rate, eta, eta0, L,
                  local_epochs, optimizer):
         super().__init__(numeric_id, train_data, test_data, model[0], batch_size, learning_rate, eta, eta0, L,
