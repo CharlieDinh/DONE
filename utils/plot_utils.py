@@ -68,7 +68,7 @@ def average_data(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb="", learning
     print("Mean:", np.mean(max_accurancy))
 
     alg = dataset + "_" + algorithms
-    alg = alg + "_" + str(learning_rate)+ "_" + str(alpha) + "_" + str(eta) + "_" + str(lamb) + "_" + str(num_users[i]) + "u" + "_" + str(batch_size) + "b" + "_" + str(loc_ep1)
+    alg = alg + "_" + str(learning_rate)+ "_" + str(alpha) + "_" + str(eta) + "_" + str(lamb) + "_" + str(num_users) + "u" + "_" + str(batch_size) + "b" + "_" + str(loc_ep1)
     alg = alg + "_" + "avg"
     if (len(glob_acc) != 0 &  len(train_acc) & len(train_loss)) :
         with h5py.File("./results/"+'{}.h5'.format(alg,loc_ep1), 'w') as hf:
