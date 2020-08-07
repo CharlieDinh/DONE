@@ -754,7 +754,7 @@ def plot_summary_linear_kappa(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
-    ax1.set_ylim([0.049, 0.1])
+    ax1.set_ylim([0.0485, 0.1])
     ax1.grid(True)
    # ax1.set_title('Fixed '+'$\\alpha$')
 
@@ -762,7 +762,7 @@ def plot_summary_linear_kappa(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=
         stringbatch = str(batch_size[i])
         ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\kappa = $' + kappa[i] ,marker = markers[i],markevery=0.2, markersize=7)
 
-    ax2.set_ylim([0.049, 0.1])
+    ax2.set_ylim([0.0485, 0.1])
 
     #plt.title('$\\kappa = $' + str(kappa))
     #fig.set_title('Linear Synthetic')
@@ -799,7 +799,7 @@ def plot_summary_linear_kappa(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
-    ax1.set_ylim([0.049, 0.1])
+    ax1.set_ylim([0.0485, 0.1])
     ax1.grid(True)
    # ax1.set_title('Fixed '+'$\\alpha$')
 
@@ -808,7 +808,7 @@ def plot_summary_linear_kappa(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=
         ax2.plot(glob_acc[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
             loc_ep1[i + num_al]) + ', $\\kappa = $' + kappa[i], marker=markers[i], markevery=0.2, markersize=7)
 
-    ax2.set_ylim([0.049, 0.1])
+    ax2.set_ylim([0.0485, 0.1])
 
     #plt.title('$\\kappa = $' + str(kappa))
     #fig.set_title('Linear Synthetic')
