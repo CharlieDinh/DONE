@@ -31,7 +31,7 @@ def get_training_data_value(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[]
         algs_lbl[i] = algs_lbl[i]
     return glob_acc, train_acc, train_loss
 
-def get_all_training_data_value(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=0, learning_rate=0, alpha = 0, eta = 0, algorithms="", batch_size=0, dataset="" ,times = 5):
+def get_all_training_data_value(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb=0, learning_rate=0, alpha = 0, eta = 0, algorithms="", batch_size=0, dataset="" ,times = 5):
     train_acc = np.zeros((times, Numb_Glob_Iters))
     train_loss = np.zeros((times, Numb_Glob_Iters))
     glob_acc = np.zeros((times, Numb_Glob_Iters))
@@ -39,7 +39,7 @@ def get_all_training_data_value(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lam
     for i in range(times):
         string_learning_rate = str(learning_rate)  
         string_learning_rate = string_learning_rate  + "_" + str(alpha)  + "_" + str(eta) + "_" + str(lamb)
-        algorithms_list[i] = algorithms_list[i] + "_" + string_learning_rate + "_" + str(num_users[i]) + "u" + "_" + str(batch_size) + "b"  "_" +str(loc_ep1) +  "_" +str(i)
+        algorithms_list[i] = algorithms_list[i] + "_" + string_learning_rate + "_" + str(num_users) + "u" + "_" + str(batch_size) + "b"  "_" +str(loc_ep1) +  "_" +str(i)
         train_acc[i, :], train_loss[i, :], glob_acc[i, :] = np.array(simple_read_data(dataset +"_"+ algorithms_list[i]))[:, :Numb_Glob_Iters]
     
     return glob_acc, train_acc, train_loss
@@ -54,7 +54,7 @@ def get_data_label_style(input_data = [], linestyles= [], algs_lbl = [], lamb = 
 
     return data, lstyles, labels
 
-def average_data(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb="", learning_rate="", alpha="", eta="", algorithms="", batch_size=0, dataset = "", times = 5):
+def average_data(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb="", learning_rate="", alpha="", eta="", algorithms="", batch_size=0, dataset = "", times = 5):
     glob_acc, train_acc, train_loss = get_all_training_data_value( num_users, loc_ep1, Numb_Glob_Iters, lamb, learning_rate,alpha,eta, algorithms, batch_size, dataset,times)
     glob_acc_data = np.average(glob_acc, axis=0)
     train_acc_data = np.average(train_acc, axis=0)
