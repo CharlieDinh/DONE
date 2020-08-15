@@ -17,16 +17,19 @@ This repository is for the Experiment Section of the paper:
   - We can change the number of user and number of labels for each user using 2 variable NUM_USERS = 32 and NUM_LABELS = 3
 
 - To generate non-iid Synthetic:
-  - Access data/Linear_synthetic and run: "python3 generate_niid_linear_32users.py". Synthetic data is configurable with the number of users, the numbers of labels for each user, and the value of $\kappa$.
+  - Access data/Linear_synthetic and run: "python3 generate_niid_linear_32users_updated.py". Synthetic data is configurable with the number of users, the numbers of labels for each user, and the value of $\kappa$.
 
 - The datasets also are available to download at: https://drive.google.com/drive/folders/1LkBjkP0PzfRNiAY9ImN85r9vBIuW4U6-?usp=sharing
 
 # Produce experiments and figures
 - There is a main file "main.py" which allows running all experiments, and 2 files: plot_mnist.py, plot_synthetic.py to plot all results after runing all experiment.
 ## Effect of parameters: $\alpha$, $R $, and $\kappa$
-- To produce the Fig.1 : Effects of various values of $\alpha$ and $R$ on synthetic ($\kappa = 10^3$)
+- To produce the Fig.1 : Effects of various values of $\alpha$ and $R$ on synthetic ($\kappa = 10^2$)
 <p align="center">
-  <img src="https://github.com/CharlieDinh/DONE/files/5032598/Linear_synthetic_R_alpha_test_loss.pdf" height="300">
+  <img src="https://user-images.githubusercontent.com/44039773/90308495-59b36580-df23-11ea-856e-6b1e34085715.png" height="300">
+</p>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/44039773/90308494-58823880-df23-11ea-88c3-82a629e38894.png" height="300">
 </p>
     <pre><code>
     python3 --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --eta --num_global_iters 100 --local_epochs 10 --numedges 32
