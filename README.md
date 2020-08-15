@@ -32,6 +32,31 @@ This repository is for the Experiment Section of the paper:
   <img src="https://user-images.githubusercontent.com/44039773/90308494-58823880-df23-11ea-88c3-82a629e38894.png" height="300">
 </p>
     <pre><code>
-    python3 --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --eta --num_global_iters 100 --local_epochs 10 --numedges 32
+      python3 --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --eta 0.06 --num_global_iters 100 --local_epochs 20 --numedges 32
+      python3 --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --eta 0.08 --num_global_iters 100 --local_epochs 20 --numedges 32
+      python3 --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --eta 0.1 --num_global_iters 100 --local_epochs 20 --numedges 32
+      python3 --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --eta 0.2 --num_global_iters 100 --local_epochs 20 --numedges 32
+      python3 --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --eta 0.1 --num_global_iters 100 --local_epochs 10 --numedges 32
+      python3 --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --eta 0.1 --num_global_iters 100 --local_epochs 20 --numedges 32
+      python3 --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --eta 0.1 --num_global_iters 100 --local_epochs 30 --numedges 32
+      python3 --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --eta 0.1 --num_global_iters 100 --local_epochs 40 --numedges 32
+    </code></pre>
+    
+- To produce the Fig.2 : Effects of various values of $\alpha$ and $R$ on MNIST
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/44039773/90308499-5d46ec80-df23-11ea-9bcc-08c748b589d7.png" height="300">
+</p>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/44039773/90308497-5c15bf80-df23-11ea-8073-94bddbbb71f5.png" height="300">
+</p>
+    <pre><code>
+      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.005 --num_global_iters 100 --local_epochs 20 --numedges 32
+      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.01 --num_global_iters 100 --local_epochs 20 --numedges 32
+      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 100 --local_epochs 20 --numedges 32
+      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.03 --num_global_iters 100 --local_epochs 20 --numedges 32
+      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 20 --local_epochs 10 --numedges 32
+      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 50 --local_epochs 20 --numedges 32
+      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 80 --local_epochs 30 --numedges 32
+      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 100 --local_epochs 40 --numedges 32
     </code></pre>
 ## Performance comparison with different  distributed algorithms
