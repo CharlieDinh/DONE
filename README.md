@@ -22,7 +22,8 @@ This repository is for the Experiment Section of the paper:
 - The datasets also are available to download at: https://drive.google.com/drive/folders/1LkBjkP0PzfRNiAY9ImN85r9vBIuW4U6-?usp=sharing
 
 # Produce experiments and figures
-- There is a main file "main.py" which allows running all experiments, and 2 files: plot_mnist.py, plot_synthetic.py to plot all results after runing all experiment.
+- There is a main file "main.py" which allows running all experiments, and 2 files: "plot_mnist.py", "plot_synthetic.py" to plot all results after runing all experiment.  Only run "plot_mnist.py" and "plot_synthetic.py" after getting the results from training process.
+
 ## Effect of parameters: $\alpha$, $R $, and $\kappa$
 - To produce the Fig.1 : Effects of various values of $\alpha$ and $R$ on synthetic ($\kappa = 10^2$)
 <p align="center">
@@ -50,13 +51,38 @@ This repository is for the Experiment Section of the paper:
   <img src="https://user-images.githubusercontent.com/44039773/90308497-5c15bf80-df23-11ea-8073-94bddbbb71f5.png" height="300">
 </p>
     <pre><code>
-      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.005 --num_global_iters 100 --local_epochs 20 --numedges 32
-      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.01 --num_global_iters 100 --local_epochs 20 --numedges 32
-      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 100 --local_epochs 20 --numedges 32
-      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.03 --num_global_iters 100 --local_epochs 20 --numedges 32
-      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 20 --local_epochs 10 --numedges 32
-      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 50 --local_epochs 20 --numedges 32
-      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 80 --local_epochs 30 --numedges 32
-      python3 --dataset Linear_synthetic --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 100 --local_epochs 40 --numedges 32
+      python3 --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.005 --num_global_iters 100 --local_epochs 100 --numedges 32
+      python3 --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.01 --num_global_iters 100 --local_epochs 100 --numedges 32
+      python3 --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 100 --local_epochs 100 --numedges 32
+      python3 --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.03 --num_global_iters 100 --local_epochs 100 --numedges 32
+      python3 --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 20 --local_epochs 20 --numedges 32
+      python3 --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 50 --local_epochs 50 --numedges 32
+      python3 --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 80 --local_epochs 80 --numedges 32
+      python3 --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 100 --local_epochs 100 --numedges 32
     </code></pre>
-## Performance comparison with different  distributed algorithms
+    
+## Performance comparison with different distributed algorithms
+- For MNIST:
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/44039773/90308504-61730a00-df23-11ea-88a6-4c1f43bf54c1.png" height="300">
+</p>
+      <pre><code>
+      python3 --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.015 --num_global_iters 100 --local_epochs 120 --numedges 32
+      python3 --dataset MNIST --model mclr --algorithm DONE --batch_size 256 --eta 0.01 --num_global_iters 100 --local_epochs 190 --numedges 32
+      python3 --dataset MNIST --model mclr --algorithm DONE --batch_size 128 --eta 0.003 --num_global_iters 100 --local_epochs 200 --numedges 32
+      python3 --dataset MNIST --model mclr --algorithm Newton --batch_size 0 --eta 0.015 --num_global_iters 100 --local_epochs 120 --numedges 32
+      python3 --dataset MNIST --model mclr --algorithm DANE --batch_size 0 --eta 1 --learning_rate 0.05 --num_global_iters 100 --local_epochs 120 --numedges 32
+      python3 --dataset MNIST --model mclr --algorithm GD --batch_size 0 --learning_rate 0.2 --num_global_iters 100 --numedges 32
+    </code></pre>
+- For Synthetic:
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/44039773/90308485-51f3c100-df23-11ea-8b9e-367905260506.png" height="300">
+</p>
+ <pre><code>
+      python3 --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --eta 0.1 --num_global_iters 100 --local_epochs 40 --numedges 32
+      python3 --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 256 --eta 0.1 --num_global_iters 100 --local_epochs 40 --numedges 32
+      python3 --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 128 --eta 0.1 --num_global_iters 100 --local_epochs 40 --numedges 32
+      python3 --dataset Linear_synthetic --model linear_regression --algorithm Newton --batch_size 0 --eta 0.1 --num_global_iters 100 --local_epochs 40 --numedges 32
+      python3 --dataset Linear_synthetic --model linear_regression --algorithm DANE --batch_size 0 --eta 1 --learning_rate 0.1 --num_global_iters 100 --local_epochs 40 --numedges 32
+      python3 --dataset Linear_synthetic --model linear_regression --algorithm GD --batch_size 0 --learning_rate 0.8 --num_global_iters 100 --numedges 32
+</code></pre>
