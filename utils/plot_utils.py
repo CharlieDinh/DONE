@@ -4,6 +4,9 @@ import numpy as np
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes, mark_inset
 from matplotlib.ticker import StrMethodFormatter
 import os
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
 plt.rcParams.update({'font.size': 14})
 
 def simple_read_data(alg):
