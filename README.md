@@ -51,14 +51,14 @@ This repository is for the Experiment Section of the paper:
   <img src="https://user-images.githubusercontent.com/44039773/90308497-5c15bf80-df23-11ea-8073-94bddbbb71f5.png" height="300">
 </p>
     <pre><code>
-      python3 main.py --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.005 --num_global_iters 100 --local_epochs 100 --numedges 32
-      python3 main.py --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.01 --num_global_iters 100 --local_epochs 100 --numedges 32
-      python3 main.py --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 100 --local_epochs 100 --numedges 32
-      python3 main.py --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.03 --num_global_iters 100 --local_epochs 100 --numedges 32
-      python3 main.py --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 20 --local_epochs 20 --numedges 32
-      python3 main.py --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 50 --local_epochs 50 --numedges 32
-      python3 main.py --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 80 --local_epochs 80 --numedges 32
-      python3 main.py --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 100 --local_epochs 100 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --eta 0.005 --num_global_iters 100 --local_epochs 100 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --eta 0.01 --num_global_iters 100 --local_epochs 100 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 100 --local_epochs 100 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --eta 0.03 --num_global_iters 100 --local_epochs 100 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 20 --local_epochs 20 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 50 --local_epochs 50 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 80 --local_epochs 80 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --eta 0.02 --num_global_iters 100 --local_epochs 100 --numedges 32
     </code></pre>
     
 ## Performance comparison with different distributed algorithms
@@ -67,12 +67,12 @@ This repository is for the Experiment Section of the paper:
   <img src="https://user-images.githubusercontent.com/44039773/90308504-61730a00-df23-11ea-88a6-4c1f43bf54c1.png" height="300">
 </p>
       <pre><code>
-      python3 main.py --dataset MNIST --model mclr --algorithm DONE --batch_size 0 --eta 0.015 --num_global_iters 100 --local_epochs 120 --numedges 32
-      python3 main.py --dataset MNIST --model mclr --algorithm DONE --batch_size 256 --eta 0.01 --num_global_iters 100 --local_epochs 190 --numedges 32
-      python3 main.py --dataset MNIST --model mclr --algorithm DONE --batch_size 128 --eta 0.003 --num_global_iters 100 --local_epochs 200 --numedges 32
-      python3 main.py --dataset MNIST --model mclr --algorithm Newton --batch_size 0 --eta 0.015 --num_global_iters 100 --local_epochs 120 --numedges 32
-      python3 main.py --dataset MNIST --model mclr --algorithm DANE --batch_size 0 --eta 1 --learning_rate 0.05 --num_global_iters 100 --local_epochs 120 --numedges 32
-      python3 main.py --dataset MNIST --model mclr --algorithm GD --batch_size 0 --learning_rate 0.2 --num_global_iters 100 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --eta 0.015 --num_global_iters 100 --local_epochs 120 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 256 --eta 0.01 --num_global_iters 100 --local_epochs 190 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 128 --eta 0.003 --num_global_iters 100 --local_epochs 200 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm Newton --batch_size 0 --eta 0.015 --num_global_iters 100 --local_epochs 120 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DANE --batch_size 0 --eta 1 --learning_rate 0.05 --num_global_iters 100 --local_epochs 120 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm GD --batch_size 0 --learning_rate 0.2 --num_global_iters 100 --numedges 32
     </code></pre>
 - For Synthetic:
 <p align="center">
