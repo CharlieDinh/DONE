@@ -126,7 +126,7 @@ def read_edge_data(index, data, dataset):
     train_data = data[2][id]
     test_data = data[3][id]
     X_train, y_train, X_test, y_test = train_data['x'], train_data['y'], test_data['x'], test_data['y']
-    if(dataset == "Mnist"):
+    if(dataset == "Mnist" or dataset == "Fashion_Mnist" ):
         X_train, y_train, X_test, y_test = train_data['x'], train_data['y'], test_data['x'], test_data['y']
         X_train = torch.Tensor(X_train).view(-1, NUM_CHANNELS, IMAGE_SIZE, IMAGE_SIZE).type(torch.float32)
         y_train = torch.Tensor(y_train).type(torch.int64)

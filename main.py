@@ -20,10 +20,7 @@ def main(dataset, algorithm, model, batch_size, learning_rate, alpha, eta, L, nu
 
         # Generate model
         if(model == "mclr"):
-            if(dataset == "Mnist"):
-                model = Mclr_Logistic(), model
-            elif( dataset == "Fenist"):
-                model = Mclr_Logistic(), model
+            model = Mclr_Logistic(), model
 
         if(model == "linear_regression"):
             model = Linear_Regression(40,1), model
@@ -42,7 +39,7 @@ def main(dataset, algorithm, model, batch_size, learning_rate, alpha, eta, L, nu
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset", type=str, default="Logistic_synthetic", choices=["Mnist", "Linear_synthetic"])
+    parser.add_argument("--dataset", type=str, default="Logistic_synthetic", choices=["Mnist", "Linear_synthetic", "Fashion_Mnist", "Cifar10"])
     parser.add_argument("--model", type=str, default="logistic_regression", choices=["linear_regression", "mclr", "logistic_regression"])
     parser.add_argument("--batch_size", type=int, default=20)
     parser.add_argument("--learning_rate", type=float, default=1, help="Local learning rate for DANE, GD")
