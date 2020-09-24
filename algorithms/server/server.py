@@ -9,6 +9,7 @@ from algorithms.edges.edgeNew import edgeNew
 from algorithms.edges.edgeGD import edgeGD
 from algorithms.edges.edgeFEDL import edgeFEDL
 from algorithms.edges.edgeNewton import edgeNewton
+from algorithms.edges.edgeAvg import edgeAvg
 
 from algorithms.server.serverbase import ServerBase
 from utils.model_utils import read_data, read_edge_data
@@ -40,25 +41,28 @@ class Server(ServerBase):
 
             if(algorithm == "DONE"):
                 edge = edgeDONE(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
-                #print("Finished creating DONE server.")
+
             if(algorithm == "FirstOrder"):
                 edge = edgeFiOrder(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
-                #print("Finished creating FirstOrder server.")
+
             if(algorithm == "DANE"):
                 edge = edgeDANE(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
-                #print("Finished creating DANE server.")
+
             if algorithm == "New":
                 edge = edgeNew(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
 
             if algorithm == "GD":
                 edge = edgeGD(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+            
+            if algorithm == "FedAvg":
+                edge = edgeAvg(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
 
             if(algorithm == "FEDL"):
                 edge = edgeFEDL(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
 
             if(algorithm == "Newton"):
                 edge = edgeNewton(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
-                
+            
             self.edges.append(edge)
             self.total_train_samples += edge.train_samples
 
@@ -99,35 +103,18 @@ class Server(ServerBase):
                 self.aggregate_parameters()
 
         elif self.algorithm == "DANE":
-        
-            # # Choose all edges in the training process
-            # self.selected_edges = self.edges
             for glob_iter in range(self.num_glob_iters):
                 print("-------------Round number: ",glob_iter, " -------------")
-            #     self.aggregate_grads()
-
-            #     self.send_grads()
-            #     self.send_parameters()
-
-            #     self.evaluate()
-
-            #     for edge in self.selected_edges:
-            #         edge.train(self.local_epochs)
-
-            #     self.aggregate_parameters()
-            #recive parameter from server
                 self.send_parameters()
                 self.evaluate()
-                    #self.selected_edges = self.select_edges(glob_iter, self.num_edges)
-                    # Caculate gradient to send to server for average
+                # Caculate gradient to send to server for average
                 for edge in self.edges:
                     edge.get_full_grad()
                     
                 self.aggregate_grads()
-                    # receive average gradient form server 
+
+                # receive average gradient form server 
                 self.send_grads()
-                
-                    # all note are trained 
                 self.selected_edges = self.select_edges(glob_iter, self.num_edges)
                 for edge in self.selected_edges:
                     edge.train(self.local_epochs)
@@ -147,7 +134,7 @@ class Server(ServerBase):
             self.save_results()
             self.save_model()
 
-        elif self.algorithm == "GD":
+        elif self.algorithm == "GD" or self.algorithm == "FedAvg":
             for glob_iter in range(self.num_glob_iters):
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
@@ -165,7 +152,6 @@ class Server(ServerBase):
                 # recive parameter from server
                 self.send_parameters()
                 self.evaluate()
-                #self.selected_edges = self.select_edges(glob_iter, self.num_edges)
                 # Caculate gradient to send to server for average
                 for edge in self.edges:
                     edge.get_full_grad()
@@ -195,14 +181,13 @@ class Server(ServerBase):
                 self.aggregate_parameters()
                 self.aggregate_grads()
 
-        elif self.algorithm == "Newton":
+        elif self.algorithm == "Newton": #using Richardson
             # create zero dt
         
             for glob_iter in range(self.num_glob_iters):
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
                 self.evaluate()
-            
                 # reset all direction after each global interation
                 self.dt = []
                 self.total_dt = []
@@ -225,7 +210,7 @@ class Server(ServerBase):
 
                 self.aggregate_newton()
 
-        elif self.algorithm == "Newton2":
+        elif self.algorithm == "Newton2": #using inverse hessian
             for glob_iter in range(self.num_glob_iters):
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
@@ -247,12 +232,6 @@ class Server(ServerBase):
 
                 for param, d in zip(self.model.parameters(), [weights_direction, bias_direction]):
                     param.data.add_(self.alpha * d)
-
-                # self.selected_edges = self.select_edges(glob_iter, self.num_edges)
-                # for edge in self.selected_edges:
-                #     edge.get_hessian(self.local_epochs, glob_iter)
-
-                # self.aggregate_parameters()
 
         self.save_results()
         self.save_model()

@@ -23,8 +23,6 @@ class edgeAvg(Edgebase):
         self.model.train()
         for epoch in range(1, self.local_epochs + 1):
             self.model.train()
-            #loss_per_epoch = 0
-            # Sample a mini-batch (D_i)
             (X, y) = self.get_next_train_batch()
             self.optimizer.zero_grad()
             output = self.model(X)
