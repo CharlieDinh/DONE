@@ -307,9 +307,9 @@ def plot_summary_mnist2(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[], le
         print(algorithms_list[i], "acc:", glob_acc[i].max())
         print(algorithms_list[i], "loss:", train_loss[i].min())
 
-    linestyles = ['-', '-', '-', '--', '-.', '-.', ':']
-    markers = ["o","v","s","*","x","P"]
-    algs_lbl = ["DONE", "DONE", "DONE", "Newton", "DANE", "GD"]
+    linestyles = ['-', '-', '-', '--', '--', '-.', ':']
+    markers = ["o", "v", "s", "*", "x", "P", "+"]
+    algs_lbl = ["DONE", "DONE", "DONE", "Newton", "Newton", "DANE", "GD"]
 
    #plt.figure(figsize=(6,12))
     fig = plt.figure(figsize=(12, 6))
@@ -324,27 +324,36 @@ def plot_summary_mnist2(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[], le
                    bottom='off', left='off', right='off')
     #fig, (ax1, ax2) = plt.subplots(1, 2)
 
-    num_al = 6
+    num_al = 7
 
     for i in range(num_al):
         stringbatch = str(batch_size[i])
-        if(stringbatch == '0'):
-            stringbatch = '$\infty$'
-        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=7)
+        if(stringbatch == '0' and algs_lbl[i] != "DANE"):
+            stringbatch = '$\infty$' + ", " + \
+                '$\\alpha$' + " = " + str(alpha[i])
+        elif(stringbatch == '0'):
+             stringbatch = '$\infty$'
+        
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch, marker = markers[i],markevery=0.2, markersize=7)
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
-    ax1.set_ylim([0.21, 0.5])
+    ax1.set_ylim([0.2, 0.5])
     ax1.grid(True)
     ax1.set_title('Training Loss')
 
     for i in range(num_al):
         stringbatch = str(batch_size[i])
-        if(stringbatch == '0'):
-            stringbatch = '$\infty$'
-        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + stringbatch ,marker = markers[i],markevery=0.2, markersize=7)
+        if(stringbatch == '0' and algs_lbl[i] != "DANE"):
+            stringbatch = '$\infty$' + ", " + \
+                '$\\alpha$' + " = " + str(alpha[i])
+        elif(stringbatch == '0'):
+             stringbatch = '$\infty$'
 
-    ax2.set_ylim([0.86, 0.922])
+        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$B = $' +
+                 stringbatch , marker=markers[i], markevery=0.2, markersize=7)
+
+    ax2.set_ylim([0.88, 0.922])
 
     #plt.title('$\\kappa = $' + str(kappa))
     #fig.set_title('Linear Synthetic')

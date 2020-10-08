@@ -28,14 +28,14 @@ num_glob_iters = 100
 dataset = "MNIST"
 
 # defind parameters
-if(0):
-    numedges =[32,32,32,32,32,32,32]
-    local_epochs = [120,190,200,120,20,1]
-    learning_rate = [1,1,1,1,0.05,0.2]
-    alpha =  [0.015,0.01,0.003,0.015,1,1,1]
-    eta = [1,1,1,1,1,1,1]
-    batch_size = [0,256,128,0,0,0]
-    algorithms = ["DONE", "DONE", "DONE", "Newton", "DANE", "GD"]
+if(1):
+    numedges =[32,32,32,32,32,32,32,32]
+    local_epochs = [120,190,200,120,120,20,1]
+    learning_rate = [1,1,1,1,1,0.05,0.2]
+    alpha =  [0.02,0.01,0.003,0.02,0.03,1,1,1]
+    eta = [1,1,1,1,1,1,1,1]
+    batch_size = [0,256,128,0,0,0,0]
+    algorithms = ["DONE", "DONE", "DONE", "Newton", "Newton", "DANE", "GD"]
     L = [0,0,0,0,0,0,0,0,0,0,0]
     plot_summary_mnist2(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L, learning_rate=learning_rate, alpha = alpha, eta = eta, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
 
