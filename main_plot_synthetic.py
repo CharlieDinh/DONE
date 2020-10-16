@@ -30,19 +30,19 @@ dataset = "Linear_synthetic"
 # defind parameters
 
 if(1):
-    numedges = [32,32,32,32,32,32,32,32]
-    local_epochs = [40, 40, 40, 40, 40, 1]
-    learning_rate = [1, 1, 1, 1, 0.1, 0.8]
-    alpha = [0.1, 0.1, 0.1, 0.1, 1, 1]
-    eta = [1, 1, 1, 1, 1,1]
-    batch_size = [0, 256, 128, 0, 0, 0]
-    algorithms = ["DONE", "DONE", "DONE", "Newton", "DANE", "GD"]
-    L = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    numedges = [32,32,32,32,32,32,32,32,32]
+    local_epochs = [40, 40, 40, 40, 40, 1,40]
+    learning_rate = [1, 1, 1, 1, 0.1, 0.8,1]
+    alpha = [0.1, 0.1, 0.1, 0.1, 1, 1,0.01]
+    eta = [1, 1, 1, 1, 1,1,1]
+    batch_size = [0, 256, 128, 0, 0, 0,0]
+    algorithms = ["DONE", "DONE", "DONE", "Newton", "DANE", "GD", "GT"]
+    L = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         #kappa = [4,4,4,4,4,4,9,9,9,9,9,9]
     plot_summary_linear2(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L,
                         learning_rate=learning_rate, alpha=alpha, eta=eta, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
 
-if(1):
+if(0):
     numedges = [8,16,24,32]
     local_epochs = [40, 40, 40, 40]
     learning_rate = [1, 1, 1, 1]
@@ -55,7 +55,7 @@ if(1):
     plot_summary_linear_edge(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L,
                         learning_rate=learning_rate, alpha=alpha, eta=eta, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
 
-if(1):
+if(0):
     numedges = [32,32,32,32,32,32,32,32]
     local_epochs = [10, 20, 30, 40, 20,20,20,20]
     learning_rate = [1, 1, 1, 1, 1, 1, 1, 1]
@@ -68,7 +68,7 @@ if(1):
     plot_summary_linear_R_and_alpha(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L,
                         learning_rate=learning_rate, alpha=alpha, eta=eta, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
 
-if(1):
+if(0):
     numedges = [32,32,32,32,32,32,32,32]
     local_epochs = [20, 20, 20, 20, 40, 40, 40, 40]
     learning_rate = [1, 1, 1, 1, 1, 1, 1, 1]

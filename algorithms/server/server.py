@@ -10,6 +10,8 @@ from algorithms.edges.edgeGD import edgeGD
 from algorithms.edges.edgeFEDL import edgeFEDL
 from algorithms.edges.edgeNewton import edgeNewton
 from algorithms.edges.edgeAvg import edgeAvg
+from algorithms.edges.edgeGT import edgeGT
+from algorithms.edges.edgePGT import edgePGT
 
 from algorithms.server.serverbase import ServerBase
 from utils.model_utils import read_data, read_edge_data
@@ -62,6 +64,11 @@ class Server(ServerBase):
 
             if(algorithm == "Newton"):
                 edge = edgeNewton(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+
+            if(algorithm == "GT"):
+                edge = edgeGT(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+            if(algorithm == "PGT"):
+                edge = edgePGT(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
             
             self.edges.append(edge)
             self.total_train_samples += edge.train_samples
@@ -232,6 +239,28 @@ class Server(ServerBase):
 
                 for param, d in zip(self.model.parameters(), [weights_direction, bias_direction]):
                     param.data.add_(self.alpha * d)
+                    
+        elif self.algorithm == "GT" or self.algorithm == "PGT":
+            for glob_iter in range(self.num_glob_iters):
+                print("-------------Round number: ",glob_iter, " -------------")
+
+                # recive parameter from server
+                self.send_parameters()
+                self.evaluate()
+                # Caculate gradient to send to server for average
+                for edge in self.edges:
+                    edge.get_full_grad()
+                
+                self.aggregate_grads()
+                # receive average gradient form server 
+                self.send_grads()
+               
+                # all note are trained 
+                self.selected_edges = self.select_edges(glob_iter, self.num_edges)
+                for edge in self.selected_edges:
+                    edge.train(self.local_epochs, glob_iter)
+
+                self.aggregate_parameters()
 
         self.save_results()
         self.save_model()
