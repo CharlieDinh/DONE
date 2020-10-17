@@ -8,9 +8,8 @@ import json
 from torch.utils.data import DataLoader
 from algorithms.edges.edgebase import Edgebase
 from algorithms.optimizers.optimizer import *
-from algorithms.edges.nn_utils import hessian
 
-# Implementation for Conjugate gradient method clients
+# Implementation for Preconditioned Conjugate Gradient method clients
 
 class edgePGT(Edgebase):
     def __init__(self, numeric_id, train_data, test_data, model, batch_size, learning_rate, alpha, eta, L,
@@ -61,8 +60,7 @@ class edgePGT(Edgebase):
         dt = torch.cat([x.data.view(-1) for x in self.dt]).reshape(-1,1)
         
         # calculating hessian
-        client_grads = torch.autograd.grad(loss, self.model.parameters(), create_graph=True, retain_graph=True)
-        hess = hessian(client_grads, self.model)
+        hess = self.calc_hessian(loss, list(self.model.parameters())) 
         
         I =  torch.eye(*hess.size())
         hess = hess + self.alpha * I # adding identify notice for regularization
@@ -102,3 +100,23 @@ class edgePGT(Edgebase):
             shape = d.data.shape
             d.data = dt[index: index+ d.data.numel()].reshape(shape)
             index = index+ d.data.numel()
+            
+            
+    def calc_hessian(self, loss, params):
+        self.model.zero_grad()
+        loss_grad = torch.autograd.grad(loss, params, create_graph=True, retain_graph=True)
+        cnt = 0
+        for g in loss_grad:
+            g_vector = g.contiguous().view(-1) if cnt == 0 else torch.cat([g_vector, g.contiguous().view(-1)])
+            cnt = 1
+        l = g_vector.size(0)
+        hessian = torch.zeros(l, l)
+        for idx in range(l):
+            self.model.zero_grad()
+            grad2rd = torch.autograd.grad(g_vector[idx], params, create_graph=True)
+            cnt = 0
+            for g in grad2rd:
+                g2 = g.contiguous().view(-1) if cnt == 0 else torch.cat([g2, g.contiguous().view(-1)])
+                cnt = 1
+            hessian[idx] = g2
+        return hessian            
