@@ -64,7 +64,7 @@ This repository is for the Experiment Section of the paper:
 ## Performance comparison with different distributed algorithms
 - For MNIST:
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/72589172/96325425-6859ee00-1034-11eb-9dc5-ac55912fb009.png" height="300">
+  <img src="https://user-images.githubusercontent.com/72589172/96325966-9857c000-1039-11eb-94db-d967fa366e8b.png" height="300">
 </p>
       <pre><code>
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.015 --num_global_iters 100 --local_epochs 120 --numedges 32
@@ -77,7 +77,7 @@ This repository is for the Experiment Section of the paper:
     </code></pre>
 - For Synthetic:
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/44039773/90308485-51f3c100-df23-11ea-8b9e-367905260506.png" height="300">
+  <img src="https://user-images.githubusercontent.com/72589172/96326146-0fda1f00-103b-11eb-9468-145718e0ac41.png" height="300">
 </p>
  <pre><code>
       python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --alpha 0.1 --num_global_iters 100 --local_epochs 40 --numedges 32
@@ -86,4 +86,5 @@ This repository is for the Experiment Section of the paper:
       python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm Newton --batch_size 0 --alpha 0.1 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm DANE --batch_size 0 --eta 1 --learning_rate 0.1 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm GD --batch_size 0 --learning_rate 0.8 --num_global_iters 100 --numedges 32
+      python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm GT --batch_size 0 --alpha 0.2 --num_global_iters 100 --local_epochs 40 --numedges 32
 </code></pre>
