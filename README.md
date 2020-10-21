@@ -64,25 +64,27 @@ This repository is for the Experiment Section of the paper:
 ## Performance comparison with different distributed algorithms
 - For MNIST:
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/44039773/90308504-61730a00-df23-11ea-88a6-4c1f43bf54c1.png" height="300">
+  <img src="https://user-images.githubusercontent.com/72589172/96359887-8a329e00-1124-11eb-9fc6-8f691059f899.png" height="300">
 </p>
       <pre><code>
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.015 --num_global_iters 100 --local_epochs 120 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 256 --alpha 0.01 --num_global_iters 100 --local_epochs 190 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 128 --alpha 0.003 --num_global_iters 100 --local_epochs 200 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm Newton --batch_size 0 --alpha 0.015 --num_global_iters 100 --local_epochs 120 --numedges 32
-      python3 main.py --dataset Mnist --model mclr --algorithm DANE --batch_size 0 --eta 1 --learning_rate 0.05 --num_global_iters 100 --local_epochs 120 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DANE --batch_size 0 --alpha 1 --learning_rate 0.05 --num_global_iters 100 --local_epochs 20 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm GD --batch_size 0 --learning_rate 0.2 --num_global_iters 100 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm GT --batch_size 0 --alpha 0.4 --num_global_iters 100 --local_epochs 120 --numedges 32
     </code></pre>
 - For Synthetic:
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/44039773/90308485-51f3c100-df23-11ea-8b9e-367905260506.png" height="300">
+  <img src="https://user-images.githubusercontent.com/72589172/96359869-6a9b7580-1124-11eb-8638-8fbdc2b29428.png" height="300">
 </p>
  <pre><code>
       python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --alpha 0.1 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 256 --alpha 0.1 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 128 --alpha 0.1 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm Newton --batch_size 0 --alpha 0.1 --num_global_iters 100 --local_epochs 40 --numedges 32
-      python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm DANE --batch_size 0 --eta 1 --learning_rate 0.1 --num_global_iters 100 --local_epochs 40 --numedges 32
+      python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm DANE --batch_size 0 --alpha 1 --learning_rate 0.1 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm GD --batch_size 0 --learning_rate 0.8 --num_global_iters 100 --numedges 32
+      python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm GT --batch_size 0 --alpha 0.2 --num_global_iters 100 --local_epochs 40 --numedges 32
 </code></pre>
