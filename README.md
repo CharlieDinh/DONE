@@ -61,6 +61,43 @@ This repository is for the Experiment Section of the paper:
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 100 --numedges 32
     </code></pre>
     
+## Parameters impact for conjugate gradient
+- To produce the Fig.1 : Effects of various values of $\alpha$ and $R$ on synthetic ($\kappa = 10^2$)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/72589172/96943989-887f2680-14e6-11eb-8025-88e346f60502.png" height="300">
+</p>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/72589172/96944017-992f9c80-14e6-11eb-8328-28fee66e1cde.png" height="300">
+</p>
+    <pre><code>
+    python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm GT --batch_size 0 --alpha 0.2 --num_global_iters 100 --local_epochs 20 --numedges 32
+    python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm GT --batch_size 0 --alpha 0.3 --num_global_iters 100 --local_epochs 20 --numedges 32
+    python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm GT --batch_size 0 --alpha 0.4 --num_global_iters 100 --local_epochs 20 --numedges 32
+    python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm GT --batch_size 0 --alpha 0.5 --num_global_iters 100 --local_epochs 20 --numedges 32
+    python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm GT --batch_size 0 --alpha 0.3 --num_global_iters 100 --local_epochs 10 --numedges 32
+    python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm GT --batch_size 0 --alpha 0.3 --num_global_iters 100 --local_epochs 20 --numedges 32
+    python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm GT --batch_size 0 --alpha 0.3 --num_global_iters 100 --local_epochs 30 --numedges 32
+    python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm GT --batch_size 0 --alpha 0.3 --num_global_iters 100 --local_epochs 40 --numedges 32
+    </code></pre>
+    
+- To produce the Fig.2 : Effects of various values of $\alpha$ and $R$ on MNIST
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/72589172/96944071-ba908880-14e6-11eb-8e80-ddb4fa801b36.png" height="300">
+</p>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/72589172/96944068-b82e2e80-14e6-11eb-8755-6214176ee6c3.png" height="300">
+</p>
+    <pre><code>
+     python3 main.py --dataset Mnist --model mclr --algorithm GT --batch_size 0 --alpha 0.4 --num_global_iters 100 --local_epochs 100 --numedges 32
+     python3 main.py --dataset Mnist --model mclr --algorithm GT --batch_size 0 --alpha 0.5 --num_global_iters 100 --local_epochs 100 --numedges 32
+     python3 main.py --dataset Mnist --model mclr --algorithm GT --batch_size 0 --alpha 0.6 --num_global_iters 100 --local_epochs 100 --numedges 32
+     python3 main.py --dataset Mnist --model mclr --algorithm GT --batch_size 0 --alpha 0.7 --num_global_iters 100 --local_epochs 100 --numedges 32
+     python3 main.py --dataset Mnist --model mclr --algorithm GT --batch_size 0 --alpha 0.5 --num_global_iters 100 --local_epochs 1 --numedges 32
+     python3 main.py --dataset Mnist --model mclr --algorithm GT --batch_size 0 --alpha 0.5 --num_global_iters 100 --local_epochs 5 --numedges 32
+     python3 main.py --dataset Mnist --model mclr --algorithm GT --batch_size 0 --alpha 0.5 --num_global_iters 100 --local_epochs 10 --numedges 32
+     python3 main.py --dataset Mnist --model mclr --algorithm GT --batch_size 0 --alpha 0.5 --num_global_iters 100 --local_epochs 20 --numedges 32
+    </code></pre>
+    
 ## Performance comparison with different distributed algorithms
 - For MNIST:
 <p align="center">
