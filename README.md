@@ -61,6 +61,16 @@ This repository is for the Experiment Section of the paper:
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 100 --numedges 32
     </code></pre>
     
+## Best parameters($\alpha$, $R $) for Done:
+ - Fig.1 : finding best values of $\alpha$ and $R$ on synthetic
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/72589172/97913907-4666a800-1d64-11eb-8d43-ba3aec74643d.png" height="300">
+</p>
+- Fig.2 : finding best values of $\alpha$ and $R$ on MNIST
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/72589172/97913987-672efd80-1d64-11eb-8c45-d54c9007cf9a.png" height="300">
+</p>
+
 ## Parameters impact for conjugate gradient
 - To produce the Fig.1 : Effects of various values of $\alpha$ and $R$ on synthetic ($\kappa = 10^2$)
 <p align="center">
