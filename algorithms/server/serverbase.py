@@ -6,9 +6,11 @@ from utils.model_utils import Metrics
 import copy
 
 class ServerBase:
-    def __init__(self, dataset, algorithm, model, batch_size, learning_rate , alpha, eta, L, num_glob_iters, local_epochs, optimizer, num_edges, times):
+    def __init__(self, experiment, device, dataset, algorithm, model, batch_size, learning_rate , alpha, eta, L, num_glob_iters, local_epochs, optimizer, num_edges, times):
 
         # Set up the main attributes
+        self.device = device
+        self.experiment = experiment
         self.dataset = dataset
         self.num_glob_iters = num_glob_iters
         self.local_epochs = local_epochs
@@ -169,6 +171,9 @@ class ServerBase:
         self.rs_glob_acc.append(glob_acc)
         self.rs_train_acc.append(train_acc)
         self.rs_train_loss.append(train_loss)
+        self.experiment.log_metric("glob_acc",glob_acc)
+        self.experiment.log_metric("train_acc",train_acc)
+        self.experiment.log_metric("train_loss",train_loss)
         #print("stats_train[1]",stats_train[3][0])
         print("Average Global Accurancy: ", glob_acc)
         print("Average Global Trainning Accurancy: ", train_acc)

@@ -19,9 +19,9 @@ import numpy as np
 
 # Implementation for Central Server
 class Server(ServerBase):
-    def __init__(self, dataset,algorithm, model, batch_size, learning_rate, alpha, eta, L, num_glob_iters,
+    def __init__(self, experiment, device, dataset, algorithm, model, batch_size, learning_rate, alpha, eta, L, num_glob_iters,
                  local_epochs, optimizer, num_edges, times):
-        super().__init__(dataset,algorithm, model[0], batch_size, learning_rate, alpha, eta, L, num_glob_iters,
+        super().__init__(experiment, device, dataset,algorithm, model[0], batch_size, learning_rate, alpha, eta, L, num_glob_iters,
                          local_epochs, optimizer, num_edges, times)
 
         # Initialize data for all  edges
@@ -39,36 +39,37 @@ class Server(ServerBase):
         total_edges = len(data[0])
 
         for i in range(total_edges):
+
             id, train, test = read_edge_data(i, data, dataset)
 
             if(algorithm == "DONE"):
-                edge = edgeDONE(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                edge = edgeDONE(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
 
             if(algorithm == "FirstOrder"):
-                edge = edgeFiOrder(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                edge = edgeFiOrder(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
 
             if(algorithm == "DANE"):
-                edge = edgeDANE(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                edge = edgeDANE(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
 
             if algorithm == "New":
-                edge = edgeNew(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                edge = edgeNew(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
 
             if algorithm == "GD":
-                edge = edgeGD(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                edge = edgeGD(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
             
             if algorithm == "FedAvg":
-                edge = edgeAvg(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                edge = edgeAvg(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
 
             if(algorithm == "FEDL"):
-                edge = edgeFEDL(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                edge = edgeFEDL(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
 
             if(algorithm == "Newton"):
-                edge = edgeNewton(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                edge = edgeNewton(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
 
             if(algorithm == "GT"):
-                edge = edgeGT(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                edge = edgeGT(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
             if(algorithm == "PGT"):
-                edge = edgePGT(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                edge = edgePGT(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
             
             self.edges.append(edge)
             self.total_train_samples += edge.train_samples
@@ -93,12 +94,15 @@ class Server(ServerBase):
     def train(self):
         loss = []
         if(self.algorithm == "FirstOrder"):
+
+            self.experiment.set_epoch( glob_iter + 1)
             # All edge will eun GD or SGD to obtain w*
             for edge in self.edges:
                 edge.train(self.local_epochs)
             
             # Communication rounds
             for glob_iter in range(self.num_glob_iters):
+
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
                 self.evaluate() # still evaluate on the global model

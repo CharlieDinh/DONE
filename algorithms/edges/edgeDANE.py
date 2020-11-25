@@ -4,9 +4,9 @@ from algorithms.edges.edgebase import Edgebase
 from algorithms.optimizers.optimizer import *
 
 class edgeDANE(Edgebase):
-    def __init__(self, numeric_id, train_data, test_data, model, batch_size, learning_rate, alpha, eta, L,
+    def __init__(self,device, numeric_id, train_data, test_data, model, batch_size, learning_rate, alpha, eta, L,
                  local_epochs, optimizer):
-        super().__init__(numeric_id, train_data, test_data, model[0], batch_size, learning_rate, alpha, eta, L,
+        super().__init__(device, numeric_id, train_data, test_data, model[0], batch_size, learning_rate, alpha, eta, L,
                          local_epochs)
 
         self.pre_params = []

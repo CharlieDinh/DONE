@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from comet_ml import Experiment
 import h5py
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,25 +13,28 @@ from utils.plot_utils import *
 import torch
 torch.manual_seed(0)
 
-def main(dataset, algorithm, model, batch_size, learning_rate, alpha, eta, L, num_glob_iters,
+def main(experiment, dataset, algorithm, model, batch_size, learning_rate, alpha, eta, L, num_glob_iters,
          local_epochs, optimizer, numedges, times):
+
+    device = torch.device("cuda:{}".format(args.gpu) if torch.cuda.is_available() and args.gpu != -1 else "cpu")
 
     for i in range(times):
         print("---------------Running time:------------",i)
 
         # Generate model
         if(model == "mclr"):
-            model = Mclr_Logistic(), model
+            model = Mclr_Logistic().to(device), model
 
         if(model == "linear_regression"):
-            model = Linear_Regression(40,1), model
+            model = Linear_Regression(40,1).to(device), model
 
         if model == "logistic_regression":
-            model = Logistic_Regression(40), model
+            model = Logistic_Regression(40).to(device), model
         # select algorithm
-
-        server = Server(dataset, algorithm, model, batch_size, learning_rate, alpha, eta,  L, num_glob_iters, local_epochs, optimizer, numedges, i)
-
+        
+        experiment.set_name(dataset + "_" + algorithm + "_" + model[1] + "_" + str(batch_size) + "_" + str(learning_rate) + "_" + str(alpha) + "_" + str(eta) + "_" + str(L) + "_" +  str(num_glob_iters) + "_"+ str(local_epochs) + "_"+ str(numedges))  
+        server = Server(experiment, device, dataset, algorithm, model, batch_size, learning_rate, alpha, eta,  L, num_glob_iters, local_epochs, optimizer, numedges, i)
+        
         server.train()
         server.test()
 
@@ -67,7 +71,32 @@ if __name__ == "__main__":
     print("Local Model       : {}".format(args.model))
     print("=" * 80)
 
+    # Create an experiment with your api key:
+    experiment = Experiment(
+    api_key="VtHmmkcG2ngy1isOwjkm5sHhP",
+    project_name="done",
+    workspace="federated-learning-exp",)
+
+    hyper_params = {
+        "dataset":args.dataset,
+        "algorithm" : args.algorithm,
+        "model":args.model,
+        "batch_size":args.batch_size,
+        "learning_rate":args.learning_rate,
+        "alpha" : args.alpha,
+        "eta" : args.eta, 
+        "L" : args.L,
+        "num_glob_iters":args.num_global_iters,
+        "local_epochs":args.local_epochs,
+        "optimizer": args.optimizer,
+        "numusers": args.numedges,
+        "times" : args.times
+    }
+
+    experiment.log_parameters(hyper_params)
+
     main(
+        experiment= experiment,
         dataset=args.dataset,
         algorithm = args.algorithm,
         model=args.model,
