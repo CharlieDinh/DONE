@@ -13,7 +13,7 @@ from utils.plot_utils import *
 import torch
 torch.manual_seed(0)
 
-def main(experiment, dataset, algorithm, model, batch_size, learning_rate, alpha, eta, L, num_glob_iters,
+def main(experiment, dataset, algorithm, model, batch_size, learning_rate, alpha, eta, L, rho, num_glob_iters,
          local_epochs, optimizer, numedges, times):
 
     device = torch.device("cuda:{}".format(args.gpu) if torch.cuda.is_available() and args.gpu != -1 else "cpu")
@@ -32,7 +32,7 @@ def main(experiment, dataset, algorithm, model, batch_size, learning_rate, alpha
             model = Logistic_Regression(40).to(device), model
         # select algorithm
         
-        experiment.set_name(dataset + "_" + algorithm + "_" + model[1] + "_" + str(batch_size) + "_" + str(learning_rate) + "_" + str(alpha) + "_" + str(eta) + "_" + str(L) + "_" +  str(num_glob_iters) + "_"+ str(local_epochs) + "_"+ str(numedges))  
+        experiment.set_name(dataset + "_" + algorithm + "_" + model[1] + "_" + str(batch_size) + "b_" + str(learning_rate) + "lr_" + str(alpha) + "al_" + str(eta) + "eta_" + str(L) + "L_" + str(rho) + "p_" +  str(num_glob_iters) + "ge_"+ str(local_epochs) + "le_"+ str(numedges) +"u")
         server = Server(experiment, device, dataset, algorithm, model, batch_size, learning_rate, alpha, eta,  L, num_glob_iters, local_epochs, optimizer, numedges, i)
         
         server.train()
@@ -50,6 +50,7 @@ if __name__ == "__main__":
     parser.add_argument("--alpha", type=float, default=0.2, help="alpha for DONE and use alpha as eta of DANE")
     parser.add_argument("--eta", type=float, default=1, help="eta not use at this version")
     parser.add_argument("--L", type=int, default=0, help="Regularization term")
+    parser.add_argument("--rho", type=int, default=0, help="Condition number")
     parser.add_argument("--num_global_iters", type=int, default=100)
     parser.add_argument("--local_epochs", type=int, default=20)
     parser.add_argument("--optimizer", type=str, default="SGD",choices=["SGD"])
@@ -86,11 +87,12 @@ if __name__ == "__main__":
         "alpha" : args.alpha,
         "eta" : args.eta, 
         "L" : args.L,
+        "rho": args.rho,
         "num_glob_iters":args.num_global_iters,
         "local_epochs":args.local_epochs,
         "optimizer": args.optimizer,
         "numusers": args.numedges,
-        "times" : args.times
+        "times" : args.times,
     }
 
     experiment.log_parameters(hyper_params)
@@ -105,6 +107,7 @@ if __name__ == "__main__":
         alpha = args.alpha,
         eta = args.eta,
         L = args.L,
+        rho = args.rho,
         num_glob_iters=args.num_global_iters,
         local_epochs=args.local_epochs,
         optimizer= args.optimizer,
