@@ -135,3 +135,5 @@ This repository is for the Experiment Section of the paper:
       python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm GD --batch_size 0 --learning_rate 0.8 --num_global_iters 100 --numedges 32
       python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm GT --batch_size 0 --alpha 0.2 --num_global_iters 100 --local_epochs 40 --numedges 32
 </code></pre>
+
+test
