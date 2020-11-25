@@ -55,9 +55,9 @@ This repository is for the Experiment Section of the paper:
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 100 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 100 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 100 --numedges 32
-      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 20 --local_epochs 20 --numedges 32
-      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 50 --local_epochs 50 --numedges 32
-      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 80 --local_epochs 80 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 20 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 50 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 80 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 100 --numedges 32
     </code></pre>
     
