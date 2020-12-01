@@ -100,7 +100,8 @@ class Server(ServerBase):
             
             # Communication rounds
             for glob_iter in range(self.num_glob_iters):
-                self.experiment.set_epoch( glob_iter + 1)
+                if(self.experiment):
+                    self.experiment.set_epoch( glob_iter + 1)
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
                 self.evaluate() # still evaluate on the global model
@@ -113,7 +114,8 @@ class Server(ServerBase):
 
         elif self.algorithm == "DANE":
             for glob_iter in range(self.num_glob_iters):
-                self.experiment.set_epoch( glob_iter + 1)
+                if(self.experiment):
+                    self.experiment.set_epoch( glob_iter + 1)
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
                 self.evaluate()
@@ -133,7 +135,8 @@ class Server(ServerBase):
 
         elif self.algorithm == "New":
             for glob_iter in range(1, self.num_glob_iters):
-                self.experiment.set_epoch( glob_iter + 1)
+                if(self.experiment):
+                    self.experiment.set_epoch( glob_iter + 1)
                 self.selected_edges = self.select_edges(glob_iter, self.num_edges)
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
@@ -147,7 +150,8 @@ class Server(ServerBase):
 
         elif self.algorithm == "GD" or self.algorithm == "FedAvg":
             for glob_iter in range(self.num_glob_iters):
-                self.experiment.set_epoch( glob_iter + 1)
+                if(self.experiment):
+                    self.experiment.set_epoch( glob_iter + 1)
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
                 self.evaluate()
@@ -159,7 +163,8 @@ class Server(ServerBase):
                 
         elif self.algorithm == "DONE": # Second Order method
             for glob_iter in range(self.num_glob_iters):
-                self.experiment.set_epoch( glob_iter + 1)
+                if(self.experiment):
+                    self.experiment.set_epoch( glob_iter + 1)
                 print("-------------Round number: ",glob_iter, " -------------")
 
                 # recive parameter from server
@@ -182,7 +187,8 @@ class Server(ServerBase):
 
         elif self.algorithm == "FEDL":
             for glob_iter in range(self.num_glob_iters):
-                self.experiment.set_epoch( glob_iter + 1)
+                if(self.experiment):
+                    self.experiment.set_epoch( glob_iter + 1)
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
                 self.send_grads()
@@ -197,7 +203,8 @@ class Server(ServerBase):
 
         elif self.algorithm == "Newton": #using Richardson
             for glob_iter in range(self.num_glob_iters):
-                self.experiment.set_epoch( glob_iter + 1)
+                if(self.experiment):
+                    self.experiment.set_epoch( glob_iter + 1)
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
                 self.evaluate()
@@ -225,7 +232,8 @@ class Server(ServerBase):
 
         elif self.algorithm == "Newton2": #using inverse hessian
             for glob_iter in range(self.num_glob_iters):
-                self.experiment.set_epoch( glob_iter + 1)
+                if(self.experiment):
+                    self.experiment.set_epoch( glob_iter + 1)
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
                 self.evaluate()
@@ -249,7 +257,8 @@ class Server(ServerBase):
                     
         elif self.algorithm == "GT" or self.algorithm == "PGT":
             for glob_iter in range(self.num_glob_iters):
-                self.experiment.set_epoch( glob_iter + 1)
+                if(self.experiment):
+                    self.experiment.set_epoch( glob_iter + 1)
                 print("-------------Round number: ",glob_iter, " -------------")
                 # recive parameter from server
                 self.send_parameters()

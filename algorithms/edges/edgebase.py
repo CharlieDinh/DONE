@@ -83,6 +83,7 @@ class Edgebase:
         self.optimizer.zero_grad()
 
         for x, y in self.trainloaderfull:
+            x, y = x.to(self.device), y.to(self.device)
             output = self.model(x)
             loss = self.loss(output, y)
             loss.backward()
@@ -94,6 +95,7 @@ class Edgebase:
         test_acc = 0
         loss = 0
         for x, y in self.testloaderfull:
+            x, y = x.to(self.device), y.to(self.device)
             output = self.model(x)
             if isinstance(self.model, Logistic_Regression):
                 test_acc += torch.sum(((output >= 0.5) == y).type(torch.int)).item()
@@ -107,6 +109,7 @@ class Edgebase:
         train_acc = 0
         loss = 0
         for x, y in self.trainloaderfull:
+            x, y = x.to(self.device), y.to(self.device)
             output = self.model(x)
             if isinstance(self.model, Logistic_Regression):
                 train_acc += torch.sum(((output >= 0.5) == y).type(torch.int)).item()
@@ -167,10 +170,12 @@ class Edgebase:
             model = self.model
         if X is None:
             if not full_batch:
+                X, y = X.to(self.device), y.to(self.device)
                 X, y = self.get_next_train_batch()
         loss = 0.
         if full_batch:
             for X, y in self.trainloaderfull:
+                X, y = X.to(self.device), y.to(self.device)
                 loss += self.loss(model(X), y)
         else:
             loss = self.loss(model(X), y)

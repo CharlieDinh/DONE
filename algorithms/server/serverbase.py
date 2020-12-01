@@ -171,9 +171,10 @@ class ServerBase:
         self.rs_glob_acc.append(glob_acc)
         self.rs_train_acc.append(train_acc)
         self.rs_train_loss.append(train_loss)
-        self.experiment.log_metric("glob_acc",glob_acc)
-        self.experiment.log_metric("train_acc",train_acc)
-        self.experiment.log_metric("train_loss",train_loss)
+        if(self.experiment):
+            self.experiment.log_metric("glob_acc",glob_acc)
+            self.experiment.log_metric("train_acc",train_acc)
+            self.experiment.log_metric("train_loss",train_loss)
         #print("stats_train[1]",stats_train[3][0])
         print("Average Global Accurancy: ", glob_acc)
         print("Average Global Trainning Accurancy: ", train_acc)
