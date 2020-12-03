@@ -14,9 +14,10 @@ class Edgebase:
     Base class for edges in distributed learning.
     """
 
-    def __init__(self, id, train_data, test_data, model, batch_size=0, learning_rate=0, alpha=0, eta=0, L=0,
+    def __init__(self, device, id, train_data, test_data, model, batch_size=0, learning_rate=0, alpha=0, eta=0, L=0,
                  local_epochs=0):
         # from fedprox
+        self.device = device
         self.model = copy.deepcopy(model)
         self.id = id  # integer
         self.train_samples = len(train_data)
@@ -82,6 +83,7 @@ class Edgebase:
         self.optimizer.zero_grad()
 
         for x, y in self.trainloaderfull:
+            x, y = x.to(self.device), y.to(self.device)
             output = self.model(x)
             loss = self.loss(output, y)
             loss.backward()
@@ -93,6 +95,7 @@ class Edgebase:
         test_acc = 0
         loss = 0
         for x, y in self.testloaderfull:
+            x, y = x.to(self.device), y.to(self.device)
             output = self.model(x)
             if isinstance(self.model, Logistic_Regression):
                 test_acc += torch.sum(((output >= 0.5) == y).type(torch.int)).item()
@@ -106,6 +109,7 @@ class Edgebase:
         train_acc = 0
         loss = 0
         for x, y in self.trainloaderfull:
+            x, y = x.to(self.device), y.to(self.device)
             output = self.model(x)
             if isinstance(self.model, Logistic_Regression):
                 train_acc += torch.sum(((output >= 0.5) == y).type(torch.int)).item()
@@ -127,7 +131,7 @@ class Edgebase:
             # restart the generator if the previous generator is exhausted.
             self.iter_trainloader = iter(self.trainloader)
             (X, y) = next(self.iter_trainloader)
-        return (X, y)
+        return (X.to(self.device), y.to(self.device))
 
     def get_next_test_batch(self):
         try:
@@ -137,7 +141,7 @@ class Edgebase:
             # restart the generator if the previous generator is exhausted.
             self.iter_testloader = iter(self.testloader)
             (X, y) = next(self.iter_testloader)
-        return (X, y)
+        return (X.to(self.device), y.to(self.device))
 
     def save_model(self):
         model_path = os.path.join("models", self.dataset)
@@ -166,10 +170,12 @@ class Edgebase:
             model = self.model
         if X is None:
             if not full_batch:
+                X, y = X.to(self.device), y.to(self.device)
                 X, y = self.get_next_train_batch()
         loss = 0.
         if full_batch:
             for X, y in self.trainloaderfull:
+                X, y = X.to(self.device), y.to(self.device)
                 loss += self.loss(model(X), y)
         else:
             loss = self.loss(model(X), y)
