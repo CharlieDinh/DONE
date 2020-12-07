@@ -37,6 +37,7 @@ class edgeDANE(Edgebase):
     
     def get_full_grad(self):
         for X, y in self.trainloaderfull:
+            X, y = X.to(self.device), y.to(self.device)
             self.model.zero_grad()
             output = self.model(X)
             loss = self.loss(output, y)
@@ -51,6 +52,7 @@ class edgeDANE(Edgebase):
 
         # Find derivative of phi(w^(t-1))
         for X, y in self.trainloaderfull:
+            X, y = X.to(self.device), y.to(self.device)
             self.model.zero_grad()
             output = self.model(X)
             loss = self.loss(output, y)
@@ -87,6 +89,7 @@ class edgeDANE(Edgebase):
         self.model.train()
         for epoch in range(1, self.local_epochs + 1):
             for batch_idx, (X, y) in enumerate(self.trainloader):
+                X, y = X.to(self.device), y.to(self.device)
                 self.optimizer.zero_grad()
                 output = self.model(X)
                 loss =  self.loss(output, y)

@@ -37,6 +37,7 @@ class edgeDONE(Edgebase):
 
     def get_full_grad(self):
         for X, y in self.trainloaderfull:
+            X, y = (X.to(self.device), y.to(self.device))
             self.model.zero_grad()
             output = self.model(X)
             loss = self.loss(output, y)
@@ -52,11 +53,11 @@ class edgeDONE(Edgebase):
         loss.backward(create_graph=True)
         #grads = []
 
-        # Set d^i_0
-        for d, param in zip(self.dt, self.model.parameters()):
-            #d.data = - self.alpha * param.grad.data.clone()
+        # Set initial value for d0
+        for d, param in zip(self.dt, self.server_grad):
+            d.data =  - param.grad.data.clone()
             # Set direction to 0 at the begining
-            d.data = - 0 * param.grad.data.clone()
+            #d.data = - 0 * param.grad.data.clone()
             #grads.append(param.grad.data.clone())
 
         # Richardson iteration

@@ -57,8 +57,8 @@ if __name__ == "__main__":
     parser.add_argument("--algorithm", type=str, default="DONE",choices=["DONE", "GD", "DANE", "Newton","GT","PGT"])
     parser.add_argument("--numedges", type=int, default=32,help="Number of Edges per round")
     parser.add_argument("--times", type=int, default=1, help="running time")
-    parser.add_argument("--commet", type=int, default=0, help="log data to comet")
-    parser.add_argument("--gpu", type=int, default=-1, help="Which GPU to run the experiments")
+    parser.add_argument("--commet", type=int, default=1, help="log data to comet")
+    parser.add_argument("--gpu", type=int, default=1, help="Which GPU to run the experiments")
     args = parser.parse_args()
 
     print("=" * 80)
@@ -79,7 +79,7 @@ if __name__ == "__main__":
         # Create an experiment with your api key:
         experiment = Experiment(
             api_key="VtHmmkcG2ngy1isOwjkm5sHhP",
-            project_name="multitask-learning",
+            project_name="done",
             workspace="federated-learning-exp",
         )
 
@@ -89,14 +89,12 @@ if __name__ == "__main__":
             "model":args.model,
             "batch_size":args.batch_size,
             "learning_rate":args.learning_rate,
-            "beta" : args.beta, 
-            "L_k" : args.L_k,
+            "alpha" : args.alpha, 
+            "L" : args.L,
             "num_glob_iters":args.num_global_iters,
             "local_epochs":args.local_epochs,
             "optimizer": args.optimizer,
-            "numusers": args.numusers,
-            "K" : args.K,
-            "personal_learning_rate" : args.personal_learning_rate,
+            "numusers": args.numedges,
             "times" : args.times,
             "gpu": args.gpu
         }

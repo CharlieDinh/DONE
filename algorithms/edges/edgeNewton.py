@@ -43,6 +43,7 @@ class edgeNewton(Edgebase):
 
     def get_full_grad(self):
         for X, y in self.trainloaderfull:
+            X, y = (X.to(self.device), y.to(self.device))
             self.model.zero_grad()
             output = self.model(X)
             loss = self.loss(output, y)
@@ -52,6 +53,7 @@ class edgeNewton(Edgebase):
         self.model.zero_grad()
 
         for X, y in self.trainloaderfull:
+            X,y = (X.todevice(self.device),y.todevice(self.device))
             loss = self.total_loss(X=X, y=y, full_batch=False, regularize=True)
             loss.backward(create_graph=True)
             self.Hdt = self.hessian_vec_prod(loss, list(self.model.parameters()), self.dt)
