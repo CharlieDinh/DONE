@@ -4,7 +4,8 @@ import numpy as np
 import random
 import json
 import os
-from tensorflow.examples.tutorials.mnist import input_data
+import tensorflow as tf
+#from tensorflow.examples.tutorials.mnist import input_data
 
 random.seed(1)
 np.random.seed(1)
@@ -21,18 +22,14 @@ dir_path = os.path.dirname(test_path)
 if not os.path.exists(dir_path):
     os.makedirs(dir_path)
 
-# Import Fashion MNIST
-fashion_data = input_data.read_data_sets(
-    'data/fashion', source_url='http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/')
-print("hello")
-#fashion_full = list(zip(fashion_data.train, fashion_data.test))
-print(type(fashion_data))
+fashion_mnist = tf.keras.datasets.fashion_mnist
+(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 mnist_data_image = []
 mnist_data_lable = []
-mnist_data_image.extend(fashion_data.train.images)
-mnist_data_image.extend(fashion_data.test.images)
-mnist_data_lable.extend(fashion_data.train.labels)
-mnist_data_lable.extend(fashion_data.test.labels)
+mnist_data_image.extend(train_images)
+mnist_data_image.extend(test_images)
+mnist_data_lable.extend(train_labels)
+mnist_data_lable.extend(test_labels)
 
 mu = np.mean(mnist_data_image)
 sigma = np.std(mnist_data_image)
