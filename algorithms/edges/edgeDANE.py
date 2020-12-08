@@ -17,7 +17,7 @@ class edgeDANE(Edgebase):
         else:
             self.loss = nn.NLLLoss()
 
-        self.optimizer = DANEOptimizer(self.model.parameters(), lr=self.learning_rate, L = self.L, eta = self.alpha )
+        self.optimizer = DANEOptimizer(self.model.parameters(), lr=self.learning_rate, L = self.L , eta = self.eta)
 
     # def set_grads(self, new_grads):
     #     if isinstance(new_grads, nn.Parameter):

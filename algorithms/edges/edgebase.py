@@ -30,7 +30,7 @@ class Edgebase:
 
         self.learning_rate = learning_rate
         self.alpha = alpha
-        self.eta = eta,
+        self.eta = eta
         self.L = L
         self.local_epochs = local_epochs
         self.trainloader = DataLoader(train_data, self.batch_size)

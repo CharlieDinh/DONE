@@ -209,16 +209,18 @@ class Server(ServerBase):
                 self.send_parameters()
                 self.evaluate()
                 # reset all direction after each global interation
-                self.dt = []
-                self.total_dt = []
-                for param in self.model.parameters():
-                    self.dt.append(torch.zeros_like(param.data))
-                    self.total_dt.append(torch.zeros_like(param.data))
+
 
                 # Aggregate grads of client.
                 for edge in self.edges:
                     edge.get_full_grad()
                 self.aggregate_grads()
+                
+                self.dt = []
+                self.total_dt = []
+                for param in self.model.parameters():
+                    self.dt.append(-param.grad)
+                    self.total_dt.append(torch.zeros_like(param.data))
 
                 # Richardson
                 for r in range(self.local_epochs):
