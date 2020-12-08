@@ -47,9 +47,9 @@ if __name__ == "__main__":
     parser.add_argument("--model", type=str, default="mclr", choices=["linear_regression", "mclr", "logistic_regression"])
     parser.add_argument("--batch_size", type=int, default=20)
     parser.add_argument("--learning_rate", type=float, default=1, help="Local learning rate for DANE, GD")
-    parser.add_argument("--alpha", type=float, default=0.2, help="alpha for DONE and use alpha as eta of DANE")
-    parser.add_argument("--eta", type=float, default=1, help="eta not use at this version")
-    parser.add_argument("--L", type=int, default=0, help="Regularization term")
+    parser.add_argument("--alpha", type=float, default=0.2, help="alpha for DONE and Newton using in richason interation")
+    parser.add_argument("--eta", type=float, default=1.0, help = "eta is parameter for DANE")
+    parser.add_argument("--L", type=int, default=0.01, help="Regularization term")
     parser.add_argument("--rho", type=int, default=0, help="Condition number")
     parser.add_argument("--num_global_iters", type=int, default=100)
     parser.add_argument("--local_epochs", type=int, default=20)
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     parser.add_argument("--numedges", type=int, default=32,help="Number of Edges per round")
     parser.add_argument("--times", type=int, default=1, help="running time")
     parser.add_argument("--commet", type=int, default=1, help="log data to comet")
-    parser.add_argument("--gpu", type=int, default=1, help="Which GPU to run the experiments")
+    parser.add_argument("--gpu", type=int, default=0, help="Which GPU to run the experiments")
     args = parser.parse_args()
 
     print("=" * 80)
@@ -91,6 +91,7 @@ if __name__ == "__main__":
             "learning_rate":args.learning_rate,
             "alpha" : args.alpha, 
             "L" : args.L,
+            "rho" : args.rho,
             "num_glob_iters":args.num_global_iters,
             "local_epochs":args.local_epochs,
             "optimizer": args.optimizer,
