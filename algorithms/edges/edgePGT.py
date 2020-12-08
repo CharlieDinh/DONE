@@ -38,6 +38,7 @@ class edgePGT(Edgebase):
     def get_full_grad(self):
         for X, y in self.trainloaderfull:
             self.model.zero_grad()
+            X, y = X.to(self.device), y.to(self.device)
             output = self.model(X)
             loss = self.loss(output, y)
             loss.backward()

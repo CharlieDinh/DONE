@@ -37,6 +37,7 @@ class edgeFiOrder(Edgebase):
             self.model.train()
             for batch_idx, (X, y) in enumerate(self.trainloader):
                 self.optimizer.zero_grad()
+                X, y = X.to(self.device), y.to(self.device)
                 output = self.model(X)
                 loss = self.loss(output, y)
                 loss.backward()

@@ -23,6 +23,7 @@ class edgeGD(Edgebase):
         self.model.train()
         # Only update once time
         for X, y in self.trainloaderfull:
+            X, y = X.to(self.device), y.to(self.device)
             self.model.train()
             #loss_per_epoch = 0
             # Sample a mini-batch (D_i)
