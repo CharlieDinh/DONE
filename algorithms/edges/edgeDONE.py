@@ -46,11 +46,12 @@ class edgeDONE(Edgebase):
     def train(self, epochs, glob_iter):
         # tempalpha = self.alpha/(glob_iter+1)
         self.model.zero_grad()
+        self.model.train()
 
         # Sample a mini-batch (D_i)
         (X, y) = self.get_next_train_batch()
         loss = self.total_loss(X=X, y=y, full_batch=False, regularize=True)
-        loss.backward(create_graph=True)
+        # loss.backward(create_graph=True)
         #grads = []
 
         # Set initial value for d0
