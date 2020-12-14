@@ -49,8 +49,8 @@ def generate_linear_data(num_users=100, rho=10, dim=40, noise_ratio=0.05):
 
     for n in range(num_users):
         # Generate data
-        sig = np.random.uniform(0.1, 20)
-        mean = np.random.uniform(low=-0.02, high=0.02)
+        sig = np.random.uniform(0.1, 10)
+        mean = np.random.uniform(low=-0.01, high=0.01)
         cov = np.random.uniform(low=0.0, high=0.01)
         #print("mean -cov", mean,cov)
         mean_X = np.random.normal(mean, cov, dim)
@@ -70,7 +70,7 @@ def generate_linear_data(num_users=100, rho=10, dim=40, noise_ratio=0.05):
     #X_total /= norm
 
     # Generate weights and labels
-    mean_W = np.random.normal(0, 0.1, num_users)
+    mean_W = np.random.normal(0, 0.01, num_users)
     #mean_b = mean_W
 
     for i in range(num_users):
