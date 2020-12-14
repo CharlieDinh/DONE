@@ -110,7 +110,8 @@ def generate_linear_data(num_users=100, rho=10, dim=40, noise_ratio=0.05):
 def save_total_data():
     train_data = {'users': [], 'user_data': {}, 'num_samples': []}
     test_data = {'users': [], 'user_data': {}, 'num_samples': []}
-
+    import shutil
+    shutil.rmtree("data", ignore_errors=True)
     train_path = os.path.join("data", "train", str(rho) + "p_"+ "synthetic_train.json")
     test_path = os.path.join("data", "test", str(rho)  + "p_" + "synthetic_test.json")
     for path in [os.path.join("data", "train"), os.path.join("data", "test")]:
