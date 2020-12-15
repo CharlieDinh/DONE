@@ -3,6 +3,8 @@
 This repository is for the Experiment Section of the paper:
 "DONE: Distributed Newton Method for Federated Edge Learning"
 
+Link: https://arxiv.org/pdf/2012.05625.pdf
+
 # Software requirements:
 - numpy, scipy, pytorch, Pillow, matplotlib.
 
