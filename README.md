@@ -26,11 +26,8 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
 # Produce experiments and figures
 - There is a main file "main.py" which allows running all experiments, and 2 files: "plot_mnist.py", "plot_synthetic.py" to plot all results after runing all experiment.  Only run "plot_mnist.py" and "plot_synthetic.py" after getting the results from training process.
 
-## Performance comparison with different distributed algorithms
+## Performance comparison with different distributed algorithms (table 2 in our paper)
 - For MNIST:
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/44039773/90308504-61730a00-df23-11ea-88a6-4c1f43bf54c1.png" height="300">
-</p>
       <pre><code>
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm Newton --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 32
@@ -39,9 +36,6 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
       python3 main.py --dataset Mnist --model mclr --algorithm GD --batch_size 0 --learning_rate 0.2 --num_global_iters 100 --numedges 32
     </code></pre>
 - For FEMNIST:
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/44039773/90308504-61730a00-df23-11ea-88a6-4c1f43bf54c1.png" height="300">
-</p>
       <pre><code>
       python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Nist --model mclr --algorithm Newton --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 32
@@ -51,9 +45,6 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
     </code></pre>
 
 - For Human Activities:
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/44039773/90308504-61730a00-df23-11ea-88a6-4c1f43bf54c1.png" height="300">
-</p>
       <pre><code>
       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 30
       python3 main.py --dataset human_activity --model mclr --algorithm Newton --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 30
