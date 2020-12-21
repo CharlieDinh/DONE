@@ -106,7 +106,7 @@ class ServerBase:
             return self.edges
 
         num_edges = min(num_edges, len(self.edges))
-        np.random.seed(round)
+        #np.random.seed(round)
         return np.random.choice(self.edges, num_edges, replace=False)
             
     # Save loss, accurancy to h5 fiel
