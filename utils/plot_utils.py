@@ -7,7 +7,7 @@ import os
 import matplotlib
 matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['ps.fonttype'] = 42
-plt.rcParams.update({'font.size': 14})
+plt.rcParams.update({'font.size': 12})
 
 def simple_read_data(alg):
     print(alg)
@@ -738,7 +738,7 @@ def plot_summary_mnist_edge(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[]
 def plot_summary_linear_kappa(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
 
     Numb_Algs = len(algorithms_list)
-    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, kappa = kappa, dataset= dataset)
     for i in range(Numb_Algs):
         print(algorithms_list[i], "loss:", glob_acc[i].max())
     kappa = ["$10$", "$10^2$", "$10^3$", "$10^4$"]
@@ -747,10 +747,12 @@ def plot_summary_linear_kappa(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=
     markers = ["o","v","s","*","x","P"]
     algs_lbl = ["DONE","DONE", "DONE", "DONE"]
     #plt.figure(figsize=(6,12))
-    fig = plt.figure(figsize=(12, 6))
+    fig = plt.figure(figsize=(12, 4))
     ax = fig.add_subplot(111)    # The big subplot
-    ax1 = fig.add_subplot(121)
-    ax2 = fig.add_subplot(122)
+    ax1 = fig.add_subplot(131)
+    ax2 = fig.add_subplot(132)
+    ax3 = fig.add_subplot(133)
+
     ax.spines['top'].set_color('none')
     ax.spines['bottom'].set_color('none')
     ax.spines['left'].set_color('none')
@@ -772,29 +774,31 @@ def plot_summary_linear_kappa(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=
 
     for i in range(num_al):
         stringbatch = str(batch_size[i])
-        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\kappa = $' + kappa[i] ,marker = markers[i],markevery=0.2, markersize=7)
+        ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\kappa = $' + kappa[i] ,marker = markers[i], markevery=0.2, markersize=7)
 
     ax2.set_ylim([0.0485, 0.1])
-
-    #plt.title('$\\kappa = $' + str(kappa))
-    #fig.set_title('Linear Synthetic')
     ax2.legend(loc='upper right')
     ax2.grid(True)
-    #ax2.set_title('Fixed R')
-    #ax1.set_ylim([0.045, 0.2])
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        ax3.plot(train_loss[i+num_al*2, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al * 2]) + ', $\\kappa = $' + kappa[i] ,marker = markers[i], markevery=0.2, markersize=7)
+    ax3.set_ylim([0.0485, 0.1])
+    ax3.legend(loc='upper right')
+    ax3.grid(True)
+
     ax.set_xlabel('Global rounds ' + '$T$')
     ax.set_ylabel('Training Loss', labelpad = 10)
-    #ax.set_title('Fixed ' +'$\\alpha$' + ' end ' + 'R' )
-    #plt.xticks(np.arange(0.045, 2, 0.1))
-    plt.savefig('Linear_synthetic_kappa.pdf', bbox_inches='tight')
-    plt.savefig('Linear_synthetic_kappa.png', bbox_inches='tight')
+    plt.savefig('Linear_synthetic_train_kappa.pdf', bbox_inches='tight')
+    plt.savefig('Linear_synthetic_train_kappa.png', bbox_inches='tight')
     Numb_Algs = len(algorithms_list)
 
-    #plt.figure(figsize=(6,12))
-    fig = plt.figure(figsize=(12, 6))
+
+    fig = plt.figure(figsize=(12, 4))
     ax = fig.add_subplot(111)    # The big subplot
-    ax1 = fig.add_subplot(121)
-    ax2 = fig.add_subplot(122)
+    ax1 = fig.add_subplot(131)
+    ax2 = fig.add_subplot(132)
+    ax3 = fig.add_subplot(133)
     ax.spines['top'].set_color('none')
     ax.spines['bottom'].set_color('none')
     ax.spines['left'].set_color('none')
@@ -808,29 +812,27 @@ def plot_summary_linear_kappa(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=
     for i in range(num_al):
         ax1.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
             loc_ep1[i]) + ', $\\kappa = $' + kappa[i], marker=markers[i], markevery=0.2, markersize=7)
-
-    #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
     ax1.set_ylim([0.0485, 0.1])
     ax1.grid(True)
-   # ax1.set_title('Fixed '+'$\\alpha$')
 
     for i in range(num_al):
         stringbatch = str(batch_size[i])
         ax2.plot(glob_acc[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
             loc_ep1[i + num_al]) + ', $\\kappa = $' + kappa[i], marker=markers[i], markevery=0.2, markersize=7)
-
     ax2.set_ylim([0.0485, 0.1])
-
-    #plt.title('$\\kappa = $' + str(kappa))
-    #fig.set_title('Linear Synthetic')
     ax2.legend(loc='upper right')
     ax2.grid(True)
-    #ax2.set_title('Fixed R')
-    #ax1.set_ylim([0.045, 0.2])
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        ax3.plot(glob_acc[i+num_al*2, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
+            loc_ep1[i + num_al*2]) + ', $\\kappa = $' + kappa[i], marker=markers[i], markevery=0.2, markersize=7)
+    ax3.set_ylim([0.0485, 0.1])
+    ax3.legend(loc='upper right')
+    ax3.grid(True)
+
     ax.set_xlabel('Global rounds ' + '$T$')
     ax.set_ylabel('Testing Loss', labelpad=10)
-    #ax.set_title('Fixed ' +'$\\alpha$' + ' end ' + 'R' )
-    #plt.xticks(np.arange(0.045, 2, 0.1))
     plt.savefig('Linear_synthetic_kappa_test_loss.pdf', bbox_inches='tight')
     plt.savefig('Linear_synthetic_kappa_test_loss.png', bbox_inches='tight')
