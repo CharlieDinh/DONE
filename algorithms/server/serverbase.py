@@ -109,7 +109,7 @@ class ServerBase:
         #np.random.seed(round)
         return np.random.choice(self.edges, num_edges, replace=False)
             
-    # Save loss, accurancy to h5 fiel
+    # Save loss, accuracy to h5 file
     def save_results(self):
         alg = self.dataset + "_" + self.algorithm
         alg = alg + "_" + str(self.learning_rate) + "_" + str(self.alpha)  + "_" + str(self.eta) + "_" + str(self.L) + "_" + str(self.num_edges) + "u" + "_" + str(self.batch_size) + "b" + "_" + str(self.local_epochs)
@@ -176,9 +176,9 @@ class ServerBase:
             self.experiment.log_metric("train_acc",train_acc)
             self.experiment.log_metric("train_loss",train_loss)
         #print("stats_train[1]",stats_train[3][0])
-        print("Average Global Accurancy: ", glob_acc)
-        print("Average Global Trainning Accurancy: ", train_acc)
-        print("Average Global Trainning Loss: ",train_loss)
+        print("Average Global Accuracy          : ", glob_acc)
+        print("Average Global Trainning Accuracy: ", train_acc)
+        print("Average Global Trainning Loss    : ",train_loss)
 
     def aggregate_dt(self):
         # cacluate average hvdt

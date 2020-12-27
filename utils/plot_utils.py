@@ -63,12 +63,12 @@ def average_data(num_users=100, loc_ep1=5, Numb_Glob_Iters=10, lamb="", learning
     train_acc_data = np.average(train_acc, axis=0)
     train_loss_data = np.average(train_loss, axis=0)
     # store average value to h5 file
-    max_accurancy = []
+    max_accuracy = []
     for i in range(times):
-        max_accurancy.append(glob_acc[i].max())
+        max_accuracy.append(glob_acc[i].max())
     
-    print("std:", np.std(max_accurancy))
-    print("Mean:", np.mean(max_accurancy))
+    print("std:", np.std(max_accuracy))
+    print("Mean:", np.mean(max_accuracy))
 
     alg = dataset + "_" + algorithms
     alg = alg + "_" + str(learning_rate)+ "_" + str(alpha) + "_" + str(eta) + "_" + str(lamb) + "_" + str(num_users) + "u" + "_" + str(batch_size) + "b" + "_" + str(loc_ep1)
@@ -92,7 +92,7 @@ def plot_summary_one_figure(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[]
     glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size,kappa = kappa, dataset= dataset)
 
 
-    print("max value of test accurancy",glob_acc.max())
+    print("max value of test accuracy",glob_acc.max())
     plt.figure(1,figsize=(5, 5))
     MIN = train_loss.min() - 0.001
     start = 0
@@ -138,7 +138,7 @@ def get_max_value_index(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[], le
     glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
 
     for i in range(Numb_Algs):
-        print("Algorithm: ", algorithms_list[i], "Max testing Accurancy: ", glob_acc[i].max(
+        print("Algorithm: ", algorithms_list[i], "Max testing Accuracy: ", glob_acc[i].max(
         ), "Index: ", np.argmax(glob_acc[i]), "local update:", loc_ep1[i])
 
 def average_smooth(data, window_len=20, window='hanning'):
@@ -237,7 +237,7 @@ def plot_summary_mnist(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[], lea
     markers = ["o","v","s","*","x","P"]
     algs_lbl = ["DONE","DONE", "Newton","DANE", "FedDANE", "GD"]
 
-    print("max value of test accurancy",glob_acc.max())
+    print("max value of test accuracy",glob_acc.max())
     
     start = 0
 
