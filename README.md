@@ -101,7 +101,7 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 20 --numedges 30
       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 30
     </code></pre>
-    
+
 ### Effects of mini batch
   - MNIST
     <pre><code>
@@ -134,8 +134,8 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
 
   - Human activies
     <pre><code>
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 5 --numedges 30
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 10 --numedges 30
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 20 --numedges 30
+      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 4
+      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 8
+      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 16
       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 30
     </code></pre>
