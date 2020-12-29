@@ -23,13 +23,18 @@ def main(experiment, dataset, algorithm, model, batch_size, learning_rate, alpha
 
         # Generate model
         if(model == "mclr"):
-            model = Mclr_Logistic().to(device), model
+            if(dataset == "human_activity"):
+                model = Mclr_Logistic(561,6).to(device), model
+            else:
+                model = Mclr_Logistic().to(device), model
 
         if(model == "linear_regression"):
             model = Linear_Regression(40,1).to(device), model
 
         if model == "logistic_regression":
             model = Logistic_Regression(40).to(device), model
+        
+        
         # select algorithm
         if(commet):
             experiment.set_name(dataset + "_" + algorithm + "_" + model[1] + "_" + str(batch_size) + "b_" + str(learning_rate) + "lr_" + str(alpha) + "al_" + str(eta) + "eta_" + str(L) + "L_" + str(rho) + "p_" +  str(num_glob_iters) + "ge_"+ str(local_epochs) + "le_"+ str(numedges) +"u")
@@ -43,18 +48,18 @@ def main(experiment, dataset, algorithm, model, batch_size, learning_rate, alpha
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset", type=str, default="Mnist", choices=["Mnist", "Linear_synthetic", "Fashion_Mnist", "Cifar10"])
+    parser.add_argument("--dataset", type=str, default="human_activity", choices=["Mnist", "Linear_synthetic", "Fashion_Mnist", "Cifar10" ,"human_activity", "Nist"])
     parser.add_argument("--model", type=str, default="mclr", choices=["linear_regression", "mclr", "logistic_regression"])
-    parser.add_argument("--batch_size", type=int, default=20)
+    parser.add_argument("--batch_size", type=int, default=0)
     parser.add_argument("--learning_rate", type=float, default=1, help="Local learning rate for DANE, GD")
-    parser.add_argument("--alpha", type=float, default=0.2, help="alpha for DONE and Newton using in richason interation")
+    parser.add_argument("--alpha", type=float, default=0.03, help="alpha for DONE and Newton using in richason interation")
     parser.add_argument("--eta", type=float, default=1.0, help = "eta is parameter for DANE")
-    parser.add_argument("--L", type=int, default=0.01, help="Regularization term")
+    parser.add_argument("--L", type=int, default=0, help="Regularization term")
     parser.add_argument("--rho", type=int, default=0, help="Condition number")
     parser.add_argument("--num_global_iters", type=int, default=100)
     parser.add_argument("--local_epochs", type=int, default=20)
     parser.add_argument("--optimizer", type=str, default="SGD",choices=["SGD"])
-    parser.add_argument("--algorithm", type=str, default="DONE",choices=["DONE", "GD", "DANE", "Newton","GT","PGT"])
+    parser.add_argument("--algorithm", type=str, default="DANE",choices=["DONE", "GD", "DANE", "Newton","GT","PGT"])
     parser.add_argument("--numedges", type=int, default=32,help="Number of Edges per round")
     parser.add_argument("--times", type=int, default=1, help="running time")
     parser.add_argument("--commet", type=int, default=1, help="log data to comet")
@@ -77,12 +82,14 @@ if __name__ == "__main__":
     # Create an experiment with your api key:
     if(args.commet):
         # Create an experiment with your api key:
-        experiment = Experiment(
-            api_key="VtHmmkcG2ngy1isOwjkm5sHhP",
-            project_name="done",
-            workspace="federated-learning-exp",
-        )
+        # import comet_ml at the top of your file
 
+# Create an experiment with your api key:
+        experiment = Experiment(
+        api_key="VtHmmkcG2ngy1isOwjkm5sHhP",
+        project_name="done-supplement",
+        workspace="federated-learning-exp",
+    )
         hyper_params = {
             "dataset":args.dataset,
             "algorithm" : args.algorithm,
