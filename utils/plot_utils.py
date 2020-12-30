@@ -608,7 +608,8 @@ def plot_summary_mnist_R_and_alpha(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, 
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
-    ax1.set_ylim([0.2, 0.5])
+    #ax1.set_ylim([0.2, 0.5])
+    ax1.set_ylim([0.22, 0.52])
     ax1.grid(True)
     ax1.set_title('Fixed '+'$\\alpha$')
 
@@ -616,7 +617,7 @@ def plot_summary_mnist_R_and_alpha(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, 
         stringbatch = str(batch_size[i])
         ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\alpha = $' + str(alpha[i+ num_al]) ,marker = markers[i],markevery=0.2, markersize=7)
 
-    ax2.set_ylim([0.2, 0.5])
+    ax2.set_ylim([0.22, 0.52])
 
     #plt.title('$\\kappa = $' + str(kappa))
     #fig.set_title('Linear Synthetic')
@@ -650,7 +651,7 @@ def plot_summary_mnist_R_and_alpha(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, 
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='lower right')
-    ax1.set_ylim([0.86, 0.922])
+    ax1.set_ylim([0.86, 0.92])
     ax1.grid(True)
     ax1.set_title('Fixed '+'$\\alpha$')
 
@@ -659,7 +660,7 @@ def plot_summary_mnist_R_and_alpha(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, 
         ax2.plot(glob_acc[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
             loc_ep1[i + num_al]) + ', $\\alpha = $' + str(alpha[i + num_al]), marker=markers[i], markevery=0.2, markersize=7)
 
-    ax2.set_ylim([0.86, 0.922])
+    ax2.set_ylim([0.86, 0.92])
 
     #plt.title('$\\kappa = $' + str(kappa))
     #fig.set_title('Linear Synthetic')
@@ -704,7 +705,7 @@ def plot_summary_human_R_and_alpha(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, 
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
-    ax1.set_ylim([0.1,0.7])
+    ax1.set_ylim([0.1,0.6])
     ax1.grid(True)
     ax1.set_title('Fixed '+'$\\alpha$')
 
@@ -712,7 +713,7 @@ def plot_summary_human_R_and_alpha(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, 
         stringbatch = str(batch_size[i])
         ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\alpha = $' + str(alpha[i+ num_al]) ,marker = markers[i],markevery=0.2, markersize=7)
 
-    ax2.set_ylim([0.1,0.7])
+    ax2.set_ylim([0.1,0.6])
 
     #plt.title('$\\kappa = $' + str(kappa))
     #fig.set_title('Linear Synthetic')
@@ -746,7 +747,7 @@ def plot_summary_human_R_and_alpha(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, 
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='lower right')
-    ax1.set_ylim([0.8, 0.97])
+    ax1.set_ylim([0.86, 0.97])
     ax1.grid(True)
     ax1.set_title('Fixed '+'$\\alpha$')
 
@@ -755,7 +756,7 @@ def plot_summary_human_R_and_alpha(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, 
         ax2.plot(glob_acc[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
             loc_ep1[i + num_al]) + ', $\\alpha = $' + str(alpha[i + num_al]), marker=markers[i], markevery=0.2, markersize=7)
 
-    ax2.set_ylim([0.8, 0.97])
+    ax2.set_ylim([0.86, 0.97])
 
     #plt.title('$\\kappa = $' + str(kappa))
     #fig.set_title('Linear Synthetic')
@@ -801,7 +802,7 @@ def plot_summary_nist_R_and_alpha(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, l
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
-    ax1.set_ylim([0.65,1.6])
+    ax1.set_ylim([0.8,1.8])
     ax1.grid(True)
     ax1.set_title('Fixed '+'$\\alpha$')
 
@@ -809,7 +810,8 @@ def plot_summary_nist_R_and_alpha(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, l
         stringbatch = str(batch_size[i])
         ax2.plot(train_loss[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$R = $' + str(loc_ep1[i+ num_al]) + ', $\\alpha = $' + str(alpha[i+ num_al]) ,marker = markers[i],markevery=0.2, markersize=7)
 
-    ax2.set_ylim([0.65,1.6])
+    #ax2.set_ylim([0.65,1.6])
+    ax2.set_ylim([0.8,1.8])
 
     #plt.title('$\\kappa = $' + str(kappa))
     #fig.set_title('Linear Synthetic')
@@ -843,7 +845,7 @@ def plot_summary_nist_R_and_alpha(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, l
 
     #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='lower right')
-    ax1.set_ylim([0.63, 0.808])
+    ax1.set_ylim([0.5, 0.79])
     ax1.grid(True)
     ax1.set_title('Fixed '+'$\\alpha$')
 
@@ -852,7 +854,8 @@ def plot_summary_nist_R_and_alpha(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, l
         ax2.plot(glob_acc[i+num_al, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": " + '$R = $' + str(
             loc_ep1[i + num_al]) + ', $\\alpha = $' + str(alpha[i + num_al]), marker=markers[i], markevery=0.2, markersize=7)
 
-    ax2.set_ylim([0.63, 0.808])
+    #ax2.set_ylim([0.63, 0.808])
+    ax2.set_ylim([0.5, 0.79])
 
     #plt.title('$\\kappa = $' + str(kappa))
     #fig.set_title('Linear Synthetic')
