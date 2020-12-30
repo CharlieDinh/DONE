@@ -1082,7 +1082,7 @@ def plot_summary_nist_batch(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[]
     ax2.grid(True)
     ax2.set_title('Testing Accuracy')
     ax.set_xlabel('Global rounds ' + '$T$')
-    plt.savefig(dataset + 'Nist_batch.pdf', bbox_inches='tight')
+    plt.savefig('Nist_batch.pdf', bbox_inches='tight')
 
 def plot_summary_mnist_batch(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
 
@@ -1129,7 +1129,7 @@ def plot_summary_mnist_batch(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     ax2.grid(True)
     ax2.set_title('Testing Accuracy')
     ax.set_xlabel('Global rounds ' + '$T$')
-    plt.savefig(dataset + 'Mnist_batch.pdf', bbox_inches='tight')
+    plt.savefig('Mnist_batch.pdf', bbox_inches='tight')
 
 def plot_summary_human_batch(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
 
@@ -1176,4 +1176,4 @@ def plot_summary_human_batch(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     ax2.grid(True)
     ax2.set_title('Testing Accuracy')
     ax.set_xlabel('Global rounds ' + '$T$')
-    plt.savefig(dataset + 'Human_batch.pdf', bbox_inches='tight')
+    plt.savefig('Human_batch.pdf', bbox_inches='tight')
