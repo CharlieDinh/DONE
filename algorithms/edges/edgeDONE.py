@@ -45,6 +45,13 @@ class edgeDONE(Edgebase):
 
     def train(self, epochs, glob_iter):
         # tempalpha = self.alpha/(glob_iter+1)
+        # Set initial value for d0
+        for d, param in zip(self.dt, self.model.parameters()):
+            d.data =  - param.grad.data.clone()
+            # Set direction to 0 at the begining
+            #d.data = - 0 * param.grad.data.clone()
+            #grads.append(param.grad.data.clone())
+
         self.model.zero_grad()
         self.model.train()
 
@@ -53,14 +60,6 @@ class edgeDONE(Edgebase):
         loss = self.total_loss(X=X, y=y, full_batch=False, regularize=True)
         # loss.backward(create_graph=True)
         #grads = []
-
-        # Set initial value for d0
-        for d, param in zip(self.dt, self.server_grad):
-            d.data =  - param.grad.data.clone()
-            # Set direction to 0 at the begining
-            #d.data = - 0 * param.grad.data.clone()
-            #grads.append(param.grad.data.clone())
-
         # Richardson iteration
         for i in range(1, self.local_epochs + 1):  # R
             hess_vec_prods = self.hessian_vec_prod(loss, list(self.model.parameters()), self.dt)
