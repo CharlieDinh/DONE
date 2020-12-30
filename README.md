@@ -116,21 +116,26 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
 ### Effects of mini batch
   - MNIST
     <pre><code>
-      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 256 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 32
-      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 128 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 256 --alpha 0.01 --num_global_iters 100 --local_epochs 120 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 128 --alpha 0.01 --num_global_iters 100 --local_epochs 120 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 64 --alpha 0.01 --num_global_iters 100 --local_epochs 120 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 32 --alpha 0.01 --num_global_iters 100 --local_epochs 120 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 32
     </code></pre>
   - FEMNIST
     <pre><code>
-      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 256 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 32
-      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 128 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 32
+      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 256 --alpha 0.005 --num_global_iters 100 --local_epochs 80 --numedges 32
+      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 128 --alpha 0.005 --num_global_iters 100 --local_epochs 80 --numedges 32
+      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 64 --alpha 0.005 --num_global_iters 100 --local_epochs 80 --numedges 32
       python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 32
     </code></pre>
   - Human activies
     <pre><code>
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 256 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 30
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 128 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 30
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 30
+      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 64 --alpha 0.01 --num_global_iters 100 --local_epochs 80 --numedges 30
+      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 256 --alpha 0.01 --num_global_iters 100 --local_epochs 80 --numedges 30
+      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 128 --alpha 0.01 --num_global_iters 100 --local_epochs 80 --numedges 30
+      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 32 --alpha 0.01 --num_global_iters 100 --local_epochs 80 --numedges 30
+      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 30
     </code></pre>
 
 ### Effects of sub-sampling users
