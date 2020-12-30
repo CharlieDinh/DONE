@@ -127,6 +127,7 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
       python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 256 --alpha 0.005 --num_global_iters 100 --local_epochs 80 --numedges 32
       python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 128 --alpha 0.005 --num_global_iters 100 --local_epochs 80 --numedges 32
       python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 64 --alpha 0.005 --num_global_iters 100 --local_epochs 80 --numedges 32
+      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 32 --alpha 0.005 --num_global_iters 100 --local_epochs 80 --numedges 32
       python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 32
     </code></pre>
   - Human activies
