@@ -887,8 +887,7 @@ def plot_summary_mnist_edge(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[]
     linestyles = ['-', '-', '-', '-']
     markers = ["o","v","s","*","x","P"]
     algs_lbl = ["DONE", "DONE", "DONE", "DONE"]
-
-   #plt.figure(figsize=(6,12))
+    num_users = ["0.4N","0.6N","0.8N","N"]
     fig = plt.figure(figsize=(12, 6))
     ax = fig.add_subplot(111)    # The big subplot
     ax1 = fig.add_subplot(121)
@@ -899,7 +898,6 @@ def plot_summary_mnist_edge(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[]
     ax.spines['right'].set_color('none')
     ax.tick_params(labelcolor='w', top='off',
                    bottom='off', left='off', right='off')
-    #fig, (ax1, ax2) = plt.subplots(1, 2)
 
     num_al = 4
 
@@ -908,10 +906,8 @@ def plot_summary_mnist_edge(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[]
         if(stringbatch == '0'):
             stringbatch = '$\infty$'
         ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$S = $' + str(num_users[i]) ,marker = markers[i],markevery=0.2, markersize=7)
-
-    #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
     ax1.legend(loc='upper right')
-    ax1.set_ylim([0.21, 0.5])
+    ax1.set_ylim([0.22, 0.52])
     ax1.grid(True)
     ax1.set_title('Training Loss')
 
@@ -921,18 +917,116 @@ def plot_summary_mnist_edge(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[]
             stringbatch = '$\infty$'
         ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$S = $' + str(num_users[i]) ,marker = markers[i],markevery=0.2, markersize=7)
 
-    ax2.set_ylim([0.86, 0.922])
-
-    #plt.title('$\\kappa = $' + str(kappa))
-    #fig.set_title('Linear Synthetic')
+    ax2.set_ylim([0.86, 0.92])
     ax2.grid(True)
     ax2.set_title('Testing Accuracy')
-    #ax1.set_ylim([0.045, 0.2])
     ax.set_xlabel('Global rounds ' + '$T$')
-    #ax.set_ylabel('Training Loss', labelpad = 10)
-    #plt.xticks(np.arange(0.045, 2, 0.1))
-    plt.savefig(dataset + 'acu_loss_edge.pdf', bbox_inches='tight')
-    plt.savefig(dataset +  'acu_loss_edge.png', bbox_inches='tight')
+    plt.savefig(dataset + '_edge.pdf', bbox_inches='tight')
+    plt.savefig(dataset +  '_edge.png', bbox_inches='tight')
+
+def plot_summary_human_edge(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
+
+    Numb_Algs = len(algorithms_list)
+    dataset = dataset
+
+    algs_lbl = algorithms_list.copy()
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
+    
+    for i in range(Numb_Algs):
+        print(algorithms_list[i], "acc:", glob_acc[i].max())
+        print(algorithms_list[i], "loss:", train_loss[i].min())
+
+    linestyles = ['-', '-', '-', '-']
+    markers = ["o","v","s","*","x","P"]
+    algs_lbl = ["DONE", "DONE", "DONE", "DONE"]
+    num_users = ["0.4N","0.6N","0.8N","N"]
+    fig = plt.figure(figsize=(12, 6))
+    ax = fig.add_subplot(111)    # The big subplot
+    ax1 = fig.add_subplot(121)
+    ax2 = fig.add_subplot(122)
+    ax.spines['top'].set_color('none')
+    ax.spines['bottom'].set_color('none')
+    ax.spines['left'].set_color('none')
+    ax.spines['right'].set_color('none')
+    ax.tick_params(labelcolor='w', top='off',
+                   bottom='off', left='off', right='off')
+    
+    num_al = 4
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        if(stringbatch == '0'):
+            stringbatch = '$\infty$'
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$S = $' + str(num_users[i]) ,marker = markers[i],markevery=0.2, markersize=7)
+    ax1.legend(loc='upper right')
+    ax1.set_ylim([0.1, 0.6])
+    ax1.grid(True)
+    ax1.set_title('Training Loss')
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        if(stringbatch == '0'):
+            stringbatch = '$\infty$'
+        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$S = $' + str(num_users[i]) ,marker = markers[i],markevery=0.2, markersize=7)
+
+    ax2.set_ylim([0.86, 0.97])
+    ax2.grid(True)
+    ax2.set_title('Testing Accuracy')
+    ax.set_xlabel('Global rounds ' + '$T$')
+    plt.savefig(dataset + '_edge.pdf', bbox_inches='tight')
+    plt.savefig(dataset +  '_edge.png', bbox_inches='tight')
+
+def plot_summary_nist_edge(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
+
+    Numb_Algs = len(algorithms_list)
+    dataset = dataset
+
+    algs_lbl = algorithms_list.copy()
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, dataset= dataset)
+    
+    for i in range(Numb_Algs):
+        print(algorithms_list[i], "acc:", glob_acc[i].max())
+        print(algorithms_list[i], "loss:", train_loss[i].min())
+
+    linestyles = ['-', '-', '-', '-']
+    markers = ["o","v","s","*","x","P"]
+    algs_lbl = ["DONE", "DONE", "DONE", "DONE"]
+    num_users = ["0.4N","0.6N","0.8N","N"]
+    fig = plt.figure(figsize=(12, 6))
+    ax = fig.add_subplot(111)    # The big subplot
+    ax1 = fig.add_subplot(121)
+    ax2 = fig.add_subplot(122)
+    ax.spines['top'].set_color('none')
+    ax.spines['bottom'].set_color('none')
+    ax.spines['left'].set_color('none')
+    ax.spines['right'].set_color('none')
+    ax.tick_params(labelcolor='w', top='off',
+                   bottom='off', left='off', right='off')
+
+    num_al = 4
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        if(stringbatch == '0'):
+            stringbatch = '$\infty$'
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$S = $' + str(num_users[i]) ,marker = markers[i],markevery=0.2, markersize=7)
+    ax1.legend(loc='upper right')
+    ax1.set_ylim([0.8, 1.8])
+    ax1.grid(True)
+    ax1.set_title('Training Loss')
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        if(stringbatch == '0'):
+            stringbatch = '$\infty$'
+        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$S = $' + str(num_users[i]) ,marker = markers[i],markevery=0.2, markersize=7)
+
+    ax2.set_ylim([0.5, 0.79])
+    ax2.grid(True)
+    ax2.set_title('Testing Accuracy')
+    ax.set_xlabel('Global rounds ' + '$T$')
+    plt.savefig(dataset + '_edge.pdf', bbox_inches='tight')
+    plt.savefig(dataset +  '_edge.png', bbox_inches='tight')
 
 def plot_summary_linear_kappa(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
 
