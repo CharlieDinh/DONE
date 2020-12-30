@@ -25,8 +25,8 @@ torch.manual_seed(0)
     
 numedges = 32
 num_glob_iters = 100
-#dataset = "Mnist"
-dataset = "Nist"
+#
+
 #dataset = "human_activity"
 # defind parameters
 if(0):
@@ -40,7 +40,8 @@ if(0):
     L = [0,0,0,0,0,0,0,0,0,0,0]
     plot_summary_mnist2(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L, learning_rate=learning_rate, alpha = alpha, eta = eta, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
 
-if(0):
+if(1):
+    dataset = "Mnist"
     numedges = [32, 32, 32, 32, 32, 32, 32, 32, 32, 32]
     local_epochs = [10,20,30,40,40,40,40,40]
     learning_rate = [1,1,1,1,1,1,1,1]
@@ -52,7 +53,8 @@ if(0):
     #kappa = [4,4,4,4,4,4,9,9,9,9,9,9]
     plot_summary_mnist_R_and_alpha(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L, learning_rate=learning_rate, alpha = alpha, eta = eta, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
 
-if(0):
+if(1):
+    dataset = "human_activity"
     numedges = [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
     local_epochs = [10,20,30,40,40,40,40,40]
     learning_rate = [1,1,1,1,1,1,1,1]
@@ -66,6 +68,7 @@ if(0):
 
 
 if(1):
+    dataset = "Nist"
     numedges = [32, 32, 32, 32, 32, 32, 32, 32, 32, 32]
     local_epochs = [10,20,30,40,40,40,40,40]
     learning_rate = [1,1,1,1,1,1,1,1]
