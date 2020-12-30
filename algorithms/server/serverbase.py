@@ -37,6 +37,16 @@ class ServerBase:
                 self.add_grad(edge, edge.train_samples / self.total_train_samples)
             else:
                 self.add_grad(edge, 1 / self.num_edges)
+    
+    def aggregate_sub_grads(self):
+        assert (self.edges is not None and len(self.edges) > 0)
+        for param in self.model.parameters():
+            param.grad = torch.zeros_like(param.data)
+        for edge in self.selected_edges:
+            if self.algorithm == "FEDL":
+                self.add_grad(edge, edge.train_samples / self.total_train_samples)
+            else:
+                self.add_grad(edge, 1 / self.num_edges)
 
     def add_grad(self, edge, ratio):
         for server_param, edge_param in zip(self.model.parameters(), edge.get_parameters()):

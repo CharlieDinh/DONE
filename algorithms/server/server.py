@@ -170,16 +170,18 @@ class Server(ServerBase):
                 # recive parameter from server
                 self.send_parameters()
                 self.evaluate()
+                self.selected_edges = self.select_edges(glob_iter, self.num_edges)
                 # Caculate gradient to send to server for average
-                for edge in self.edges:
+                for edge in self.selected_edges:
                     edge.get_full_grad()
                 
-                self.aggregate_grads()
+                #self.aggregate_grads()
+                self.aggregate_sub_grads()
                 # receive average gradient form server 
                 self.send_grads()
                
                 # all note are trained 
-                self.selected_edges = self.select_edges(glob_iter, self.num_edges)
+                #self.selected_edges = self.select_edges(glob_iter, self.num_edges)
                 for edge in self.selected_edges:
                     edge.train(self.local_epochs, glob_iter)
 
