@@ -1067,7 +1067,7 @@ def plot_summary_nist_batch(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[]
         stringbatch = str(batch_size[i])
         if(stringbatch == '0'):
             stringbatch = '$\infty$'
-        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+ '$B = $' + str(batch_size[i]) + ', $R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]),marker = markers[i],markevery=0.2, markersize=7)
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+ '$B = $' + str(stringbatch) + ', $R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]),marker = markers[i],markevery=0.2, markersize=7)
     ax1.legend(loc='upper right')
     ax1.set_ylim([0.8,1.8])
     ax1.grid(True)
@@ -1076,7 +1076,7 @@ def plot_summary_nist_batch(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[]
         stringbatch = str(batch_size[i])
         if(stringbatch == '0'):
             stringbatch = '$\infty$'
-        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + str(batch_size[i]) + ', $R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]),marker = markers[i],markevery=0.2, markersize=7)
+        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + str(stringbatch) + ', $R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]),marker = markers[i],markevery=0.2, markersize=7)
 
     ax2.set_ylim([0.5, 0.79])
     ax2.grid(True)
@@ -1114,7 +1114,7 @@ def plot_summary_mnist_batch(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[
         stringbatch = str(batch_size[i])
         if(stringbatch == '0'):
             stringbatch = '$\infty$'
-        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+ '$B = $' + str(batch_size[i]) + ', $R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]),marker = markers[i],markevery=0.2, markersize=7)
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+ '$B = $' + str(stringbatch) + ', $R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]),marker = markers[i],markevery=0.2, markersize=7)
     ax1.legend(loc='upper right')
     ax1.set_ylim([0.22, 0.52])
     ax1.grid(True)
@@ -1123,7 +1123,7 @@ def plot_summary_mnist_batch(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[
         stringbatch = str(batch_size[i])
         if(stringbatch == '0'):
             stringbatch = '$\infty$'
-        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + str(batch_size[i]) + ', $R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]),marker = markers[i],markevery=0.2, markersize=7)
+        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + str(stringbatch) + ', $R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]),marker = markers[i],markevery=0.2, markersize=7)
 
     ax2.set_ylim([0.86, 0.92])
     ax2.grid(True)
@@ -1161,7 +1161,7 @@ def plot_summary_human_batch(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[
         stringbatch = str(batch_size[i])
         if(stringbatch == '0'):
             stringbatch = '$\infty$'
-        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+ '$B = $' + str(batch_size[i]) + ', $R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]),marker = markers[i],markevery=0.2, markersize=7)
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+ '$B = $' + str(stringbatch) + ', $R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]),marker = markers[i],markevery=0.2, markersize=7)
     ax1.legend(loc='upper right')
     ax1.set_ylim([0.1,0.6])
     ax1.grid(True)
@@ -1170,7 +1170,7 @@ def plot_summary_human_batch(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[
         stringbatch = str(batch_size[i])
         if(stringbatch == '0'):
             stringbatch = '$\infty$'
-        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + str(batch_size[i]) + ', $R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]),marker = markers[i],markevery=0.2, markersize=7)
+        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] + ": "+  '$B = $' + str(stringbatch) + ', $R = $' + str(loc_ep1[i]) + ', $\\alpha = $' + str(alpha[i]),marker = markers[i],markevery=0.2, markersize=7)
 
     ax2.set_ylim([0.86, 0.97])
     ax2.grid(True)
