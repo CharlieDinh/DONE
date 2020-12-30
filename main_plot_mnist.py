@@ -72,7 +72,7 @@ if(1):
     learning_rate = [1,1,1,1,1,1,1,1]
     alpha =  [0.01,0.01,0.01,0.03]
     eta = [1.0, 1.0, 1.0, 1.0]
-    batch_size = [64,128,256,0]
+    batch_size = [32,64,128,0]
     algorithms = ["DONE","DONE", "DONE", "DONE"]
     L = [0,0,0,0,0,0,0,0,0,0,0,0]
     plot_summary_mnist_batch(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L, learning_rate=learning_rate, alpha = alpha, eta = eta, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
@@ -85,7 +85,7 @@ if(1):
     learning_rate = [1,1,1,1,1,1,1,1]
     alpha =  [0.005,0.005,0.005,0.01]
     eta = [1.0, 1.0, 1.0, 1.0]
-    batch_size = [64,128,256,0]
+    batch_size = [32,64,128,0]
     algorithms = ["DONE","DONE", "DONE", "DONE"]
     L = [0,0,0,0,0,0,0,0,0,0,0,0]
     plot_summary_nist_batch(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L, learning_rate=learning_rate, alpha = alpha, eta = eta, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
@@ -97,7 +97,7 @@ if(1):
     learning_rate = [1,1,1,1,1,1,1,1]
     alpha =  [0.01,0.01,0.01,0.02]
     eta = [1.0, 1.0, 1.0, 1.0]
-    batch_size = [64,128,256,0]
+    batch_size = [32, 64,128,0]
     algorithms = ["DONE","DONE", "DONE", "DONE"]
     L = [0,0,0,0,0,0,0,0,0,0,0,0]
     plot_summary_human_batch(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L, learning_rate=learning_rate, alpha = alpha, eta = eta, algorithms_list=algorithms, batch_size=batch_size, dataset=dataset)
