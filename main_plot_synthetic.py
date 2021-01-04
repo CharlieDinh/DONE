@@ -35,4 +35,4 @@ if(1):
     L = [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01]
     kappa = [10, 100, 1000, 10000, 10, 100, 1000, 10000, 10, 100, 1000, 10000]
     plot_summary_linear_kappa(num_users=numedges, loc_ep1=local_epochs, Numb_Glob_Iters=num_glob_iters, lamb=L,
-                     
+                            learning_rate=learning_rate, alpha=alpha, eta=eta, algorithms_list=algorithms, batch_size=batch_size, kappa=kappa, dataset=dataset)
