@@ -44,14 +44,13 @@ class edgeDONE(Edgebase):
             loss.backward()
 
     def train(self, epochs, glob_iter):
-        # tempalpha = self.alpha/(glob_iter+1)
-        # Set initial value for d0
-        for d, param in zip(self.dt, self.model.parameters()):
-            d.data =  - param.grad.data.clone()
-            # Set direction to 0 at the begining
-            #d.data = - 0 * param.grad.data.clone()
-            #grads.append(param.grad.data.clone())
-
+        # Set initial value for d0, d0 can be 0 or can be any value
+        for d, server_param, local_param in zip(self.dt, self.server_grad, self.model.parameters()):
+            if(self.batch_size == 0):
+                d.data =  - server_param.grad.data.clone()
+            else:
+                d.data =  - local_param.grad.data.clone()
+            
         self.model.zero_grad()
         self.model.train()
 

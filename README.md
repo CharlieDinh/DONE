@@ -78,9 +78,7 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.005 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 32
-      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 32
       
-      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 5 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 10 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 20 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 30 --numedges 32
@@ -91,9 +89,7 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
       python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.004 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.006 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.008 --num_global_iters 100 --local_epochs 40 --numedges 32
-      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 32
       
-      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 5 --numedges 32
       python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 10 --numedges 32
       python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 20 --numedges 32
       python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 30 --numedges 32
@@ -105,7 +101,6 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
        python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.006 --num_global_iters 100 --local_epochs 40 --numedges 30
       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.008 --num_global_iters 100 --local_epochs 40 --numedges 30
       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 30
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 30
 
       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 5 --numedges 30
       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 10 --numedges 30
@@ -120,7 +115,6 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 128 --alpha 0.01 --num_global_iters 100 --local_epochs 120 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 64 --alpha 0.01 --num_global_iters 100 --local_epochs 120 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 32 --alpha 0.01 --num_global_iters 100 --local_epochs 120 --numedges 32
-      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 32
     </code></pre>
   - FEMNIST
     <pre><code>
@@ -128,7 +122,6 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
       python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 128 --alpha 0.005 --num_global_iters 100 --local_epochs 80 --numedges 32
       python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 64 --alpha 0.005 --num_global_iters 100 --local_epochs 80 --numedges 32
       python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 32 --alpha 0.005 --num_global_iters 100 --local_epochs 80 --numedges 32
-      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 32
     </code></pre>
   - Human activies
     <pre><code>
@@ -136,30 +129,26 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 256 --alpha 0.01 --num_global_iters 100 --local_epochs 80 --numedges 30
       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 128 --alpha 0.01 --num_global_iters 100 --local_epochs 80 --numedges 30
       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 32 --alpha 0.01 --num_global_iters 100 --local_epochs 80 --numedges 30
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 30
     </code></pre>
 
 ### Effects of sub-sampling users
   - MNIST
     <pre><code>
-      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 4
-      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 8
-      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 16
-      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 13
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 20
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 26
     </code></pre>
 
   - FEMNIST
     <pre><code>
-      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 4
-      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 8
-      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 16
-      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 32
+      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 13
+      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 20
+      python3 main.py --dataset Nist --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 26
     </code></pre>
 
   - Human activies
     <pre><code>
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 4
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 8
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 16
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 30
+      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 12
+      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 18
+      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 24
     </code></pre>
