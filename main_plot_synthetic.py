@@ -22,7 +22,10 @@ from algorithms.trainmodel.models import *
 from utils.plot_utils import *
 import torch
 torch.manual_seed(0)
-    
+
+numedges = [32,32,32,32,32,32,32,32,32,32,32,32]
+num_glob_iters = 100
+dataset = "Linear_synthetic"
 if(1):
     local_epochs = [5, 5, 5, 5, 10, 10, 10, 10, 20, 20, 20, 20]
     learning_rate = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
