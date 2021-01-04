@@ -98,11 +98,10 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
   
   - Human activies
     <pre><code>
-       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.006 --num_global_iters 100 --local_epochs 40 --numedges 30
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.008 --num_global_iters 100 --local_epochs 40 --numedges 30
+       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.005 --num_global_iters 100 --local_epochs 40 --numedges 30
       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 30
+      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.015 --num_global_iters 100 --local_epochs 40 --numedges 30
 
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 5 --numedges 30
       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 10 --numedges 30
       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 20 --numedges 30
       python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 30 --numedges 30
