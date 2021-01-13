@@ -55,12 +55,6 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
 
 ## Effect of hyper-parameters: $\alpha$, $R $, and $\kappa$
 - To produce the Fig.1 : Effects of various values of $\alpha$ and $R$ on synthetic with diffent $\kappa = 10^2$
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/44039773/90308495-59b36580-df23-11ea-856e-6b1e34085715.png" height="300">
-</p>
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/44039773/90308494-58823880-df23-11ea-88c3-82a629e38894.png" height="300">
-</p>
     <pre><code>
       python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --alpha 0.06 --num_global_iters 100 --local_epochs 20 --numedges 32
       python3 main.py --dataset Linear_synthetic --model linear_regression --algorithm DONE --batch_size 0 --alpha 0.08 --num_global_iters 100 --local_epochs 20 --numedges 32
