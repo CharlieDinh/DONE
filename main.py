@@ -54,7 +54,7 @@ if __name__ == "__main__":
     parser.add_argument("--num_global_iters", type=int, default=100)
     parser.add_argument("--local_epochs", type=int, default=20)
     parser.add_argument("--optimizer", type=str, default="SGD",choices=["SGD"])
-    parser.add_argument("--algorithm", type=str, default="DONE",choices=["DONE", "GD", "DANE", "Newton","GT","PGT"])
+    parser.add_argument("--algorithm", type=str, default="DONE",choices=["DONE", "GD", "DANE", "Newton","GT","PGT","RK","NL1","GIANT"])
     parser.add_argument("--numedges", type=int, default=32,help="Number of Edges per round")
     parser.add_argument("--times", type=int, default=1, help="running time")
     parser.add_argument("--commet", type=int, default=0, help="log data to comet")

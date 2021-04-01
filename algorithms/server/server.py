@@ -12,6 +12,9 @@ from algorithms.edges.edgeNewton import edgeNewton
 from algorithms.edges.edgeAvg import edgeAvg
 from algorithms.edges.edgeGT import edgeGT
 from algorithms.edges.edgePGT import edgePGT
+from algorithms.edges.edgeRK import edgeRK
+from algorithms.edges.edgeNL1 import edgeNL1
+from algorithms.edges.edgeGIANT import edgeGIANT
 
 from algorithms.server.serverbase import ServerBase
 from utils.model_utils import read_data, read_edge_data
@@ -68,8 +71,18 @@ class Server(ServerBase):
 
             if(algorithm == "GT"):
                 edge = edgeGT(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                
             if(algorithm == "PGT"):
                 edge = edgePGT(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                
+            if(algorithm == "RK"):
+                edge = edgeRK(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                
+            if(algorithm == "NL1"):
+                edge = edgeNL1(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+            
+            if(algorithm == "GIANT"):
+                edge = edgeGIANT(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)            
             
             self.edges.append(edge)
             self.total_train_samples += edge.train_samples
@@ -255,7 +268,7 @@ class Server(ServerBase):
                 for param, d in zip(self.model.parameters(), [weights_direction, bias_direction]):
                     param.data.add_(self.alpha * d)
                     
-        elif self.algorithm == "GT" or self.algorithm == "PGT":
+        elif self.algorithm == "GT" or self.algorithm == "PGT" or self.algorithm == "RK" or self.algorithm == "GIANT"::
             for glob_iter in range(self.num_glob_iters):
                 if(self.experiment):
                     self.experiment.set_epoch( glob_iter + 1)
@@ -278,6 +291,75 @@ class Server(ServerBase):
 
                 self.aggregate_parameters()
 
+       elif self.algorithm == "NL1":
+            #1- getting all training dataset of each clients
+            #2- computing H0
+            etha = 0.5
+            hess = None
+            hs =[]
+            for edge in self.edges:
+                edge.get_full_grad_2nd_dloss()
+                for (X, y) , h in zip(edge.trainloaderfull,edge.second_derivative):
+                    temp = torch.ones((X.shape[0], 1))
+                    a = torch.cat((X, temp), -1)
+                    a = a.reshape(len(h),a.shape[1],-1)
+                    for i in range(len(h)):
+                       if(h[i]>0):
+                          hes = h[i] * a[i] * a[i].T / (len(self.edges)* len(h) )
+                          hess =  hes if (hess == None) else  hess + hes
+                    hs.append(h)
+                    
+            for glob_iter in range(self.num_glob_iters):
+                print("-------------Round number: ",glob_iter, " -------------")
+                self.send_parameters()
+                self.evaluate()
+
+                #3- getting grads and C_i(h_i(x) − h_i)
+                hess_new = []
+                hx_new =[]
+                for edge in self.edges:
+                    edge.get_full_grad_2nd_dloss()
+                    for h in edge.second_derivative:
+                        hx_new.append(h)
+                        
+                        
+                hs_new = []
+                for h_i, hx_i in zip(hs,hx_new):
+                    hi_new =  h_i  + etha * (hx_i - h_i)
+                    hi_new[hi_new < 0] = 0
+                    hs_new.append(hi_new)
+                self.aggregate_grads()
+                
+                
+            
+                #hess = self.aggregate_hessians()
+                hess_r = hess + self.alpha * torch.eye(hess.shape[0])
+                inverse_hess = torch.inverse(hess_r)
+                grads = []
+                weights = []
+                for param in self.model.parameters():
+                    grads.append(param.grad.clone().detach())
+                    weights.append(self.alpha * param.data)
+                    
+                grads = grads + weights
+                grads_as_vector = torch.cat([-grads[0].data, -grads[1].data.view(1, 1)], 1)
+                direction = torch.matmul(grads_as_vector, inverse_hess)
+                weights_direction = direction[0, 0:-1].view(grads[0].shape)
+                bias_direction = direction[0, -1].view(grads[1].shape)
+
+                for param, d in zip(self.model.parameters(), [weights_direction, bias_direction]):
+                    param.data.add_(d)
+                
+                #update hessian
+                for edge, h_new_i, h_i in zip(self.edges, hs_new,hs):
+                    for X,y in edge.trainloaderfull:
+                        temp = torch.ones((X.shape[0], 1))
+                        a = torch.cat((X, temp), -1)
+                        a = a.reshape(len(h_i),a.shape[1],-1)
+                        for j in range(len(h_i)):
+                            hess =  hess + ((h_new_i[j] -  h_i[j])* a[j] * a[j].T)/(len(h_i) * len(self.edges))
+                hs = hs_new
+                    
         self.save_results()
         self.save_model()
 
