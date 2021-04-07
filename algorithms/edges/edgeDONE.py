@@ -46,7 +46,7 @@ class edgeDONE(Edgebase):
     def train(self, epochs, glob_iter):
         # Set initial value for d0, d0 can be 0 or can be any value
         for d, server_param, local_param in zip(self.dt, self.server_grad, self.model.parameters()):
-            if(self.batch_size == 0):
+            if(self.batch_size != 0):
                 d.data =  - server_param.grad.data.clone()
             else:
                 d.data =  - local_param.grad.data.clone()
