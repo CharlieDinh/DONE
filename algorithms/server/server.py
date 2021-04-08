@@ -61,7 +61,7 @@ class Server(ServerBase):
                 edge = edgeAvg(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
 
             if(algorithm == "FEDL"):
-                edge = edgeFEDL(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                edge = edgeDANE(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
 
             if(algorithm == "Newton"):
                 edge = edgeNewton(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
@@ -210,9 +210,7 @@ class Server(ServerBase):
                 print("-------------Round number: ",glob_iter, " -------------")
                 self.send_parameters()
                 self.evaluate()
-                # reset all direction after each global interation
-
-
+                # reset all direction after each global interatio
                 # Aggregate grads of client.
                 for edge in self.edges:
                     edge.get_full_grad()
