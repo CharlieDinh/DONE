@@ -76,13 +76,13 @@ class Server(ServerBase):
                 edge = edgePGT(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
                 
             if(algorithm == "RK"):
-                edge = edgeRK(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                edge = edgeRK(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)     
                 
             if(algorithm == "NL1"):
-                edge = edgeNL1(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)
+                edge = edgeNL1(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)     
             
             if(algorithm == "GIANT"):
-                edge = edgeGIANT(id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)            
+                edge = edgeGIANT(device, id, train, test, model, batch_size, learning_rate, alpha, eta, L, local_epochs, optimizer)         
             
             self.edges.append(edge)
             self.total_train_samples += edge.train_samples
@@ -268,7 +268,7 @@ class Server(ServerBase):
                 for param, d in zip(self.model.parameters(), [weights_direction, bias_direction]):
                     param.data.add_(self.alpha * d)
                     
-        elif self.algorithm == "GT" or self.algorithm == "PGT" or self.algorithm == "RK" or self.algorithm == "GIANT"::
+        elif self.algorithm == "GT" or self.algorithm == "PGT" or self.algorithm == "RK" or self.algorithm == "GIANT":
             for glob_iter in range(self.num_glob_iters):
                 if(self.experiment):
                     self.experiment.set_epoch( glob_iter + 1)
@@ -291,7 +291,7 @@ class Server(ServerBase):
 
                 self.aggregate_parameters()
 
-       elif self.algorithm == "NL1":
+        elif self.algorithm == "NL1":
             #1- getting all training dataset of each clients
             #2- computing H0
             etha = 0.5

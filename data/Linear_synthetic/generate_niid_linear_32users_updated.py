@@ -6,7 +6,7 @@ import os
 np.random.seed(0)
 
 NUM_USER = 32
-rho = 10
+rho = 100
 Dim = 40 
 Noise = 0.05
 

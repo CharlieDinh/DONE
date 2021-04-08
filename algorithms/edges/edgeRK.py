@@ -13,7 +13,7 @@ from algorithms.edges.nn_utils import dot_product,add_params
 # Implementation for Conjugate gradient method clients
 
 class edgeRK(Edgebase):
-    def __init__(self, numeric_id, train_data, test_data, model, batch_size, learning_rate, alpha, eta, L,
+    def __init__(self, device, numeric_id, train_data, test_data, model, batch_size, learning_rate, alpha, eta, L,
                  local_epochs, optimizer):
         super().__init__(numeric_id, train_data, test_data, model[0], batch_size, learning_rate, alpha, eta, L,
                          local_epochs)
