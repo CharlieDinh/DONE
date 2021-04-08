@@ -29,7 +29,7 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
 ## Performance comparison with different distributed algorithms (table 2 in our paper)
 - For MNIST:
       <pre><code>
-      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.04 --num_global_iters 100 --local_epochs 40 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm DONE --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm Newton --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm Newton --batch_size 0 --alpha 0.05 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm DANE --batch_size 0 --eta 1 --learning_rate 0.04 --num_global_iters 100 --local_epochs 40 --numedges 32
@@ -46,7 +46,7 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
 
 - For Human Activities:
       <pre><code>
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.02 --num_global_iters 100 --local_epochs 40 --numedges 30
+      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 30
       python3 main.py --dataset human_activity --model mclr --algorithm Newton --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 30
       python3 main.py --dataset human_activity --model mclr --algorithm Newton --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 30
       python3 main.py --dataset human_activity --model mclr --algorithm DANE --batch_size 0 --eta 1 --learning_rate 0.05 --num_global_iters 100 --local_epochs 40 --numedges 30
