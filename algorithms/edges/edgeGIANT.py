@@ -12,7 +12,7 @@ from algorithms.edges.nn_utils import dot_product,add_params
 
 # Implementation for Conjugate gradient method clients
 
-class edgeGT(Edgebase):
+class edgeGIANT(Edgebase):
     def __init__(self, device, numeric_id, train_data, test_data, model, batch_size, learning_rate, alpha, eta, L,
                  local_epochs, optimizer):
         super().__init__(device, numeric_id, train_data, test_data, model[0], batch_size, learning_rate, alpha, eta, L,
@@ -57,9 +57,11 @@ class edgeGT(Edgebase):
         p_vec =[]
         for param, d, grad in zip(self.model.parameters(), self.dt,self.server_grad):
             # Set direction to 0 at the begining
-            d.data = - 0 * param.grad.data.clone()
-            r_vec.append(-grad.grad.detach().clone())
-            p_vec.append(-grad.grad.detach().clone())
+            #d.data = - 0 * param.grad.data.clone()
+            grad = grad.grad.detach().clone()
+            add_params(grad,d.data,ratio=self.alpha)
+            r_vec.append(-grad)
+            p_vec.append(-grad)
         
         # conjugate gradien initials 
         rsold = dot_product(r_vec, r_vec)
