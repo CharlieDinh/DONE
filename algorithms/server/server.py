@@ -17,6 +17,7 @@ from algorithms.edges.edgeGIANT import edgeGIANT
 from algorithms.server.serverbase import ServerBase
 from utils.model_utils import read_data, read_edge_data
 import numpy as np
+import time
 
 # Implementation for Central Server
 class Server(ServerBase):
@@ -98,6 +99,7 @@ class Server(ServerBase):
 
     def train(self):
         loss = []
+        start_time = time.time()
         if(self.algorithm == "FirstOrder"):
             # All edge will eun GD or SGD to obtain w*
             for edge in self.edges:
@@ -285,6 +287,7 @@ class Server(ServerBase):
 
                 self.aggregate_parameters()
 
+        print("--- %s Finish training in seconds ---" % (time.time() - start_time))
         self.save_results()
         self.save_model()
 
