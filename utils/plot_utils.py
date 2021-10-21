@@ -1271,3 +1271,157 @@ def plot_summary_human_batch(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[
     ax2.set_title('Testing Accuracy')
     ax.set_xlabel('Global rounds ' + '$T$')
     plt.savefig('Human_batch.pdf', bbox_inches='tight')
+
+
+def plot_summary_mnist_algorithm(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
+
+    Numb_Algs = len(algorithms_list)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
+    for i in range(Numb_Algs):
+        print(algorithms_list[i], "loss:", glob_acc[i].max())
+    
+    plt.figure(1)
+    linestyles = ['-','-','-', '-','-', '-']
+    markers = ["o","v","s","*","x","P"]
+    algs_lbl = ["DONE", "NEWTON", "FEDL", "DANE", "GT", "GD"]
+    #plt.figure(figsize=(6,12))
+    fig = plt.figure(figsize=(12, 6))
+    ax = fig.add_subplot(111)    # The big subplot
+    ax1 = fig.add_subplot(121)
+    ax2 = fig.add_subplot(122)
+    ax.spines['top'].set_color('none')
+    ax.spines['bottom'].set_color('none')
+    ax.spines['left'].set_color('none')
+    ax.spines['right'].set_color('none')
+    ax.tick_params(labelcolor='w', top='off', bottom='off', left='off', right='off')
+    #fig, (ax1, ax2) = plt.subplots(1, 2)
+
+    num_al = len(algs_lbl)
+
+    for i in range(num_al):
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] ,marker = markers[i],markevery=0.2, markersize=7)
+
+    #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
+    ax1.legend(loc='upper right')
+    ax1.set_ylabel('Training Loss', labelpad=10)
+    ax1.set_ylim([0.21, 0.52])
+    ax1.grid(True)
+    #ax1.set_title('Fixed '+'$\\alpha$')
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i], marker=markers[i], markevery=0.2, markersize=7)
+
+    ax2.set_ylim([0.86, 0.922])
+
+    #plt.title('$\\kappa = $' + str(kappa))
+    #fig.set_title('Linear Synthetic')
+    ax2.legend(loc='lower right')
+    ax2.grid(True)
+    #ax1.set_ylim([0.045, 0.2])
+    ax.set_xlabel('Global rounds ' + '$T$')
+    ax2.set_ylabel('Testing Accuracy', labelpad=10)
+    #plt.xticks(np.arange(0.045, 2, 0.1))
+    plt.savefig('MNIST_Algorithm.pdf', bbox_inches='tight')
+
+def plot_summary_nist_algorithm(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
+
+    Numb_Algs = len(algorithms_list)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
+    for i in range(Numb_Algs):
+        print(algorithms_list[i], "loss:", glob_acc[i].max())
+    
+    plt.figure(1)
+    linestyles = ['-','-','-', '-','-', '-']
+    markers = ["o","v","s","*","x","P"]
+    algs_lbl = ["DONE", "NEWTON", "FEDL", "DANE", "GT", "GD"]
+    #plt.figure(figsize=(6,12))
+    fig = plt.figure(figsize=(12, 6))
+    ax = fig.add_subplot(111)    # The big subplot
+    ax1 = fig.add_subplot(121)
+    ax2 = fig.add_subplot(122)
+    ax.spines['top'].set_color('none')
+    ax.spines['bottom'].set_color('none')
+    ax.spines['left'].set_color('none')
+    ax.spines['right'].set_color('none')
+    ax.tick_params(labelcolor='w', top='off', bottom='off', left='off', right='off')
+    #fig, (ax1, ax2) = plt.subplots(1, 2)
+
+    num_al = len(algs_lbl)
+
+    for i in range(num_al):
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] ,marker = markers[i],markevery=0.2, markersize=7)
+
+    #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
+    ax1.legend(loc='upper right')
+    ax1.set_ylabel('Training Loss', labelpad=10)
+    ax1.set_ylim([0.62, 2])
+    ax1.grid(True)
+    #ax1.set_title('Fixed '+'$\\alpha$')
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i], marker=markers[i], markevery=0.2, markersize=7)
+
+    ax2.set_ylim([0.4, 0.82])
+
+    #plt.title('$\\kappa = $' + str(kappa))
+    #fig.set_title('Linear Synthetic')
+    ax2.legend(loc='lower right')
+    ax2.grid(True)
+    #ax1.set_ylim([0.045, 0.2])
+    ax.set_xlabel('Global rounds ' + '$T$')
+    ax2.set_ylabel('Testing Accuracy', labelpad=10)
+    #plt.xticks(np.arange(0.045, 2, 0.1))
+    plt.savefig('NIST_Algorithm.pdf', bbox_inches='tight')
+
+def plot_summary_human_algorithm(num_users=[], loc_ep1=5, Numb_Glob_Iters=10, lamb=[], learning_rate=[], alpha = [], eta = [], algorithms_list=[], batch_size=0, kappa = [], dataset = ""):
+
+    Numb_Algs = len(algorithms_list)
+    glob_acc, train_acc, train_loss = get_training_data_value( num_users=num_users, loc_ep1=loc_ep1, Numb_Glob_Iters=Numb_Glob_Iters, lamb=lamb, learning_rate=learning_rate, alpha =alpha, eta =eta, algorithms_list=algorithms_list, batch_size=batch_size, kappa=kappa, dataset= dataset)
+    for i in range(Numb_Algs):
+        print(algorithms_list[i], "loss:", glob_acc[i].max())
+    
+    plt.figure(1)
+    linestyles = ['-','-','-', '-','-', '-']
+    markers = ["o","v","s","*","x","P"]
+    algs_lbl = ["DONE", "NEWTON", "FEDL", "DANE", "GT", "GD"]
+    #plt.figure(figsize=(6,12))
+    fig = plt.figure(figsize=(12, 6))
+    ax = fig.add_subplot(111)    # The big subplot
+    ax1 = fig.add_subplot(121)
+    ax2 = fig.add_subplot(122)
+    ax.spines['top'].set_color('none')
+    ax.spines['bottom'].set_color('none')
+    ax.spines['left'].set_color('none')
+    ax.spines['right'].set_color('none')
+    ax.tick_params(labelcolor='w', top='off', bottom='off', left='off', right='off')
+    #fig, (ax1, ax2) = plt.subplots(1, 2)
+
+    num_al = len(algs_lbl)
+
+    for i in range(num_al):
+        ax1.plot(train_loss[i, 1:], linestyle=linestyles[i], label=algs_lbl[i] ,marker = markers[i],markevery=0.2, markersize=7)
+
+    #fig.hlines(y=0.035,xmin=0, xmax=200, linestyle='--',label = "optimal solution", color= "m" )
+    ax1.legend(loc='upper right')
+    ax1.set_ylabel('Training Loss', labelpad=10)
+    ax1.set_ylim([0.1, 0.6])
+    ax1.grid(True)
+    #ax1.set_title('Fixed '+'$\\alpha$')
+
+    for i in range(num_al):
+        stringbatch = str(batch_size[i])
+        ax2.plot(glob_acc[i, 1:], linestyle=linestyles[i], label=algs_lbl[i], marker=markers[i], markevery=0.2, markersize=7)
+
+    ax2.set_ylim([0.86, 0.97])
+
+    #plt.title('$\\kappa = $' + str(kappa))
+    #fig.set_title('Linear Synthetic')
+    ax2.legend(loc='lower right')
+    ax2.grid(True)
+    #ax1.set_ylim([0.045, 0.2])
+    ax.set_xlabel('Global rounds ' + '$T$')
+    ax2.set_ylabel('Testing Accuracy', labelpad=10)
+    #plt.xticks(np.arange(0.045, 2, 0.1))
+    plt.savefig('Human_Algorithm.pdf', bbox_inches='tight')

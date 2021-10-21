@@ -34,8 +34,8 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
       python3 main.py --dataset Mnist --model mclr --algorithm Newton --batch_size 0 --alpha 0.05 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm DANE --batch_size 0 --eta 1 --learning_rate 0.04 --num_global_iters 100 --local_epochs 40 --numedges 32
       python3 main.py --dataset Mnist --model mclr --algorithm FEDL --batch_size 0 --eta 1 --learning_rate 0.04 --num_global_iters 100 --local_epochs 40 --numedges 32
-      python3 main.py --dataset Mnist --model mclr --algorithm GD --batch_size 0 --learning_rate 0.03 --num_global_iters 100 --numedges 32
-      python3 main.py --dataset Mnist --model mclr --algorithm GT --batch_size 0 --alpha 0.2 --L 1 --num_global_iters 100 --local_epochs 40 --numedges 32 
+      python3 main.py --dataset Mnist --model mclr --algorithm GD --batch_size 0 --learning_rate 0.2 --num_global_iters 100 --numedges 32
+      python3 main.py --dataset Mnist --model mclr --algorithm GT --batch_size 0 --alpha 0.03 --L 1 --num_global_iters 100 --local_epochs 40 --numedges 32 
     </code></pre>
 - For FEMNIST:
       <pre><code>
@@ -50,14 +50,13 @@ Link: https://arxiv.org/pdf/2012.05625.pdf
 
 - For Human Activities:
       <pre><code>
-      python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 30
-      python3 main.py --dataset human_activity --model mclr --algorithm Newton --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 30
-      python3 main.py --dataset human_activity --model mclr --algorithm Newton --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 30
-      python3 main.py --dataset human_activity --model mclr --algorithm DANE --batch_size 0 --eta 1 --learning_rate 0.05 --num_global_iters 100 --local_epochs 40 --numedges 30
-      python3 main.py --dataset human_activity --model mclr --algorithm FEDL --batch_size 0 --eta 1 --learning_rate 0.05 --num_global_iters 100 --local_epochs 40 --numedges 30
-      python3 main.py --dataset human_activity --model mclr --algorithm GD --batch_size 0 --learning_rate 0.1 --num_global_iters 100 --numedges 30
-      python3 main.py --dataset human_activity --model mclr --algorithm GT --batch_size 0 --alpha 0.01 --L 1 --num_global_iters 100 --local_epochs 40 --numedges 30
-      
+      !python3 main.py --dataset human_activity --model mclr --algorithm DONE --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 30
+      !python3 main.py --dataset human_activity --model mclr --algorithm Newton --batch_size 0 --alpha 0.01 --num_global_iters 100 --local_epochs 40 --numedges 30
+      !python3 main.py --dataset human_activity --model mclr --algorithm Newton --batch_size 0 --alpha 0.03 --num_global_iters 100 --local_epochs 40 --numedges 30
+      !python3 main.py --dataset human_activity --model mclr --algorithm DANE --batch_size 0 --eta 1 --learning_rate 0.05 --num_global_iters 100 --local_epochs 40 --numedges 30
+      !python3 main.py --dataset human_activity --model mclr --algorithm FEDL --batch_size 0 --eta 1 --learning_rate 0.05 --num_global_iters 100 --local_epochs 40 --numedges 30
+      !python3 main.py --dataset human_activity --model mclr --algorithm GD --batch_size 0 --learning_rate 0.1 --num_global_iters 100 --numedges 30
+      !python3 main.py --dataset human_activity --model mclr --algorithm GT --batch_size 0 --alpha 0.01 --L 1 --num_global_iters 100 --local_epochs 40 --numedges 30
     </code></pre>
 
 ## Effect of hyper-parameters: $\alpha$, $R $, and $\kappa$
