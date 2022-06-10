@@ -1,9 +1,9 @@
-# DONE: Distributed Newton Method for Federated Edge Learning.
+# DONE: Distributed Newton Method for Federated Edge Learning (IEEE Transactions on Parallel and Distributed Systems 2022).
 
 This repository is for the Experiment Section of the paper:
 "DONE: Distributed Newton Method for Federated Edge Learning"
 
-Link: https://arxiv.org/pdf/2012.05625.pdf
+Link: https://arxiv.org/pdf/2012.05625.pdf, https://ieeexplore.ieee.org/abstract/document/9695269
 
 # Software requirements:
 - numpy, scipy, pytorch, Pillow, matplotlib.
